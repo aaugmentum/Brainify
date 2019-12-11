@@ -3,17 +3,5 @@
 
 void terminate(const char* msg) {
 	perror(msg);
-	exit(0);
+	exit(EXIT_FAILURE);
 }
-
-struct method
-{
-	int type;
-	char data[1024];
-};
-
-struct login
-{
-	char username[50];
-};
-

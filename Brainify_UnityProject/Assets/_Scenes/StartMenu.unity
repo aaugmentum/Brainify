@@ -358,6 +358,7 @@ GameObject:
   - component: {fileID: 838537022}
   - component: {fileID: 838537021}
   - component: {fileID: 838537020}
+  - component: {fileID: 838537023}
   m_Layer: 5
   m_Name: Btn_Quit
   m_TagString: Untagged
@@ -428,12 +429,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
+      - m_Target: {fileID: 838537023}
+        m_MethodName: PlayDefaultSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -475,6 +476,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838537018}
   m_CullTransparentMesh: 0
+--- !u!114 &838537023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838537018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a3e70a7e5f80246baecd3ac6e4fdf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultClip: {fileID: 8300000, guid: a292ccec259eeff4ab2a888bf67e7a1f, type: 3}
+  clips: []
 --- !u!1 &883681107
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +652,7 @@ GameObject:
   - component: {fileID: 1289498225}
   - component: {fileID: 1289498224}
   - component: {fileID: 1289498223}
+  - component: {fileID: 1289498226}
   m_Layer: 5
   m_Name: Btn_Options
   m_TagString: Untagged
@@ -706,7 +722,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1289498224}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1289498226}
+        m_MethodName: PlayDefaultSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1289498224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -743,6 +770,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1289498221}
   m_CullTransparentMesh: 0
+--- !u!114 &1289498226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289498221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a3e70a7e5f80246baecd3ac6e4fdf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultClip: {fileID: 8300000, guid: a292ccec259eeff4ab2a888bf67e7a1f, type: 3}
+  clips: []
 --- !u!1 &1347386185
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,6 +796,7 @@ GameObject:
   - component: {fileID: 1347386189}
   - component: {fileID: 1347386188}
   - component: {fileID: 1347386187}
+  - component: {fileID: 1347386190}
   m_Layer: 5
   m_Name: Btn_NewGame
   m_TagString: Untagged
@@ -825,6 +867,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1347386190}
+        m_MethodName: PlayDefaultSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Question
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1811747005}
         m_MethodName: LoadScene
         m_Mode: 5
@@ -872,6 +925,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1347386185}
   m_CullTransparentMesh: 0
+--- !u!114 &1347386190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347386185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a3e70a7e5f80246baecd3ac6e4fdf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultClip: {fileID: 8300000, guid: a292ccec259eeff4ab2a888bf67e7a1f, type: 3}
+  clips: []
 --- !u!1 &1479497661
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +1054,7 @@ GameObject:
   - component: {fileID: 1502533137}
   - component: {fileID: 1502533136}
   - component: {fileID: 1502533135}
+  - component: {fileID: 1502533138}
   m_Layer: 5
   m_Name: Btn_FindGame
   m_TagString: Untagged
@@ -1056,7 +1124,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1502533136}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1502533138}
+        m_MethodName: PlayDefaultSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1502533136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1093,6 +1172,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502533133}
   m_CullTransparentMesh: 0
+--- !u!114 &1502533138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502533133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a3e70a7e5f80246baecd3ac6e4fdf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultClip: {fileID: 8300000, guid: a292ccec259eeff4ab2a888bf67e7a1f, type: 3}
+  clips: []
 --- !u!1 &1759851844
 GameObject:
   m_ObjectHideFlags: 0

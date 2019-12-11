@@ -1,9 +1,19 @@
-#include <stdlib.h>
 #include <stdio.h>
 #define PORT 8080
 
-void terminate(const char *msg)
-{
+void terminate(const char* msg) {
 	perror(msg);
-	exit(EXIT_FAILURE);
+	exit(0);
 }
+
+struct method
+{
+	int type;
+	char data[1024];
+};
+
+struct login
+{
+	char username[50];
+};
+

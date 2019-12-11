@@ -13,24 +13,24 @@
 #define PORT 8080
 
 void terminate(const char *msg);
-void init_socket();
+void InitSocket();
 
 int server_fd;
 char buf[1024] = {0};
 
-int main()
-{
-	init_socket();
-	while (1)
-	{
-		memset(buf, 0, sizeof(buf));
-		recv(server_fd, buf, sizeof(buf), 0);
-		printf("%s", buf);
-	}
-	return 0;
-}
+// int main()
+// {
+// 	init_socket();
+// 	while (1)
+// 	{
+// 		memset(buf, 0, sizeof(buf));
+// 		recv(server_fd, buf, sizeof(buf), 0);
+// 		printf("%s", buf);
+// 	}
+// 	return 0;
+// }
 
-void init_socket()
+void InitSocket()
 {
 	//Init variables
 	struct sockaddr_in server_addr;
@@ -46,6 +46,14 @@ void init_socket()
 	if (inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0)
 		terminate("Address is not supported");
 
-	if (connect(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
-		terminate("Socket connect failed");
+	if (connect(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0);
+		// terminate("Socket connect failed");
+}
+
+char *GetMsg()
+{
+	memset(buf, 0, sizeof(buf));
+	recv(server_fd, buf, sizeof(buf), 0);
+	printf("%s", buf);
+	return buf;
 }

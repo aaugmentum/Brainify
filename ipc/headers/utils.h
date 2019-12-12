@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define PORT 8080
+#define PORT 8085
 
 void terminate(const char* msg) {
 	perror(msg);

@@ -70,6 +70,21 @@ int connect_server()
 	return 1;
 }
 
+int sendall(int fd, method_t *buf, int n, int flags)
+{
+	int total = 0, temp;
+
+	while (total < n)
+	{
+		temp = send(fd, buf + total, n - total, flags);
+		if (temp == -1)
+			break;
+		total += temp;
+	}
+
+	return (temp == -1 ? -1 : total);
+}
+
 int login(const char username[16], const char password[128])
 {
 	method_t *method = malloc(sizeof(method_t));
@@ -79,7 +94,7 @@ int login(const char username[16], const char password[128])
 	memcpy(auth->password, password, 128);
 	memcpy(method->data, auth, sizeof(auth_t));
 
-	send(server_fd, method, sizeof(method_t), 0);
+	sendall(server_fd, method, sizeof(method_t), 0);
 	free(method);
 	free(auth);
 }
@@ -93,7 +108,7 @@ int signup(const char username[16], const char password[128])
 	memcpy(auth->password, password, 128);
 	memcpy(method->data, auth, sizeof(auth_t));
 
-	send(server_fd, method, sizeof(method_t), 0);
+	sendall(server_fd, method, sizeof(method_t), 0);
 	free(method);
 	free(auth);
 }
@@ -102,7 +117,7 @@ int logout()
 {
 	method_t *method = malloc(sizeof(method_t));
 	method->type = LOGOUT;
-	send(server_fd, method, sizeof(method_t), 0);
+	sendall(server_fd, method, sizeof(method_t), 0);
 	free(method);
 }
 

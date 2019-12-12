@@ -78,7 +78,7 @@ void *handle_client(peer_t *peer)
 	while (1)
 	{
 		method_t *method = malloc(sizeof(method_t));
-		int size = recv(peer->fd, method, sizeof(method_t), 0);
+		int size = recv(peer->fd, method, sizeof(method_t), MSG_WAITALL);
 
 		//Client disconnected
 		if (size < 1)

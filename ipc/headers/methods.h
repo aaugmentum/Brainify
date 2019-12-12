@@ -1,4 +1,4 @@
-#define MAX_DATA_SIZE 256
+#define MAX_DATA_SIZE 32000
 
 
 typedef enum {

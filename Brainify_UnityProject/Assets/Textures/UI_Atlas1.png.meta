@@ -1,0 +1,760 @@
+fileFormatVersion: 2
+guid: 73428d2a19d663d4188c6d4df32ba878
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4273527062152291470
+    second: delimiter
+  - first:
+      213: 7061083421459938783
+    second: toggle-off2
+  - first:
+      213: -6218069928216211097
+    second: Download_progress_1
+  - first:
+      213: 3296131560283722053
+    second: flag-EN
+  - first:
+      213: -1413084450853689084
+    second: flag-ES
+  - first:
+      213: -3261677163884650165
+    second: flag-FR
+  - first:
+      213: -1851687131633279007
+    second: flag-IT
+  - first:
+      213: -6247637068171043113
+    second: toggle-on2
+  - first:
+      213: -8504614597736253265
+    second: Download_progress_2_new
+  - first:
+      213: 5329350922598298761
+    second: flag-DE
+  - first:
+      213: 4718452981039865049
+    second: flag-RU
+  - first:
+      213: -2285952987017640082
+    second: button-number-white
+  - first:
+      213: -5102300985662742901
+    second: Download_progress-4
+  - first:
+      213: 5049675035272248052
+    second: social-networks-fb
+  - first:
+      213: -8973579007916783532
+    second: social-networks-ok
+  - first:
+      213: -3199808427829477856
+    second: progress-3
+  - first:
+      213: -1429174380271438451
+    second: Download_progress_2
+  - first:
+      213: -1788071006897994062
+    second: social-networks-vk
+  - first:
+      213: -2317351927511315493
+    second: check-mark
+  - first:
+      213: 4922348434008409185
+    second: toggle-off
+  - first:
+      213: -6553992748840292155
+    second: toggle-on
+  - first:
+      213: 8149754577835019109
+    second: Attraction-UI_Settings_21
+  - first:
+      213: -801986583383468186
+    second: Download_progress-3
+  - first:
+      213: 6549504899117255025
+    second: check-mark2
+  - first:
+      213: 10021600480228412
+    second: button-white
+  - first:
+      213: 8322511960572307616
+    second: button-orange
+  - first:
+      213: -7269227988884288440
+    second: button-green
+  - first:
+      213: 4746958374724737602
+    second: button-number1
+  - first:
+      213: -4895229812629264641
+    second: button-number-red1
+  - first:
+      213: -9046045887265053789
+    second: button-number-green1
+  - first:
+      213: 8828379512176749800
+    second: button-number-yellow1
+  - first:
+      213: 868933649162321335
+    second: progress-2-new
+  - first:
+      213: 8918872571784840942
+    second: button-blue
+  - first:
+      213: -8314209660813420431
+    second: block-for-text
+  - first:
+      213: -8331305233754124330
+    second: progress-2
+  - first:
+      213: -432598474091571006
+    second: progress-4
+  - first:
+      213: 4922348434008409185
+    second: Attraction-UI_Settings_19
+  - first:
+      213: -3042295642492684922
+    second: border_blue
+  - first:
+      213: 4624525860999836590
+    second: border_red
+  - first:
+      213: 6588753357898932663
+    second: CheckMark
+  - first:
+      213: -663486515837350474
+    second: Orange
+  - first:
+      213: 9092069447905511334
+    second: Circle
+  - first:
+      213: -3134730024398392468
+    second: Jaw
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: button-number-yellow1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 701
+        width: 327
+        height: 321
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a96ffb01331c9c34e8242144cfbd1b0c
+      internalID: 8828379512176749800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button-number-red1
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 701
+        width: 324
+        height: 321
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbf40da671fc9e241b3bbe1bd01ef9f0
+      internalID: -4895229812629264641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button-number-green1
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 701
+        width: 326
+        height: 321
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62a0dec2879d1bc43844036c0cb0b730
+      internalID: -9046045887265053789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: delimiter
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 669
+        width: 804
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cb6e2dce4ff39b468e0f77a654ec9ff
+      internalID: -4273527062152291470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress-2-new
+      rect:
+        serializedVersion: 2
+        x: 881
+        y: 615
+        width: 143
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 71, y: 40, z: 71, w: 40}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79de7ad2e2bdb6045a6cec976527ebd2
+      internalID: 868933649162321335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button-number-white
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 352
+        width: 325
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d391a8602346c774e82c2793a384f337
+      internalID: -2285952987017640082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button-blue
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 513
+        width: 277
+        height: 151
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 137, y: 75, z: 137, w: 75}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31562e5dd3ea6ea478a1126d0351acdd
+      internalID: 8918872571784840942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block-for-text
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 407
+        width: 257
+        height: 259
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1852bdaa6f0e63c469bfe47b929a91ba
+      internalID: -8314209660813420431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress-2
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 528
+        width: 144
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 71, y: 40, z: 71, w: 40}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51f50c156c80bac49abc8770a914c1bf
+      internalID: -8331305233754124330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button-white
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 355
+        width: 275
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 137, y: 73, z: 137, w: 75}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6dc75eac9238cf4f949c856d6768506
+      internalID: 10021600480228412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toggle-off2
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 399
+        width: 123
+        height: 125
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8edd14463d5f73242bbe220e6434af3e
+      internalID: 7061083421459938783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button-orange
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 194
+        width: 278
+        height: 152
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 138, y: 75, z: 138, w: 75}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 781198e548d8b1a4eb552a41cc51804f
+      internalID: 8322511960572307616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button-green
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 194
+        width: 275
+        height: 152
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 137, y: 75, z: 137, w: 75}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06ebc993a4d37994fba3d6040b5c1ae9
+      internalID: -7269227988884288440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toggle-on2
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 272
+        width: 123
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ccce49794999c8f41a56d08c30b46b1b
+      internalID: -6247637068171043113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress-3
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 291
+        width: 82
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f455efd5d06ba04796a61cb14b8ff09
+      internalID: -3199808427829477856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toggle-off
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 255
+        width: 124
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6661ce85a4bd26d41be159f8aa7fd856
+      internalID: 4922348434008409185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress-4
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 125
+        width: 212
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 105, y: 81, z: 105, w: 58}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d0aa11249a6db44aa981fe404492aec
+      internalID: -432598474091571006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toggle-on
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 111
+        width: 122
+        height: 137
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63e684cd92bd55540adc7472cc476571
+      internalID: -6553992748840292155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: border_blue
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 127
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 62, y: 62, z: 62, w: 62}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72884ca387fe14f71811a15f22e358a8
+      internalID: -3042295642492684922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: border_red
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 63
+        width: 127
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 62, y: 61, z: 62, w: 61}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68ee64b4d6e1f414f80323c32f66b013
+      internalID: 4624525860999836590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckMark
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 78
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1f56bfaaf108a24f9e9fa9ec918a70d
+      internalID: 6588753357898932663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Orange
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 2
+        width: 177
+        height: 185
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ad1da4de32164d9ab9feb9ba8814923
+      internalID: -663486515837350474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Circle
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 15
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 40, y: 40, z: 40, w: 40}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03c854d3a73ad4dd3a01c588961678dd
+      internalID: 9092069447905511334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jaw
+      rect:
+        serializedVersion: 2
+        x: 883
+        y: 2
+        width: 4
+        height: 392
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 4, z: 1, w: 387}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd4ad3b55129d5a4f841d75ddf37f712
+      internalID: -3134730024398392468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

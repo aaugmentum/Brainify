@@ -1,7 +1,7 @@
-#define MAX_DATA_SIZE 65535
+#define MAX_DATA_SIZE 256
 
 
-enum METHODS {
+typedef enum {
 	//User
 	SIGNUP,
 	LOGIN,
@@ -16,7 +16,7 @@ enum METHODS {
 	FINISH,
 	//In game
 	ANSWER
-};
+} mtd_type_t;
 
 typedef struct
 {

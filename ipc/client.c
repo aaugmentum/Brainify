@@ -15,10 +15,11 @@
 void terminate(const char *msg);
 int connect_server();
 int login(const char[16], const char[128]);
+int logout();
 char *get_msg();
 
 int server_fd;
-char buf[1024] = {0};
+char buf[sizeof(method_t)];
 question_t questions[128];
 int questions_size;
 
@@ -27,7 +28,12 @@ int main()
 	if (connect_server() == 0)
 		exit(EXIT_FAILURE);
 
-	login("aaugmentum", "12354");
+	for (size_t i = 0; i < 10000; i++)
+	{
+		login("aaugmentum", "12354");
+	}
+
+	close(server_fd);
 	return 0;
 }
 
@@ -65,23 +71,28 @@ int connect_server()
 	return 1;
 }
 
-int login(const char username[16], const char password[128]) {
+int login(const char username[16], const char password[128])
+{
 	method_t *method = malloc(sizeof(method_t));
 	method->type = LOGIN;
-	auth_t *auth = malloc(sizeof(sizeof(auth)));
+	auth_t *auth = malloc(sizeof(auth_t));
 	memcpy(auth->username, username, 16);
 	memcpy(auth->password, password, 128);
 	memcpy(method->data, auth, sizeof(auth_t));
 
-	send(server_fd, method, sizeof(method_t), 0);
-	free(method);
-	free(auth);
+	memset(buf, 0, sizeof(method_t));
+	memcpy(buf, method, sizeof(method_t));
+
+	send(server_fd, buf, sizeof(method_t), 0);
+	// free(method);
+	// free(auth);
 }
 
-int signup(const char username[16], const char password[128]) {
+int signup(const char username[16], const char password[128])
+{
 	method_t *method = malloc(sizeof(method_t));
 	method->type = SIGNUP;
-	auth_t *auth = malloc(sizeof(sizeof(auth)));
+	auth_t *auth = malloc(sizeof(auth_t));
 	memcpy(auth->username, username, 16);
 	memcpy(auth->password, password, 128);
 	memcpy(method->data, auth, sizeof(auth_t));
@@ -91,7 +102,8 @@ int signup(const char username[16], const char password[128]) {
 	free(auth);
 }
 
-int logout(){
+int logout()
+{
 	method_t *method = malloc(sizeof(method_t));
 	method->type = LOGOUT;
 	send(server_fd, method, sizeof(method_t), 0);
@@ -112,13 +124,5 @@ int logout(){
 // }
 
 // void finish_question() {
-	
-// }
 
-char *get_msg()
-{
-	memset(buf, 0, sizeof(buf));
-	recv(server_fd, buf, sizeof(buf), 0);
-	printf("%s", buf);
-	return buf;
-}
+// }

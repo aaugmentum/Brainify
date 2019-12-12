@@ -5,8 +5,8 @@ using Random = UnityEngine.Random;
 public class SceneAnim : MonoBehaviour
 {
     [SerializeField] private GameObject[] flyingObjects;
-    [SerializeField] private Vector2 offsetY = new Vector2(0.1f,0.5f);
-    [SerializeField] private Vector2 duration = new Vector2(1f,5f);
+    [SerializeField] private Vector2 offsetY = new Vector2(0.1f, 0.5f);
+    [SerializeField] private Vector2 duration = new Vector2(1.0f, 5.0f);
     
     private float _randomDuration, _randomOffsetY;
 

@@ -16,9 +16,11 @@ void init_socket();
 void *handle_client();
 
 int server_fd;
-list_t clients;
-char buf[1024] = {0};
-char text[1024] = {0};
+typedef struct
+{
+	pthread_t tid;
+	int fd;
+} peer_t;
 
 int main()
 {
@@ -28,7 +30,6 @@ int main()
 
 void init_socket()
 {
-	clients.size = 0;
 	//Init variables
 	struct sockaddr_in address;
 	int addrlen = sizeof(address);
@@ -59,71 +60,69 @@ void init_socket()
 	//Accept clients
 	while (1)
 	{
-		int *client_fd = malloc(sizeof(int));
-		*client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
-		if (client_fd < 0)
+		peer_t *peer = malloc(sizeof(peer_t));
+		peer->fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
+		if (peer->fd < 0)
 			perror("Socket accept failed");
 
 		// puts("New client connected. Type:");
-		clients.at[clients.size++] = *client_fd;
 		pthread_t tid;
-		pthread_create(&tid, NULL, handle_client, client_fd);
+		pthread_create(&tid, NULL, handle_client, peer);
 	}
 }
 
-void *handle_client(int *client_fd)
+void *handle_client(peer_t *peer)
 {
-	short finish = 0;
-	char buf[sizeof(method_t)];
+	peer->tid = pthread_self();
 	int count = 0;
 	while (1)
 	{
 		method_t *method = malloc(sizeof(method_t));
-		memset(buf, 0, sizeof(method_t));
-		int size = recv(*client_fd, buf, sizeof(method_t), 0);
-		memcpy(method, buf, sizeof(method_t));
-		if (size > 0)
+		int size = recv(peer->fd, method, sizeof(method_t), 0);
+
+		//Client disconnected
+		if (size < 1)
 		{
-			// printf("Type: %d, Size: %d\n", method->type, size);
-
-			switch (method->type)
-			{
-			//Check if user is registred
-			case LOGIN:
-			{
-				auth_t *auth = malloc(sizeof(auth_t));
-				memcpy(auth, method->data, sizeof(auth_t));
-
-				count++;
-				printf("%d\n", count);
-
-				// printf("USERNAME: %s\n", auth->username);
-				// printf("PASSWORD: %s\n", auth->password);
-				free(auth);
-			}
+			fprintf(stdout, "Client disconnected\n");
+			free(method);
 			break;
-			//Write to database new user
-			case SIGNUP:
-			{
-				auth_t *auth = malloc(sizeof(auth_t));
-				memcpy(auth, method->data, sizeof(auth_t));
-
-				// printf("USERNAME: %s\n", auth->username);
-				// printf("PASSWORD: %s\n", auth->password);
-				free(auth);
-			}
-			break;
-			//Delete from list and join thread
-			case LOGOUT:
-			{
-				printf("LOGOUT");
-				finish = 1;
-			}
-			break;
-			default:
-				break;
-			}
 		}
+
+		switch (method->type)
+		{
+		//Check if user is registred
+		case LOGIN:
+		{
+			auth_t *auth = malloc(sizeof(auth_t));
+			memcpy(auth, method->data, sizeof(auth_t));
+
+			count++;
+			printf("USERNAME: %s\n", auth->username);
+			printf("PASSWORD: %s\n", auth->password);
+			free(auth);
+		}
+		break;
+		//Write to database new user
+		case SIGNUP:
+		{
+			auth_t *auth = malloc(sizeof(auth_t));
+			memcpy(auth, method->data, sizeof(auth_t));
+
+			printf("USERNAME: %s\n", auth->username);
+			printf("PASSWORD: %s\n", auth->password);
+			free(auth);
+		}
+		break;
+		default:
+			break;
+		}
+
+		fflush(stdout);
 		free(method);
 	}
+
+	printf("Count: %d\n", count);
+	close(peer->fd);
+	free(peer);
+	pthread_exit(NULL);
 }

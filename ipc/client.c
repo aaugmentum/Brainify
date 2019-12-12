@@ -19,7 +19,6 @@ int logout();
 char *get_msg();
 
 int server_fd;
-char buf[sizeof(method_t)];
 question_t questions[128];
 int questions_size;
 
@@ -80,12 +79,9 @@ int login(const char username[16], const char password[128])
 	memcpy(auth->password, password, 128);
 	memcpy(method->data, auth, sizeof(auth_t));
 
-	memset(buf, 0, sizeof(method_t));
-	memcpy(buf, method, sizeof(method_t));
-
-	send(server_fd, buf, sizeof(method_t), 0);
-	// free(method);
-	// free(auth);
+	send(server_fd, method, sizeof(method_t), 0);
+	free(method);
+	free(auth);
 }
 
 int signup(const char username[16], const char password[128])

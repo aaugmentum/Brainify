@@ -41,7 +41,7 @@ void init_socket()
 		terminate("Socket failed");
 
 	//Set socket options
-	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)) < 0)
+	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
 		terminate("Socket setopt failed");
 
 	address.sin_family = AF_INET;

@@ -69,22 +69,26 @@ void init_socket()
 
 void *handle_client()
 {
-	size_t method_size = sizeof(struct method);
-	struct method *mtd = malloc(method_size);
-	size_t login_size = sizeof(struct login);
-	struct login *lgn = malloc(login_size);
+	while (1)
+	{
+		method_t *method = malloc(sizeof(method_t));
+		recv(client_fd, method, sizeof(method_t), 0);
 
-	mtd->type = 1;
-	lgn->x = 55;
-	memcpy(mtd->data, lgn, login_size);
-	strcpy(mtd->msg, "Hello");
+		switch (method->type)
+		{
+		case LOGIN:
+		{
+			auth_t *auth = malloc(sizeof(auth_t));
+			memcpy(auth, method->data, sizeof(auth_t));
 
-	send(client_fd, mtd, method_size, 0);
-	free(mtd);
-	// while (1)
-	// {
-	// 	memset(buf, 0, sizeof(buf));
-	// 	fgets(text, sizeof(text), stdin);
-	// 	send(client_fd, text, sizeof(text), 0);
-	// }
+			printf("USERNAME: %s\n", auth->username);
+			printf("PASSWORD: %s\n", auth->password);
+		}
+		break;
+		default:
+			break;
+		}
+
+		free(method);
+	}
 }

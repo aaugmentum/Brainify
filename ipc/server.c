@@ -8,13 +8,16 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <pthread.h>
+#include <mysql/mysql.h>
 #include "headers/utils.h"
+#include "headers/consts.h"
 
 //Function prototypes
 void terminate(const char *msg);
 void init_socket();
 int generate_luminous_element();
 void *handle_client();
+void finish_with_error(MYSQL *conn);
 
 //Server structs
 typedef struct
@@ -37,6 +40,7 @@ typedef struct server
 //Global variables
 int server_fd;
 game_t game;
+MYSQL *conn;
 
 int main()
 {
@@ -50,6 +54,18 @@ void init_socket()
 	struct sockaddr_in address;
 	int addrlen = sizeof(address);
 	int opt = 1;
+
+	//MySQL init
+	if ((conn = mysql_init(NULL)) == NULL)
+	{
+		fprintf(stderr, "Could not init DB\n");
+		return;
+	}
+	if (mysql_real_connect(conn, DB_HOST, DB_USER, DB_PASSWD, DB_DB, DB_PORT, NULL, 0) == NULL)
+	{
+		fprintf(stderr, "DB Connection Error\n");
+		return;
+	}
 
 	//Init socket
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -167,6 +183,38 @@ void *handle_client(peer_t *peer)
 			send(peer->fd, &pin, sizeof(int), 0);
 		}
 		break;
+		//Debugging DB connection
+		case POTATO:
+		{
+			if (mysql_query(conn, "select question_text, answer_text from question natural join answer where is_correct = true")) 
+			{
+				finish_with_error(conn);
+			}
+
+			MYSQL_RES *result = mysql_store_result(conn);
+
+			if (result == NULL) 
+			{
+				finish_with_error(conn);
+			}
+
+			int num_fields = mysql_num_fields(result);
+
+			MYSQL_ROW row;
+
+			while ((row = mysql_fetch_row(result))) 
+			{ 
+				for(int i = 0; i < num_fields; i++) 
+				{ 
+					printf("%s ", row[i] ? row[i] : "NULL"); 
+				} 
+				printf("\n"); 
+			}
+			mysql_free_result(result);
+			int test = 1;
+			send(peer->fd, &test, sizeof(int), 0);
+		}
+		break;
 		default:
 			fprintf(stdout, "Error");
 			break;
@@ -174,8 +222,16 @@ void *handle_client(peer_t *peer)
 		fflush(stdout);
 	}
 
+  	mysql_close(conn);
 	free(method);
 	close(peer->fd);
 	free(peer);
 	pthread_exit(NULL);
+}
+
+void finish_with_error(MYSQL *conn)
+{
+  fprintf(stderr, "%s\n", mysql_error(conn));
+  mysql_close(conn);
+  exit(1);        
 }

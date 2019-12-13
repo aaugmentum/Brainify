@@ -17,6 +17,7 @@ int join(int);
 int start_game(int);
 int connect_server();
 int logout();
+void potato();
 
 int server_fd;
 question_t questions[128];
@@ -37,6 +38,11 @@ int main()
 	{
 		int pin = start_game(12345);
 		printf("PIN for the game: %d\n", pin);
+	}
+	else if(x == 8)
+	{
+		printf("DEBUG POTATO MODE");
+		potato();
 	}
 	else
 	{
@@ -160,4 +166,15 @@ int start_game(int gid)
 	int result;
 	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
 	return result;
+}
+
+void potato()
+{
+	method_t method;
+	method.type = POTATO;
+	sendall(server_fd, &method, sizeof(method_t), 0);
+
+	int result;
+	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
+	printf("%i\n", result);
 }

@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include "methods.h"
-#define PORT 8080
+#include "consts.h"
 
 void terminate(const char *msg)
 {

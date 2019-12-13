@@ -10,14 +10,13 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include "headers/utils.h"
-// #include "headers/methods.h"
 
-void terminate(const char *msg);
-int connect_server(void);
+void terminate(const char *);
 int signin(char *, char *);
-int logout(void);
 int join(int);
 int start_game(int);
+int connect_server();
+int logout();
 
 int server_fd;
 question_t questions[128];
@@ -34,10 +33,13 @@ int main()
 	printf("Enter what you want (0 to start): ");
 	scanf("%d", &x);
 
-	if(x == 0){
+	if (x == 0)
+	{
 		int pin = start_game(12345);
-		printf("PIN for the game: %d", pin);
-	}else{
+		printf("PIN for the game: %d\n", pin);
+	}
+	else
+	{
 		printf("Enter game pin: ");
 		scanf("%d", &x);
 		join(x);
@@ -76,21 +78,6 @@ int connect_server()
 	}
 
 	return 1;
-}
-
-int sendall(int fd, method_t *buf, int n, int flags)
-{
-	int total = 0, temp;
-
-	while (total < n)
-	{
-		temp = send(fd, buf + total, n - total, flags);
-		if (temp == -1)
-			break;
-		total += temp;
-	}
-
-	return (temp == -1 ? -1 : total);
 }
 
 int signin(char *username, char *password)
@@ -141,7 +128,8 @@ int logout()
 	return 1;
 }
 
-int join(int pin){
+int join(int pin)
+{
 	method_t method;
 	join_t join;
 	method.type = JOIN;
@@ -153,13 +141,15 @@ int join(int pin){
 	return result;
 }
 
-int wait_for_game(){
+int wait_for_game()
+{
 	int result;
 	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
 	return result;
 }
 
-int start_game(int gid){
+int start_game(int gid)
+{
 	method_t method;
 	start_game_t start_game;
 	start_game.gid = gid;

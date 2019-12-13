@@ -2,6 +2,7 @@
 
 typedef enum
 {
+	POTATO,
 	//User
 	SIGNUP,
 	SIGNIN,
@@ -11,7 +12,6 @@ typedef enum
 	START_GAME,
 	JOIN,
 	MY_GAMES,
-	RUN,
 	EDIT,
 	DELETE,
 	FINISH,
@@ -19,12 +19,6 @@ typedef enum
 	ANSWER,
 	RESULT
 } mtd_type_enum;
-
-typedef enum
-{
-	ERROR,
-	OK
-} result_enum;
 
 typedef struct
 {

@@ -8,21 +8,21 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <pthread.h>
-#include <time.h>
 #include "headers/utils.h"
-// #include "headers/methods.h"
 
+//Function prototypes
 void terminate(const char *msg);
 void init_socket();
+int generate_luminous_element();
 void *handle_client();
-int generate_pin();
 
-
+//Server structs
 typedef struct
 {
 	pthread_t tid;
 	int fd;
 	int score;
+	char username[16];
 } peer_t;
 
 typedef struct server
@@ -33,13 +33,13 @@ typedef struct server
 	peer_t admin;
 	int size;
 } game_t;
+
+//Global variables
 int server_fd;
 game_t game;
 
 int main()
 {
-	
-
 	init_socket();
 	return 0;
 }
@@ -88,21 +88,6 @@ void init_socket()
 	}
 }
 
-int sendall(int fd, method_t *buf, int n, int flags)
-{
-	int total = 0, temp;
-
-	while (total < n)
-	{
-		temp = send(fd, buf + total, n - total, flags);
-		if (temp == -1)
-			break;
-		total += temp;
-	}
-
-	return (temp == -1 ? -1 : total);
-}
-
 void *handle_client(peer_t *peer)
 {
 	method_t *method = malloc(sizeof(method_t));
@@ -111,8 +96,6 @@ void *handle_client(peer_t *peer)
 	{
 		memset(method, 0, sizeof(method_t));
 		int size = recv(peer->fd, method, sizeof(method_t), MSG_WAITALL);
-		// fprintf(stdout, "Received: %d bytes\n", size);
-
 		//Client disconnected
 		if (size < 1)
 		{
@@ -134,7 +117,11 @@ void *handle_client(peer_t *peer)
 				printf("PASSWORD: %s\n", auth->password);
 				result = 1;
 			}
-			
+			else
+			{
+				fprintf(stdout, "Wrong credentials...");
+			}
+
 			send(peer->fd, &result, sizeof(int), 0);
 			free(auth);
 		}
@@ -155,33 +142,35 @@ void *handle_client(peer_t *peer)
 			join_t *join = malloc(sizeof(join_t));
 			memcpy(join, method->data, sizeof(join_t));
 			int result = 0;
-			if(join->pin == game.pin && game.size < 8){
+			if (join->pin == game.pin && game.size < 8)
+			{
 				game.players[game.size] = *peer;
 				game.size++;
 				result = 1;
 
 				printf("New player connected!\n");
-			}else{
+			}
+			else
+			{
 				printf("Pin incorrect!\n");
 			}
 			send(peer->fd, &result, sizeof(int), 0);
-
 		}
 		break;
 		case START_GAME:
 		{
 			start_game_t start_game;
 			memcpy(&start_game, method->data, sizeof(start_game_t));
-			int pin = generate_pin();
+			int pin = generate_luminous_element();
 			game.gid = start_game.gid;
 			game.pin = pin;
 			send(peer->fd, &pin, sizeof(int), 0);
 		}
 		break;
 		default:
+			fprintf(stdout, "Error");
 			break;
 		}
-
 		fflush(stdout);
 	}
 
@@ -189,12 +178,4 @@ void *handle_client(peer_t *peer)
 	close(peer->fd);
 	free(peer);
 	pthread_exit(NULL);
-
-}
-
-
-int generate_pin(){
-	srand(time(NULL));   // Initialization, should only be called once.
-	int r = rand()%100000;  
-	return r;
 }

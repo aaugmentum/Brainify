@@ -9,7 +9,7 @@
 #include <string.h>
 #include <pthread.h>
 #include "headers/utils.h"
-#include "headers/methods.h"
+// #include "headers/methods.h"
 
 void terminate(const char *msg);
 void init_socket();
@@ -71,20 +71,35 @@ void init_socket()
 	}
 }
 
+int sendall(int fd, method_t *buf, int n, int flags)
+{
+	int total = 0, temp;
+
+	while (total < n)
+	{
+		temp = send(fd, buf + total, n - total, flags);
+		if (temp == -1)
+			break;
+		total += temp;
+	}
+
+	return (temp == -1 ? -1 : total);
+}
+
 void *handle_client(peer_t *peer)
 {
+	method_t *method = malloc(sizeof(method_t));
 	peer->tid = pthread_self();
-	int count = 0;
 	while (1)
 	{
-		method_t *method = malloc(sizeof(method_t));
+		memset(method, 0, sizeof(method_t));
 		int size = recv(peer->fd, method, sizeof(method_t), MSG_WAITALL);
+		// fprintf(stdout, "Received: %d bytes\n", size);
 
 		//Client disconnected
 		if (size < 1)
 		{
 			fprintf(stdout, "Client disconnected\n");
-			free(method);
 			break;
 		}
 
@@ -95,10 +110,16 @@ void *handle_client(peer_t *peer)
 		{
 			auth_t *auth = malloc(sizeof(auth_t));
 			memcpy(auth, method->data, sizeof(auth_t));
+			char* result = "Error";
 
-			count++;
-			printf("USERNAME: %s\n", auth->username);
-			printf("PASSWORD: %s\n", auth->password);
+			if (!strcmp(auth->username, "aaugmentum") && !strcmp(auth->password, "12354"))
+			{
+				printf("USERNAME: %s\n", auth->username);
+				printf("PASSWORD: %s\n", auth->password);
+				result = "Success";
+			}
+			
+			send(peer->fd, result, 10, 0);
 			free(auth);
 		}
 		break;
@@ -118,10 +139,9 @@ void *handle_client(peer_t *peer)
 		}
 
 		fflush(stdout);
-		free(method);
 	}
 
-	printf("Count: %d\n", count);
+	free(method);
 	close(peer->fd);
 	free(peer);
 	pthread_exit(NULL);

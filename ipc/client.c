@@ -10,7 +10,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include "headers/utils.h"
-#include "headers/methods.h"
+// #include "headers/methods.h"
 
 void terminate(const char *msg);
 int connect_server();
@@ -27,10 +27,11 @@ int main()
 	if (connect_server() == 0)
 		exit(EXIT_FAILURE);
 
-	for (size_t i = 0; i < 10000; i++)
-	{
-		login("aaugmentum", "12354");
-	}
+	login("aaugmentum", "12354");
+
+	// for (size_t i = 0; i < 10000; i++)
+	// {
+	// }
 
 	close(server_fd);
 	return 0;
@@ -95,6 +96,11 @@ int login(const char username[16], const char password[128])
 	memcpy(method->data, auth, sizeof(auth_t));
 
 	sendall(server_fd, method, sizeof(method_t), 0);
+
+	char* result = malloc(sizeof(10));
+	recv(server_fd, result, 10, MSG_WAITALL);
+	
+	printf("Result: %s\n", result);
 	free(method);
 	free(auth);
 }
@@ -118,6 +124,8 @@ int logout()
 	method_t *method = malloc(sizeof(method_t));
 	method->type = LOGOUT;
 	sendall(server_fd, method, sizeof(method_t), 0);
+
+	
 	free(method);
 }
 

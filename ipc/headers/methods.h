@@ -1,7 +1,7 @@
 #define MAX_DATA_SIZE 65000
 
-
-typedef enum {
+typedef enum
+{
 	//User
 	SIGNUP,
 	LOGIN,
@@ -15,8 +15,15 @@ typedef enum {
 	DELETE,
 	FINISH,
 	//In game
-	ANSWER
-} mtd_type_t;
+	ANSWER,
+	RESULT
+} mtd_type_enum;
+
+typedef enum
+{
+	ERROR,
+	OK
+} result_enum;
 
 typedef struct
 {
@@ -50,3 +57,9 @@ typedef struct
 {
 	int pin;
 } join_t;
+
+typedef struct
+{
+	//0 Error, 1 Success
+	int status;
+} result_t;

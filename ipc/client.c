@@ -13,10 +13,9 @@
 // #include "headers/methods.h"
 
 void terminate(const char *msg);
-int connect_server();
-int login(const char[16], const char[128]);
-int logout();
-char *get_msg();
+int connect_server(void);
+int signin(char *, char *);
+int logout(void);
 
 int server_fd;
 question_t questions[128];
@@ -27,11 +26,7 @@ int main()
 	if (connect_server() == 0)
 		exit(EXIT_FAILURE);
 
-	login("aaugmentum", "12354");
-
-	// for (size_t i = 0; i < 10000; i++)
-	// {
-	// }
+	signin("aaugmentum", "12354");
 
 	close(server_fd);
 	return 0;
@@ -41,9 +36,7 @@ int main()
 int connect_server()
 {
 	//Init variables
-	int is_connect = 1;
 	struct sockaddr_in server_addr;
-	int addrlen = sizeof(server_addr);
 
 	//Init socket
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -86,7 +79,7 @@ int sendall(int fd, method_t *buf, int n, int flags)
 	return (temp == -1 ? -1 : total);
 }
 
-int login(const char username[16], const char password[128])
+int signin(char *username, char *password)
 {
 	method_t *method = malloc(sizeof(method_t));
 	method->type = LOGIN;
@@ -97,12 +90,14 @@ int login(const char username[16], const char password[128])
 
 	sendall(server_fd, method, sizeof(method_t), 0);
 
-	char* result = malloc(sizeof(10));
+	char *result = malloc(10);
 	recv(server_fd, result, 10, MSG_WAITALL);
-	
+
 	printf("Result: %s\n", result);
 	free(method);
 	free(auth);
+
+	return 1;
 }
 
 int signup(const char username[16], const char password[128])
@@ -117,6 +112,8 @@ int signup(const char username[16], const char password[128])
 	sendall(server_fd, method, sizeof(method_t), 0);
 	free(method);
 	free(auth);
+
+	return 1;
 }
 
 int logout()
@@ -125,23 +122,7 @@ int logout()
 	method->type = LOGOUT;
 	sendall(server_fd, method, sizeof(method_t), 0);
 
-	
 	free(method);
+
+	return 1;
 }
-
-// int create_question() {
-// 	questions_size = 0;
-// 	memset(&questions, 0, sizeof(question_t[128]));
-// }
-
-// void add_question() {
-
-// 	questions[questions_size].answer = ;
-// 	questions[questions_size].title = ;
-
-// 	questions_size++;
-// }
-
-// void finish_question() {
-
-// }

@@ -8,22 +8,38 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <pthread.h>
+#include <time.h>
 #include "headers/utils.h"
 // #include "headers/methods.h"
 
 void terminate(const char *msg);
 void init_socket();
 void *handle_client();
+int generate_pin();
 
-int server_fd;
+
 typedef struct
 {
 	pthread_t tid;
 	int fd;
+	int score;
 } peer_t;
+
+typedef struct server
+{
+	int gid;
+	int pin;
+	peer_t players[8];
+	peer_t admin;
+	int size;
+} game_t;
+int server_fd;
+game_t game;
 
 int main()
 {
+	
+
 	init_socket();
 	return 0;
 }
@@ -62,6 +78,7 @@ void init_socket()
 	{
 		peer_t *peer = malloc(sizeof(peer_t));
 		peer->fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
+		peer->score = 0;
 		if (peer->fd < 0)
 			perror("Socket accept failed");
 
@@ -106,20 +123,19 @@ void *handle_client(peer_t *peer)
 		switch (method->type)
 		{
 		//Check if user is registred
-		case LOGIN:
+		case SIGNIN:
 		{
 			auth_t *auth = malloc(sizeof(auth_t));
 			memcpy(auth, method->data, sizeof(auth_t));
-			char* result = "Error";
-
+			int result = 0;
 			if (!strcmp(auth->username, "aaugmentum") && !strcmp(auth->password, "12354"))
 			{
 				printf("USERNAME: %s\n", auth->username);
 				printf("PASSWORD: %s\n", auth->password);
-				result = "Success";
+				result = 1;
 			}
 			
-			send(peer->fd, result, 10, 0);
+			send(peer->fd, &result, sizeof(int), 0);
 			free(auth);
 		}
 		break;
@@ -134,6 +150,34 @@ void *handle_client(peer_t *peer)
 			free(auth);
 		}
 		break;
+		case JOIN:
+		{
+			join_t *join = malloc(sizeof(join_t));
+			memcpy(join, method->data, sizeof(join_t));
+			int result = 0;
+			if(join->pin == game.pin && game.size < 8){
+				game.players[game.size] = *peer;
+				game.size++;
+				result = 1;
+
+				printf("New player connected!\n");
+			}else{
+				printf("Pin incorrect!\n");
+			}
+			send(peer->fd, &result, sizeof(int), 0);
+
+		}
+		break;
+		case START_GAME:
+		{
+			start_game_t start_game;
+			memcpy(&start_game, method->data, sizeof(start_game_t));
+			int pin = generate_pin();
+			game.gid = start_game.gid;
+			game.pin = pin;
+			send(peer->fd, &pin, sizeof(int), 0);
+		}
+		break;
 		default:
 			break;
 		}
@@ -145,4 +189,12 @@ void *handle_client(peer_t *peer)
 	close(peer->fd);
 	free(peer);
 	pthread_exit(NULL);
+
+}
+
+
+int generate_pin(){
+	srand(time(NULL));   // Initialization, should only be called once.
+	int r = rand()%100000;  
+	return r;
 }

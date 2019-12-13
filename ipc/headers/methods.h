@@ -4,10 +4,11 @@ typedef enum
 {
 	//User
 	SIGNUP,
-	LOGIN,
+	SIGNIN,
 	LOGOUT,
 	//Game
 	CREATE,
+	START_GAME,
 	JOIN,
 	MY_GAMES,
 	RUN,
@@ -63,3 +64,8 @@ typedef struct
 	//0 Error, 1 Success
 	int status;
 } result_t;
+
+typedef struct
+{
+	int gid;
+} start_game_t;

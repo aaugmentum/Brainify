@@ -16,6 +16,8 @@ void terminate(const char *msg);
 int connect_server(void);
 int signin(char *, char *);
 int logout(void);
+int join(int);
+int start_game(int);
 
 int server_fd;
 question_t questions[128];
@@ -28,6 +30,18 @@ int main()
 
 	signin("aaugmentum", "12354");
 
+	int x;
+	printf("Enter what you want (0 to start): ");
+	scanf("%d", &x);
+
+	if(x == 0){
+		int pin = start_game(12345);
+		printf("PIN for the game: %d", pin);
+	}else{
+		printf("Enter game pin: ");
+		scanf("%d", &x);
+		join(x);
+	}
 	close(server_fd);
 	return 0;
 }
@@ -82,7 +96,7 @@ int sendall(int fd, method_t *buf, int n, int flags)
 int signin(char *username, char *password)
 {
 	method_t *method = malloc(sizeof(method_t));
-	method->type = LOGIN;
+	method->type = SIGNIN;
 	auth_t *auth = malloc(sizeof(auth_t));
 	memcpy(auth->username, username, 16);
 	memcpy(auth->password, password, 128);
@@ -90,14 +104,14 @@ int signin(char *username, char *password)
 
 	sendall(server_fd, method, sizeof(method_t), 0);
 
-	char *result = malloc(10);
-	recv(server_fd, result, 10, MSG_WAITALL);
+	int result;
+	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
 
-	printf("Result: %s\n", result);
+	printf("Result: %d\n", result);
 	free(method);
 	free(auth);
 
-	return 1;
+	return result;
 }
 
 int signup(const char username[16], const char password[128])
@@ -125,4 +139,35 @@ int logout()
 	free(method);
 
 	return 1;
+}
+
+int join(int pin){
+	method_t method;
+	join_t join;
+	method.type = JOIN;
+	join.pin = pin;
+	memcpy(method.data, &join, sizeof(join_t));
+	sendall(server_fd, &method, sizeof(method_t), 0);
+	int result;
+	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
+	return result;
+}
+
+int wait_for_game(){
+	int result;
+	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
+	return result;
+}
+
+int start_game(int gid){
+	method_t method;
+	start_game_t start_game;
+	start_game.gid = gid;
+	method.type = START_GAME;
+	memcpy(method.data, &start_game, sizeof(start_game_t));
+	sendall(server_fd, &method, sizeof(method_t), 0);
+
+	int result;
+	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
+	return result;
 }

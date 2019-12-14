@@ -14,8 +14,9 @@
 void terminate(const char *);
 int signin(char *, char *);
 int signup(char *, char *);
+char *games();
 int join(int);
-int start_game(int);
+int start_game(char *);
 int connect_server();
 int logout();
 void potato();
@@ -38,10 +39,14 @@ int main()
 
 	if (x == 0)
 	{
-		int pin = start_game(12345);
+		int pin = start_game("12345");
 		printf("PIN for the game: %d\n", pin);
 	}
-	else if(x == 8)
+	else if (x == 7)
+	{
+		games("Azamat");
+	}
+	else if (x == 8)
 	{
 		printf("DEBUG POTATO MODE");
 		potato();
@@ -126,6 +131,32 @@ int signup(char *username, char *password)
 	return result;
 }
 
+char *games()
+{
+	method_t method;
+	method.type = GAMES;
+	sendall(server_fd, &method, sizeof(method_t), 0);
+
+	//Get list of games of this user
+	char *result = malloc(1024);
+	memset(result, 0, 1024);
+	games_t games;
+	int size = recv(server_fd, &games, sizeof(games_t), MSG_WAITALL);
+	for (size_t i = 0; i < games.size; i++)
+	{
+		game_t game = games.at[i];
+
+		strcat(result, game.title);
+		strcat(result, "/");
+		strcat(result, game.game_id);
+		strcat(result, ",");
+
+		printf("GID: %s, Title: %s, Owner: %s\n", game.game_id, game.title, game.username);
+	}
+	printf("%s", result);
+	return result;
+}
+
 int logout()
 {
 	method_t method;
@@ -156,11 +187,11 @@ int wait_for_game()
 	return result;
 }
 
-int start_game(int gid)
+int start_game(char *game_id)
 {
 	method_t method;
 	start_game_t start_game;
-	start_game.gid = gid;
+	strcpy(start_game.game_id, game_id);
 	method.type = START_GAME;
 	memcpy(method.data, &start_game, sizeof(start_game_t));
 	sendall(server_fd, &method, sizeof(method_t), 0);

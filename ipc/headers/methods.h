@@ -8,12 +8,12 @@ typedef enum
 	SIGNIN,
 	LOGOUT,
 	//Game
-	CREATE,
+	// CREATE,
 	START_GAME,
 	JOIN,
-	MY_GAMES,
-	EDIT,
-	DELETE,
+	GAMES,
+	// EDIT,
+	// DELETE,
 	FINISH,
 	//In game
 	ANSWER,
@@ -44,9 +44,16 @@ typedef struct
 
 typedef struct
 {
-	question_t questions[128];
+	char game_id[8];
+	char title[20];
+	char username[20];
+} game_t;
+
+typedef struct
+{
+	game_t at[9];
 	int size;
-} create_t;
+} games_t;
 
 typedef struct
 {
@@ -61,5 +68,5 @@ typedef struct
 
 typedef struct
 {
-	int gid;
+	char game_id[8];
 } start_game_t;

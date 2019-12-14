@@ -3,8 +3,6 @@ using UnityEngine.UI;
 
 public class UserAnswerData : MonoBehaviour
 {
-    [SerializeField] private EventsContainer events;
-    
     [SerializeField] private Text answerText;
     public Text AnswerText
     {
@@ -12,16 +10,15 @@ public class UserAnswerData : MonoBehaviour
         set => answerText = value;
     }
     
-    private int _answerIndex;
+    [SerializeField] private int _answerIndex;
     public int AnswerIndex
     {
         get => _answerIndex;
         set => _answerIndex = value;
     }
 
-    public void UpdateData(int index, string text)
+    public void UpdateData(string text)
     {
-        _answerIndex = index;
         answerText.text = text;
     }
 }

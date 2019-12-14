@@ -108,13 +108,13 @@ void *handle_client(peer_t *peer)
 		//Check if user is registred
 		case SIGNIN:
 		{
-			auth_t *auth = malloc(sizeof(auth_t));
-			memcpy(auth, method->data, sizeof(auth_t));
+			auth_t auth;
+			memcpy(&auth, method->data, sizeof(auth_t));
 			int result = 0;
-			if (!strcmp(auth->username, "aaugmentum") && !strcmp(auth->password, "12354"))
+			if (!strcmp(auth.username, "aaugmentum") && !strcmp(auth.password, "12354"))
 			{
-				printf("USERNAME: %s\n", auth->username);
-				printf("PASSWORD: %s\n", auth->password);
+				fprintf("USERNAME: %s\n", auth.username);
+				fprintf("PASSWORD: %s\n", auth.password);
 				result = 1;
 			}
 			else
@@ -122,39 +122,37 @@ void *handle_client(peer_t *peer)
 				fprintf(stdout, "Wrong credentials...");
 			}
 
-			send(peer->fd, &result, sizeof(int), 0);
-			free(auth);
+			sendall(peer->fd, &result, sizeof(int), 0);
 		}
 		break;
 		//Write to database new user
 		case SIGNUP:
 		{
-			auth_t *auth = malloc(sizeof(auth_t));
-			memcpy(auth, method->data, sizeof(auth_t));
+			auth_t auth;
+			memcpy(&auth, method->data, sizeof(auth_t));
 
-			printf("USERNAME: %s\n", auth->username);
-			printf("PASSWORD: %s\n", auth->password);
-			free(auth);
+			fprintf(stdout, "USERNAME: %s\n", auth.username);
+			fprintf(stdout, "PASSWORD: %s\n", auth.password);
 		}
 		break;
 		case JOIN:
 		{
-			join_t *join = malloc(sizeof(join_t));
-			memcpy(join, method->data, sizeof(join_t));
+			join_t join;
+			memcpy(&join, method->data, sizeof(join_t));
 			int result = 0;
-			if (join->pin == game.pin && game.size < 8)
+			if (join.pin == game.pin && game.size < 8)
 			{
 				game.players[game.size] = *peer;
 				game.size++;
 				result = 1;
 
-				printf("New player connected!\n");
+				fprintf(stdout, "New player connected!\n");
 			}
 			else
 			{
-				printf("Pin incorrect!\n");
+				fprintf(stdout, "Pin incorrect!\n");
 			}
-			send(peer->fd, &result, sizeof(int), 0);
+			sendall(peer->fd, &result, sizeof(int), 0);
 		}
 		break;
 		case START_GAME:
@@ -164,7 +162,7 @@ void *handle_client(peer_t *peer)
 			int pin = generate_luminous_element();
 			game.gid = start_game.gid;
 			game.pin = pin;
-			send(peer->fd, &pin, sizeof(int), 0);
+			sendall(peer->fd, &pin, sizeof(int), 0);
 		}
 		break;
 		default:

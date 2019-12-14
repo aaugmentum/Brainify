@@ -11,13 +11,16 @@
 #include <arpa/inet.h>
 #include "headers/utils.h"
 
+//Function prototypes
 void terminate(const char *);
 int signin(char *, char *);
+int signup(char *, char *);
 int join(int);
 int start_game(int);
 int connect_server();
 int logout();
 
+//Global variables
 int server_fd;
 question_t questions[128];
 int questions_size;
@@ -82,48 +85,41 @@ int connect_server()
 
 int signin(char *username, char *password)
 {
-	method_t *method = malloc(sizeof(method_t));
-	method->type = SIGNIN;
-	auth_t *auth = malloc(sizeof(auth_t));
-	memcpy(auth->username, username, 16);
-	memcpy(auth->password, password, 128);
-	memcpy(method->data, auth, sizeof(auth_t));
+	method_t method;
+	auth_t auth;
+	method.type = SIGNIN;
+	memcpy(auth.username, username, 16);
+	memcpy(auth.password, password, 128);
+	memcpy(method.data, &auth, sizeof(auth_t));
+	sendall(server_fd, &method, sizeof(method_t), 0);
 
-	sendall(server_fd, method, sizeof(method_t), 0);
-
+	//0 Wrong credentials, 1 Success
 	int result;
 	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
-
-	printf("Result: %d\n", result);
-	free(method);
-	free(auth);
-
 	return result;
 }
 
-int signup(const char username[16], const char password[128])
+int signup(char *username, char *password)
 {
-	method_t *method = malloc(sizeof(method_t));
-	method->type = SIGNUP;
-	auth_t *auth = malloc(sizeof(auth_t));
-	memcpy(auth->username, username, 16);
-	memcpy(auth->password, password, 128);
-	memcpy(method->data, auth, sizeof(auth_t));
+	method_t method;
+	auth_t auth;
+	method.type = SIGNUP;
+	memcpy(auth.username, username, 16);
+	memcpy(auth.password, password, 128);
+	memcpy(method.data, &auth, sizeof(auth_t));
+	sendall(server_fd, &method, sizeof(method_t), 0);
 
-	sendall(server_fd, method, sizeof(method_t), 0);
-	free(method);
-	free(auth);
-
-	return 1;
+	//0 Already exist, 1 Success
+	int result;
+	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
+	return result;
 }
 
 int logout()
 {
-	method_t *method = malloc(sizeof(method_t));
-	method->type = LOGOUT;
-	sendall(server_fd, method, sizeof(method_t), 0);
-
-	free(method);
+	method_t method;
+	method.type = LOGOUT;
+	sendall(server_fd, &method, sizeof(method_t), 0);
 
 	return 1;
 }
@@ -136,6 +132,7 @@ int join(int pin)
 	join.pin = pin;
 	memcpy(method.data, &join, sizeof(join_t));
 	sendall(server_fd, &method, sizeof(method_t), 0);
+
 	int result;
 	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
 	return result;

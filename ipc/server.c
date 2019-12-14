@@ -15,7 +15,7 @@
 void terminate(const char *msg);
 int generate_luminous_element();
 void finish_with_error(MYSQL *conn);
-MYSQL_RES *getQueryResult(const char *);
+MYSQL_RES *selectQuery(const char *);
 void init_socket();
 void init_db();
 void *handle_client();
@@ -33,7 +33,6 @@ typedef struct
 {
 	//DB
 	game_t game;
-
 
 	//Players
 	peer_t admin;
@@ -149,8 +148,7 @@ void *handle_client(peer_t *peer)
 
 			char query[256];
 			sprintf(query, SQL_USER_EXIST, auth.username, auth.password);
-			fprintf(stdout, "%s\n", query);
-			MYSQL_RES *sql_result = getQueryResult(query);
+			MYSQL_RES *sql_result = selectQuery(query);
 			if (sql_result->row_count)
 			{
 				fprintf(stdout, "USERNAME: %s\n", auth.username);
@@ -173,9 +171,8 @@ void *handle_client(peer_t *peer)
 
 			char query[256];
 			sprintf(query, SQL_USER_CREATE, auth.username, auth.password);
-			fprintf(stdout, "%s\n", query);
 
-			if (mysql_query(conn, query))
+			if (insertQuery(query))
 				fprintf(stdout, "Dublicate entry\n");
 			else
 			{
@@ -205,7 +202,7 @@ void *handle_client(peer_t *peer)
 			{
 				fprintf(stdout, "Pin incorrect!\n");
 			}
-			send(peer->fd, &result, sizeof(int), 0);
+			sendall(peer->fd, &result, sizeof(int), 0);
 		}
 		break;
 		case START_GAME:
@@ -213,16 +210,18 @@ void *handle_client(peer_t *peer)
 			start_game_t start_game;
 			memcpy(&start_game, method->data, sizeof(start_game_t));
 			int pin = generate_luminous_element();
+			sendall(peer->fd, &pin, sizeof(int), 0);
+
 			strcpy(session.game.game_id, start_game.game_id);
 			session.pin = pin;
-			sendall(peer->fd, &pin, sizeof(int), 0);
+			session.admin = *peer;
 		}
 		break;
 		case GAMES:
 		{
 			char query[256];
 			sprintf(query, SQL_GAMES, peer->username);
-			MYSQL_RES *sql_result = getQueryResult(query);
+			MYSQL_RES *sql_result = selectQuery(query);
 
 			games_t games;
 			games.size = sql_result->row_count;
@@ -231,7 +230,7 @@ void *handle_client(peer_t *peer)
 			MYSQL_ROW row;
 
 			int i = 0;
-			while ((row = mysql_fetch_row(sql_result))) 
+			while ((row = mysql_fetch_row(sql_result)))
 			{
 				strcpy(games.at[i].game_id, row[0]);
 				strcpy(games.at[i].username, row[1]);
@@ -251,7 +250,7 @@ void *handle_client(peer_t *peer)
 		case POTATO:
 		{
 
-			MYSQL_RES *result = getQueryResult(SQL_POTATO);
+			MYSQL_RES *result = selectQuery(SQL_POTATO);
 			int num_fields = mysql_num_fields(result);
 
 			MYSQL_ROW row;
@@ -282,8 +281,10 @@ void *handle_client(peer_t *peer)
 	pthread_exit(NULL);
 }
 
-MYSQL_RES *getQueryResult(const char *query)
+MYSQL_RES *selectQuery(const char *query)
 {
+	fprintf(stdout, "%s\n", query);
+
 	if (mysql_query(conn, query))
 		finish_with_error(conn);
 
@@ -293,6 +294,12 @@ MYSQL_RES *getQueryResult(const char *query)
 		finish_with_error(conn);
 
 	return result;
+}
+
+int insertQuery(const char *query)
+{
+	fprintf(stdout, "%s\n", query);
+	return mysql_query(conn, query);
 }
 
 void finish_with_error(MYSQL *conn)

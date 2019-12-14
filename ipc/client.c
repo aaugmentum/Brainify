@@ -142,7 +142,7 @@ char *games()
 		game_t game = games.at[i];
 
 		strcat(result, game.title);
-		strcat(result, ",");
+		strcat(result, "/");
 		strcat(result, game.game_id);
 		strcat(result, ",");
 

@@ -8,12 +8,12 @@ typedef enum
 	SIGNIN,
 	LOGOUT,
 	//Game
-	CREATE,
+	// CREATE,
 	START_GAME,
 	JOIN,
 	GAMES,
-	EDIT,
-	DELETE,
+	// EDIT,
+	// DELETE,
 	FINISH,
 	//In game
 	ANSWER,

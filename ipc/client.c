@@ -42,7 +42,7 @@ int main()
 		int pin = start_game("12345");
 		printf("PIN for the game: %d\n", pin);
 	}
-	else if (x == 7)
+	else if (x == 6)
 	{
 		games("Azamat");
 	}

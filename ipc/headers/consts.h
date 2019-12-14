@@ -1,5 +1,3 @@
-#pragma once
-
 #define DB_HOST "remotemysql.com"
 #define DB_USER "71VUvOSzmm"
 #define DB_PASSWD "rpraRefD0g"

@@ -10,7 +10,6 @@
 #include <pthread.h>
 #include <mysql/mysql.h>
 #include "headers/utils.h"
-#include "headers/consts.h"
 
 //Function prototypes
 void terminate(const char *msg);
@@ -129,8 +128,8 @@ void *handle_client(peer_t *peer)
 			int result = 0;
 			if (!strcmp(auth.username, "aaugmentum") && !strcmp(auth.password, "12354"))
 			{
-				fprintf("USERNAME: %s\n", auth.username);
-				fprintf("PASSWORD: %s\n", auth.password);
+				fprintf(stdout, "USERNAME: %s\n", auth.username);
+				fprintf(stdout, "PASSWORD: %s\n", auth.password);
 				result = 1;
 			}
 			else
@@ -184,14 +183,14 @@ void *handle_client(peer_t *peer)
 		//Debugging DB connection
 		case POTATO:
 		{
-			if (mysql_query(conn, "select question_text, answer_text from question natural join answer where is_correct = true")) 
+			if (mysql_query(conn, "select question_text, answer_text from question natural join answer where is_correct = true"))
 			{
 				finish_with_error(conn);
 			}
 
 			MYSQL_RES *result = mysql_store_result(conn);
 
-			if (result == NULL) 
+			if (result == NULL)
 			{
 				finish_with_error(conn);
 			}
@@ -200,13 +199,13 @@ void *handle_client(peer_t *peer)
 
 			MYSQL_ROW row;
 
-			while ((row = mysql_fetch_row(result))) 
-			{ 
-				for(int i = 0; i < num_fields; i++) 
-				{ 
-					printf("%s ", row[i] ? row[i] : "NULL"); 
-				} 
-				printf("\n"); 
+			while ((row = mysql_fetch_row(result)))
+			{
+				for (int i = 0; i < num_fields; i++)
+				{
+					printf("%s ", row[i] ? row[i] : "NULL");
+				}
+				printf("\n");
 			}
 			mysql_free_result(result);
 			int test = 1;
@@ -220,7 +219,7 @@ void *handle_client(peer_t *peer)
 		fflush(stdout);
 	}
 
-  	mysql_close(conn);
+	mysql_close(conn);
 	free(method);
 	close(peer->fd);
 	free(peer);
@@ -229,7 +228,7 @@ void *handle_client(peer_t *peer)
 
 void finish_with_error(MYSQL *conn)
 {
-  fprintf(stderr, "%s\n", mysql_error(conn));
-  mysql_close(conn);
-  exit(1);        
+	fprintf(stderr, "%s\n", mysql_error(conn));
+	mysql_close(conn);
+	exit(1);
 }

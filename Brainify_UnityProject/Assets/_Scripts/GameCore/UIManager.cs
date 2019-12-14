@@ -7,19 +7,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] private EventsContainer events;
     
     [Space]
+    [Header("Question Canvas Group")]
     [SerializeField] private CanvasGroup mainCanvasGroup;
     public CanvasGroup MainCanvasGroup => mainCanvasGroup;
     
     [Space]
+    [Header("Answer Button")]
     [SerializeField] private UserAnswerData answerPrefab;
     
     [Space]
+    [Header("Question Fields")]
     [SerializeField] private Text questionInfoText;
     public Text QuestionInfoText => questionInfoText;
-    [SerializeField] private RectTransform answerButtonsParent;
-    public RectTransform AnswerButtonsParent => answerButtonsParent;
+    [SerializeField] private Button[] answerButtons;
 
     [Space]
+    [Header("Post Question Screen Fields")]
     [SerializeField] private Image postQuestionBG;
     public Image PostQuestionBg => postQuestionBG;
     [SerializeField] private Text postQuestionTitleText;
@@ -29,7 +32,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform finishUI;
     public RectTransform FinishUI => finishUI;
     
-    private List<UserAnswerData> _currentAnswerOptions = new List<UserAnswerData>();
+    private List<UserAnswerData> _currentAnswersData = new List<UserAnswerData>();
 
     private void OnEnable()
     {
@@ -55,26 +58,27 @@ public class UIManager : MonoBehaviour
 
     private void InitializeAnswers(Question question)
     {
-        DestroyAnswers();
+        EraseAnswers();
         
         for (int i = 0; i < question.AnswerOptions.Length; i++)
         {
             string answerInfo = question.AnswerOptions[i].AnswerInfo;
-            int answerIndex = i;
             
-            UserAnswerData newAnswerData = Instantiate(answerPrefab, AnswerButtonsParent);
-            newAnswerData.UpdateData(answerIndex, answerInfo);
+            UserAnswerData newAnswerData = answerButtons[i].GetComponent<UserAnswerData>();
+            newAnswerData.UpdateData(answerInfo);
             
-            _currentAnswerOptions.Add(newAnswerData);
+            _currentAnswersData.Add(newAnswerData);
         }
     }
 
-    private void DestroyAnswers()
+    private void EraseAnswers()
     {
-        for (int i = 0; i < _currentAnswerOptions.Count; i++)
-            Destroy(_currentAnswerOptions[i].gameObject);
+        for (int i = 0; i < _currentAnswersData.Count; i++)
+        {
+            _currentAnswersData[i].AnswerText = null;
+        }
         
-        _currentAnswerOptions.Clear();
+        _currentAnswersData.Clear();
     }
 }
 

@@ -50,12 +50,12 @@ public class GameManager : MonoBehaviour
     {
         bool isAnswerCorrect = CheckUserAnswers(chosenAnswerIndex);
         
-        // Debug.Log($"IsCorrect: {isAnswerCorrect}");
-        
         _finishedQuestionsIndexes.Add(_currentQuestionIndex);
 
         if (isAnswerCorrect)
             UpdateScore(_questions[_currentQuestionIndex].Score);
+
+        // Debug.Log($"IsCorrect: {isAnswerCorrect} \t Score: {currentScore}");
     }
 
     private Question GetRandomQuestion()

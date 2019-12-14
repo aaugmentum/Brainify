@@ -10,9 +10,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup mainCanvasGroup;
     public CanvasGroup MainCanvasGroup => mainCanvasGroup;
     
-    [Header("Answer Button")]
-    [SerializeField] private UserAnswerData answerPrefab;
-    
     [Header("Question Fields")]
     [SerializeField] private Text questionInfoText;
     public Text QuestionInfoText => questionInfoText;

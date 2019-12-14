@@ -1,0 +1,54 @@
+delete from user;
+delete from game;
+delete from question;
+delete from answer;
+
+insert into game values ('201', 'English vocabulary');
+insert into game values ('202', 'Java documentation');
+insert into game values ('203', 'Alphabet');
+
+insert into user values ('101', '201', 'Davron', '12345');
+insert into user values ('101', '203', 'Davron', '12345');
+insert into user values ('102', '201', 'Aleksey', '12345');
+insert into user values ('102', '203', 'Aleksey', '12345');
+insert into user values ('103', '201', 'Azamat', '12345');
+insert into user values ('103', '202', 'Azamat', '12345');
+insert into user values ('104', '202', 'Kamron', '12345');
+insert into user values ('104', '203', 'Kamron', '12345');
+
+insert into question values ('301', '201', 'Roses are red, violets are ...?');
+insert into question values ('302', '201', 'Meaning of word sanctum');
+insert into question values ('303', '202', 'Java is not ...?');
+insert into question values ('304', '202', 'JVM is ...?');
+insert into question values ('305', '203', 'First letter of alphabet');
+insert into question values ('306', '203', 'Last letter of alphabet');
+insert into question values ('307', '203', 'The letter which has two v');
+
+insert into answer values ('401', '301', '0', 'red');
+insert into answer values ('402', '301', '0', 'green');
+insert into answer values ('403', '301', '1', 'blue');
+insert into answer values ('404', '301', '0', 'purple');
+insert into answer values ('405', '302', '1', 'Sacred place');
+insert into answer values ('406', '302', '0', 'Washroom');
+insert into answer values ('407', '302', '0', 'Human organ');
+insert into answer values ('408', '302', '0', 'Place in Stockholm');
+insert into answer values ('409', '303', '0', 'Programming language');
+insert into answer values ('410', '303', '0', 'Robust');
+insert into answer values ('411', '303', '0', 'Cross-platform');
+insert into answer values ('412', '303', '1', 'Slow');
+insert into answer values ('413', '304', '1', 'Java Virtual Machine');
+insert into answer values ('414', '304', '0', 'Johnsons Virtual Multiplexer');
+insert into answer values ('415', '304', '0', 'Johannesburg Vital Medicine');
+insert into answer values ('416', '304', '0', 'Jumpy frog Virtual Machine');
+insert into answer values ('417', '305', '0', 'B');
+insert into answer values ('418', '305', '0', 'Z');
+insert into answer values ('419', '305', '1', 'A');
+insert into answer values ('420', '305', '0', 'O');
+insert into answer values ('421', '306', '1', 'Z');
+insert into answer values ('422', '306', '0', 'A');
+insert into answer values ('423', '306', '0', 'F');
+insert into answer values ('424', '306', '0', 'X');
+insert into answer values ('425', '307', '0', 'Y');
+insert into answer values ('426', '307', '1', 'W');
+insert into answer values ('427', '307', '0', 'H');
+insert into answer values ('428', '307', '0', 'Z');

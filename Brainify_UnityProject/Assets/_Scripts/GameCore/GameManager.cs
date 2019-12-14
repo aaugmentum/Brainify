@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [SerializeField] private EventsContainer _events;
+    [SerializeField] private EventsContainer events;
     
     private Question[] _questions;
     public Question[] Questions
@@ -17,12 +17,10 @@ public class GameManager : MonoBehaviour
 
     private int _currentQuestionIndex = -1;
     
-    private int score;
-
-    private UserAnswerData _userPickedAnswer;
-    
     private List<int> _finishedQuestionsIndexes;
     public List<int> FinishedQuestionsIndexes => _finishedQuestionsIndexes;
+
+    [HideInInspector] public int currentScore;
     
     private void Awake()
     {
@@ -41,7 +39,23 @@ public class GameManager : MonoBehaviour
     public void DisplayQuestion()
     {
         Question question = GetRandomQuestion();
-        _events.onUpdateQuestionUI?.Invoke(question);
+        
+        _finishedQuestionsIndexes.Add(_currentQuestionIndex);
+        _currentQuestionIndex = question.QuestionIndex;
+        
+        events.onUpdateQuestionUI?.Invoke(question);
+    }
+
+    public void AcceptUserAnswer(int chosenAnswerIndex)
+    {
+        bool isAnswerCorrect = CheckUserAnswers(chosenAnswerIndex);
+        
+        // Debug.Log($"IsCorrect: {isAnswerCorrect}");
+        
+        _finishedQuestionsIndexes.Add(_currentQuestionIndex);
+
+        if (isAnswerCorrect)
+            UpdateScore(_questions[_currentQuestionIndex].Score);
     }
 
     private Question GetRandomQuestion()
@@ -63,6 +77,17 @@ public class GameManager : MonoBehaviour
         return randomIndex;
     }
 
+    private bool CheckUserAnswers(int chosenAnswerIndex)
+    {
+        int correctAnswerOptionIndex = _questions[_currentQuestionIndex].GetCorrectAnswerIndex();
+        return (correctAnswerOptionIndex == chosenAnswerIndex);
+    }
+    
+    public void UpdateScore(int addScore)
+    {
+        currentScore += addScore;
+    }
+    
     private void LoadQuestions()
     {
         Object[] objects = Resources.LoadAll(Constants.PathQuestions, typeof(Question));

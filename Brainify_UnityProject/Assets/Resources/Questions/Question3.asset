@@ -17,10 +17,10 @@ MonoBehaviour:
   answerOptions:
   - answerInfo: Naseer
     isCorrect: 1
-  - answerInfo: Naseer
-    isCorrect: 1
-  - answerInfo: Naseer
-    isCorrect: 1
-  - answerInfo: Naseer
-    isCorrect: 1
+  - answerInfo: Tarawade
+    isCorrect: 0
+  - answerInfo: Ashish
+    isCorrect: 0
+  - answerInfo: Dragunov
+    isCorrect: 0
   score: 100

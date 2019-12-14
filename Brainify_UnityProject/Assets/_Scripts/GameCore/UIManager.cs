@@ -6,22 +6,18 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private EventsContainer events;
     
-    [Space]
     [Header("Question Canvas Group")]
     [SerializeField] private CanvasGroup mainCanvasGroup;
     public CanvasGroup MainCanvasGroup => mainCanvasGroup;
     
-    [Space]
     [Header("Answer Button")]
     [SerializeField] private UserAnswerData answerPrefab;
     
-    [Space]
     [Header("Question Fields")]
     [SerializeField] private Text questionInfoText;
     public Text QuestionInfoText => questionInfoText;
     [SerializeField] private Button[] answerButtons;
 
-    [Space]
     [Header("Post Question Screen Fields")]
     [SerializeField] private Image postQuestionBG;
     public Image PostQuestionBg => postQuestionBG;

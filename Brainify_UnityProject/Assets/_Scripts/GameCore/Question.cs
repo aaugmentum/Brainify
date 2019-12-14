@@ -14,6 +14,18 @@ public class Question : ScriptableObject
 
     [SerializeField] private int score = 100;
     public int Score => score;
+
+    public int GetCorrectAnswerIndex()
+    {
+        int correctAnswerIndex = -1;
+        for (int i = 0; i < answerOptions.Length; i++)
+        {
+            if (answerOptions[i].IsCorrect)
+                correctAnswerIndex = i;
+        }
+
+        return correctAnswerIndex;
+    }
 }
 
 [System.Serializable]

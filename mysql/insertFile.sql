@@ -3,18 +3,14 @@ delete from game;
 delete from question;
 delete from answer;
 
-insert into game values ('201', 'English vocabulary');
-insert into game values ('202', 'Java documentation');
-insert into game values ('203', 'Alphabet');
+insert into user values ('Davron', '12345');
+insert into user values ('Aleksey', '12345');
+insert into user values ('Azamat', '12345');
+insert into user values ('Kamron', '12345');
 
-insert into user values ('101', '201', 'Davron', '12345');
-insert into user values ('101', '203', 'Davron', '12345');
-insert into user values ('102', '201', 'Aleksey', '12345');
-insert into user values ('102', '203', 'Aleksey', '12345');
-insert into user values ('103', '201', 'Azamat', '12345');
-insert into user values ('103', '202', 'Azamat', '12345');
-insert into user values ('104', '202', 'Kamron', '12345');
-insert into user values ('104', '203', 'Kamron', '12345');
+insert into game values ('201', 'Davron', 'English vocabulary');
+insert into game values ('202', 'Azamat', 'Java documentation');
+insert into game values ('203', 'Kamron', 'Alphabet');
 
 insert into question values ('301', '201', 'Roses are red, violets are ...?');
 insert into question values ('302', '201', 'Meaning of word sanctum');

@@ -28,13 +28,13 @@ typedef struct
 
 typedef struct
 {
-	char username[16];
-	char password[128];
+	char username[20];
+	char password[20];
 } auth_t;
 
 typedef struct
 {
-	char title[256];
+	char title[160];
 	char option1[32];
 	char option2[32];
 	char option3[32];

@@ -159,9 +159,23 @@ void *handle_client(peer_t *peer)
 		{
 			auth_t auth;
 			memcpy(&auth, method->data, sizeof(auth_t));
+			int result = 0;
 
-			fprintf(stdout, "USERNAME: %s\n", auth.username);
-			fprintf(stdout, "PASSWORD: %s\n", auth.password);
+			char query[256];
+			sprintf(query, SQL_USER_CREATE, auth.username, auth.password);
+			fprintf(stdout, "%s\n", query);
+
+			if (mysql_query(conn, query))
+				fprintf(stdout, "Dublicate entry\n");
+			else
+			{
+				fprintf(stdout, "SUCCESS\n");
+				fprintf(stdout, "INSERTED into user table\n\tUSERNAME: %s\n\tPASSWORD: %s\n",
+						auth.username, auth.password);
+				result = 1;
+			}
+
+			sendall(peer->fd, &result, sizeof(int), 0);
 		}
 		break;
 		case JOIN:
@@ -245,6 +259,6 @@ MYSQL_RES *getQueryResult(const char *query)
 void finish_with_error(MYSQL *conn)
 {
 	fprintf(stderr, "%s\n", mysql_error(conn));
-	mysql_close(conn);
-	exit(1);
+	// mysql_close(conn);
+	// exit(1);
 }

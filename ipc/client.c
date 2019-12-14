@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -47,6 +46,11 @@ int main()
 		printf("DEBUG POTATO MODE");
 		potato();
 	}
+	else if(x == 7)
+	{
+		printf("SIGNUP\n");
+		signup("Test7", "12345");
+	}
 	else
 	{
 		printf("Enter game pin: ");
@@ -94,8 +98,8 @@ int signin(char *username, char *password)
 	method_t method;
 	auth_t auth;
 	method.type = SIGNIN;
-	memcpy(auth.username, username, 16);
-	memcpy(auth.password, password, 128);
+	memcpy(auth.username, username, sizeof(auth.username));
+	memcpy(auth.password, password, sizeof(auth.password));
 	memcpy(method.data, &auth, sizeof(auth_t));
 	sendall(server_fd, &method, sizeof(method_t), 0);
 
@@ -110,14 +114,15 @@ int signup(char *username, char *password)
 	method_t method;
 	auth_t auth;
 	method.type = SIGNUP;
-	memcpy(auth.username, username, 16);
-	memcpy(auth.password, password, 128);
+	memcpy(auth.username, username, sizeof(auth.username));
+	memcpy(auth.password, password, sizeof(auth.password));
 	memcpy(method.data, &auth, sizeof(auth_t));
 	sendall(server_fd, &method, sizeof(method_t), 0);
 
 	//0 Already exist, 1 Success
 	int result;
 	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
+	printf("%i", result);
 	return result;
 }
 

@@ -1,21 +1,20 @@
-drop table answer;
-drop table question;
-drop table user;
-drop table game;
+drop table if exists answer;
+drop table if exists question;
+drop table if exists user;
+drop table if exists game;
+
+create table user(
+  user_name varchar(20),
+  password varchar(20) not null,
+  primary key (user_name)
+);
 
 create table game(
   game_id varchar(8),
+  user_name varchar(20),
   title varchar(20) not null,
-  primary key (game_id)
-);
-
-create table user(
-  ID varchar(5),
-  game_id varchar(8),
-  name varchar(20) not null,
-  password varchar(20) not null,
-  primary key (ID, game_id),
-  foreign key (game_id) references game(game_id)
+  primary key (game_id),
+  foreign key (user_name) references user(user_name)
 );
 
 create table question(

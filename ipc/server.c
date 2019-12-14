@@ -15,6 +15,7 @@
 void terminate(const char *msg);
 int generate_luminous_element();
 void finish_with_error(MYSQL *conn);
+MYSQL_RES *getQueryResult(const char *);
 void init_socket();
 void init_db();
 void *handle_client();
@@ -65,7 +66,7 @@ void init_db()
 	}
 	else
 	{
-		fprintf(stdout, "DB connected\n");
+		fprintf(stdout, "DB connected on %s\n", DB_HOST);
 	}
 }
 
@@ -136,16 +137,19 @@ void *handle_client(peer_t *peer)
 			auth_t auth;
 			memcpy(&auth, method->data, sizeof(auth_t));
 			int result = 0;
-			if (!strcmp(auth.username, "aaugmentum") && !strcmp(auth.password, "12354"))
+
+			char query[256];
+			sprintf(query, SQL_USER_EXIST, auth.username, auth.password);
+			fprintf(stdout, "%s\n", query);
+			MYSQL_RES *sql_result = getQueryResult(query);
+			if (sql_result->row_count)
 			{
 				fprintf(stdout, "USERNAME: %s\n", auth.username);
 				fprintf(stdout, "PASSWORD: %s\n", auth.password);
 				result = 1;
 			}
 			else
-			{
-				fprintf(stdout, "Wrong credentials...");
-			}
+				fprintf(stdout, "Wrong credentials...\n");
 
 			sendall(peer->fd, &result, sizeof(int), 0);
 		}
@@ -193,18 +197,8 @@ void *handle_client(peer_t *peer)
 		//Debugging DB connection
 		case POTATO:
 		{
-			if (mysql_query(conn, "select question_text, answer_text from question natural join answer where is_correct = true"))
-			{
-				finish_with_error(conn);
-			}
 
-			MYSQL_RES *result = mysql_store_result(conn);
-
-			if (result == NULL)
-			{
-				finish_with_error(conn);
-			}
-
+			MYSQL_RES *result = getQueryResult(SQL_POTATO);
 			int num_fields = mysql_num_fields(result);
 
 			MYSQL_ROW row;
@@ -233,6 +227,19 @@ void *handle_client(peer_t *peer)
 	close(peer->fd);
 	free(peer);
 	pthread_exit(NULL);
+}
+
+MYSQL_RES *getQueryResult(const char *query)
+{
+	if (mysql_query(conn, query))
+		finish_with_error(conn);
+
+	MYSQL_RES *result = mysql_store_result(conn);
+
+	if (result == NULL)
+		finish_with_error(conn);
+
+	return result;
 }
 
 void finish_with_error(MYSQL *conn)

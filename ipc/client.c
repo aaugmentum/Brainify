@@ -31,7 +31,7 @@ int main()
 	if (connect_server() == 0)
 		exit(EXIT_FAILURE);
 
-	signin("aaugmentum", "12354");
+	signin("Azamat", "12345");
 
 	int x;
 	printf("Enter what you want (0 to start): ");

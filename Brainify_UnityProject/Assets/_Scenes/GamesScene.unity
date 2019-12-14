@@ -400,6 +400,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579514330094026, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579514330094026, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579514330094031, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}
@@ -435,6 +445,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579514382557837, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579514382557837, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579514382557938, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}
@@ -500,6 +520,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579514445168427, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579514445168427, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579514957801516, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}
@@ -535,6 +565,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579514957801519, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579514957801519, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579515072651698, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}
@@ -570,6 +610,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579515072651853, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579515072651853, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579515520543379, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}
@@ -605,11 +655,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579515520543406, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579515520543406, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579515633558708, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579515633558708, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579515633558708, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579515633558713, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}
@@ -645,6 +715,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579516026737249, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579516026737249, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579516026737254, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}
@@ -680,6 +760,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1134262705}
+    - target: {fileID: 650579516150006329, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 650579516150006329, guid: 868dc7eae8d5645a0a5dede80723dbda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Question
       objectReference: {fileID: 0}
     - target: {fileID: 650579516150006334, guid: 868dc7eae8d5645a0a5dede80723dbda,
         type: 3}

@@ -349,6 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events: {fileID: 11400000, guid: 246d1322aa314954bb28ca6facda61d7, type: 2}
+  mainCanvasGroup: {fileID: 1587558379}
   answerPrefab: {fileID: 365539480062719471, guid: 6ed685f4170311441b8712b275cc8555,
     type: 3}
   questionInfoText: {fileID: 318581913}
@@ -356,7 +357,6 @@ MonoBehaviour:
   postQuestionBG: {fileID: 2145151080}
   postQuestionTitleText: {fileID: 2145151079}
   postQuestionScoreText: {fileID: 2145151078}
-  mainCanvasGroup: {fileID: 1587558379}
   finishUI: {fileID: 2145151077}
 --- !u!1 &1557143780
 GameObject:
@@ -554,7 +554,7 @@ PrefabInstance:
     - target: {fileID: 1531959843841503445, guid: 6701bf5d56b5317448c38b6f4b1abce5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1531959843841503445, guid: 6701bf5d56b5317448c38b6f4b1abce5,
         type: 3}
@@ -581,6 +581,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 1134262703}
+    - target: {fileID: 1531959843841503445, guid: 6701bf5d56b5317448c38b6f4b1abce5,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: GamesScene
+      objectReference: {fileID: 0}
     - target: {fileID: 2330894567647881418, guid: 6701bf5d56b5317448c38b6f4b1abce5,
         type: 3}
       propertyPath: m_LocalPosition.x

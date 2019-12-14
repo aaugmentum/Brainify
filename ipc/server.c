@@ -13,10 +13,11 @@
 
 //Function prototypes
 void terminate(const char *msg);
-void init_socket();
 int generate_luminous_element();
-void *handle_client();
 void finish_with_error(MYSQL *conn);
+void init_socket();
+void init_db();
+void *handle_client();
 
 //Server structs
 typedef struct
@@ -43,17 +44,14 @@ MYSQL *conn;
 
 int main()
 {
+	init_db();
 	init_socket();
+	mysql_close(conn);
 	return 0;
 }
 
-void init_socket()
+void init_db()
 {
-	//Init variables
-	struct sockaddr_in address;
-	int addrlen = sizeof(address);
-	int opt = 1;
-
 	//MySQL init
 	if ((conn = mysql_init(NULL)) == NULL)
 	{
@@ -65,6 +63,18 @@ void init_socket()
 		fprintf(stderr, "DB Connection Error\n");
 		return;
 	}
+	else
+	{
+		fprintf(stdout, "DB connected\n");
+	}
+}
+
+void init_socket()
+{
+	//Init variables
+	struct sockaddr_in address;
+	int addrlen = sizeof(address);
+	int opt = 1;
 
 	//Init socket
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -167,7 +177,7 @@ void *handle_client(peer_t *peer)
 			{
 				fprintf(stdout, "Pin incorrect!\n");
 			}
-			sendall(peer->fd, &result, sizeof(int), 0);
+			send(peer->fd, &result, sizeof(int), 0);
 		}
 		break;
 		case START_GAME:
@@ -219,7 +229,6 @@ void *handle_client(peer_t *peer)
 		fflush(stdout);
 	}
 
-	mysql_close(conn);
 	free(method);
 	close(peer->fd);
 	free(peer);

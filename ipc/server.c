@@ -29,18 +29,27 @@ typedef struct
 	char username[16];
 } peer_t;
 
-typedef struct server
+typedef struct
 {
-	int gid;
-	int pin;
-	peer_t players[8];
+	//DB
+	game_t game;
+
+
+	//Players
 	peer_t admin;
-	int size;
-} game_t;
+	peer_t players[8];
+	int players_size;
+
+	//Questions
+	question_t questions[128];
+	int question_size;
+
+	int pin;
+} session_t;
 
 //Global variables
 int server_fd;
-game_t game;
+session_t session;
 MYSQL *conn;
 
 int main()
@@ -146,6 +155,7 @@ void *handle_client(peer_t *peer)
 			{
 				fprintf(stdout, "USERNAME: %s\n", auth.username);
 				fprintf(stdout, "PASSWORD: %s\n", auth.password);
+				strcpy(peer->username, auth.username);
 				result = 1;
 			}
 			else
@@ -169,10 +179,10 @@ void *handle_client(peer_t *peer)
 			join_t join;
 			memcpy(&join, method->data, sizeof(join_t));
 			int result = 0;
-			if (join.pin == game.pin && game.size < 8)
+			if (join.pin == session.pin && session.players_size < 8)
 			{
-				game.players[game.size] = *peer;
-				game.size++;
+				session.players[session.players_size] = *peer;
+				session.players_size++;
 				result = 1;
 
 				fprintf(stdout, "New player connected!\n");
@@ -189,9 +199,38 @@ void *handle_client(peer_t *peer)
 			start_game_t start_game;
 			memcpy(&start_game, method->data, sizeof(start_game_t));
 			int pin = generate_luminous_element();
-			game.gid = start_game.gid;
-			game.pin = pin;
+			strcpy(session.game.game_id, start_game.game_id);
+			session.pin = pin;
 			sendall(peer->fd, &pin, sizeof(int), 0);
+		}
+		break;
+		case GAMES:
+		{
+			char query[256];
+			sprintf(query, SQL_GAMES, peer->username);
+			MYSQL_RES *sql_result = getQueryResult(query);
+
+			games_t games;
+			games.size = sql_result->row_count;
+
+			int num_fields = mysql_num_fields(sql_result);
+			MYSQL_ROW row;
+
+			int i = 0;
+			while ((row = mysql_fetch_row(sql_result))) 
+			{
+				strcpy(games.at[i].game_id, row[0]);
+				strcpy(games.at[i].username, row[1]);
+				strcpy(games.at[i].title, row[2]);
+
+				game_t game = games.at[i];
+
+				i++;
+				printf("GID: %s, Title: %s, Owner: %s\n", game.game_id, game.title, game.username);
+			}
+
+			mysql_free_result(sql_result);
+			sendall(peer->fd, &games, sizeof(games_t), 0);
 		}
 		break;
 		//Debugging DB connection

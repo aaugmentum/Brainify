@@ -23,6 +23,7 @@ void potato();
 games_t gms();
 char *player_join();
 char *get_questions(char *);
+int receiver();
 
 //Global variables
 int server_fd;
@@ -50,7 +51,7 @@ A:
 		goto A;
 	}
 
-	get_questions("202");
+	get_questions("208");
 
 	printf("Create/Join game(0/1): ");
 	scanf("%d", &temp);
@@ -239,7 +240,7 @@ int join(int pin)
 	return result;
 }
 
-int wait_for_game()
+int receiver()
 {
 	int result;
 	recv(server_fd, &result, sizeof(int), MSG_WAITALL);

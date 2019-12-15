@@ -195,7 +195,7 @@ void *handle_client(peer_t *peer)
 			memcpy(&join, method->data, sizeof(join_t));
 
 			int result = 0;
-			if (join.pin == session.pin && session.players_size && session.pin != 0 < 8)
+			if (join.pin == session.pin && session.players_size < 8 && session.pin != 0)
 			{
 				session.players[session.players_size] = *peer;
 				session.players_size++;
@@ -317,13 +317,14 @@ void *handle_client(peer_t *peer)
 		case RUN_GAME:
 		{
 			session.pin = 0;
-			notify_next();
+			notify_next(1);
 			for (size_t i = 0; i < session.question_size; i++)
 			{
 				sleep(20);
-				notify_next();
+				notify_next(2);
 			}
 		}
+		break;
 		default:
 			fprintf(stdout, "Error");
 			break;
@@ -337,11 +338,10 @@ void *handle_client(peer_t *peer)
 	pthread_exit(NULL);
 }
 
-void notify_next()
+void notify_next(int i)
 {
-	int temp = 1;
 	for (size_t i = 0; i < session.players_size; i++)
-		sendall(session.players[i].fd, &temp, sizeof(int), 0);
+		sendall(session.players[i].fd, &i, sizeof(int), 0);
 }
 
 MYSQL_RES *selectQuery(const char *query)

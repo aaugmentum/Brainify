@@ -393,6 +393,8 @@ MonoBehaviour:
   username: {fileID: 0}
   password: {fileID: 0}
   c_password: {fileID: 0}
+  error_message: {fileID: 0}
+  game_buttons: []
 --- !u!1 &1811747003
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,6 +519,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099946877542883237, guid: 12becc7f4417db04d8d416da79f67756,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099946877542883237, guid: 12becc7f4417db04d8d416da79f67756,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099946877542883237, guid: 12becc7f4417db04d8d416da79f67756,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099946877542883237, guid: 12becc7f4417db04d8d416da79f67756,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1811747005}
+    - target: {fileID: 2099946877542883237, guid: 12becc7f4417db04d8d416da79f67756,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: QuitGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099946877542883237, guid: 12becc7f4417db04d8d416da79f67756,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2586605616200642057, guid: 12becc7f4417db04d8d416da79f67756,
         type: 3}

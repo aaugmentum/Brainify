@@ -436,6 +436,8 @@ MonoBehaviour:
   username: {fileID: 0}
   password: {fileID: 0}
   c_password: {fileID: 0}
+  error_message: {fileID: 0}
+  game_buttons: []
 --- !u!1001 &2078300499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -586,7 +588,7 @@ PrefabInstance:
     - target: {fileID: 2435230792413359545, guid: 7dca179be93bc714b99a746fecfebe38,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: Question
+      value: LobbyUser
       objectReference: {fileID: 0}
     - target: {fileID: 2540189803559112539, guid: 7dca179be93bc714b99a746fecfebe38,
         type: 3}

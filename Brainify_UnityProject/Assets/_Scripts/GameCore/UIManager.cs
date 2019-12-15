@@ -104,9 +104,8 @@ public class UIManager : MonoBehaviour
                 break;
             case PostQuestionScreenType.Finish:
                 postQuestionBG.color = screenColorFinish;
-                postQuestionTitleText.text = Constants.PostQuestionTextFinish;
-                postQuestionSubtitleText.text = Constants.PostQuestionTextScore + events.currentScore + " points";
-                
+                postQuestionTitleText.gameObject.SetActive(false);
+                postQuestionSubtitleText.gameObject.SetActive(false);
                 finishUI.gameObject.SetActive(true);
                 break;
         }

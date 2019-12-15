@@ -160,7 +160,7 @@ void *handle_client(peer_t *peer)
 			}
 			else
 				fprintf(stdout, "Wrong credentials...\n");
-			
+
 			mysql_free_result(sql_result);
 			sendall(peer->fd, &result, sizeof(int), 0);
 		}
@@ -312,17 +312,26 @@ void *handle_client(peer_t *peer)
 			strcpy(session.game.game_id, start_game.game_id);
 			session.pin = pin;
 			session.admin = *peer;
+
+			char query[256];
+			sprintf(query, SQL_QUESTIONS_COUNT, session.game.game_id);
+			MYSQL_RES *sql_result = selectQuery(query);
+			MYSQL_ROW row = mysql_fetch_row(sql_result);
+			session.question_size = atoi(row[0]);
+			printf("Question size: %d\n", session.question_size);
 		}
 		break;
 		case RUN_GAME:
 		{
 			session.pin = 0;
 			notify_next(1);
-			for (size_t i = 0; i < session.question_size; i++)
+			for (size_t i = 0; i < session.question_size - 1; i++)
 			{
-				sleep(20);
+				sleep(5);
 				notify_next(2);
 			}
+			sleep(5);
+			notify_next(3);
 		}
 		break;
 		default:
@@ -338,10 +347,12 @@ void *handle_client(peer_t *peer)
 	pthread_exit(NULL);
 }
 
-void notify_next(int i)
+void notify_next(int code)
 {
-	for (size_t i = 0; i < session.players_size; i++)
-		sendall(session.players[i].fd, &i, sizeof(int), 0);
+	for (size_t i = 0; i < session.players_size; i++) {
+		printf("%d\n", code);
+		sendall(session.players[i].fd, &code, sizeof(int), 0);
+	}
 }
 
 MYSQL_RES *selectQuery(const char *query)

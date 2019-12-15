@@ -21,3 +21,4 @@
 #define SQL_ALL_GAMES "select * from game"
 #define SQL_POTATO "select question_text, answer_text from question natural join answer where is_correct = true"
 #define SQL_QUESTIONS "select question_id, question_text, answer_text, is_correct from answer natural join question WHERE game_id='%s'"
+#define SQL_QUESTIONS_COUNT "select COUNT(question_id) from question WHERE game_id='%s'"

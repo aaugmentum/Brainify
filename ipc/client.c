@@ -24,6 +24,7 @@ games_t gms();
 char *player_join();
 char *get_questions(char *);
 int receiver();
+void run_game();
 
 //Global variables
 int server_fd;
@@ -51,7 +52,7 @@ A:
 		goto A;
 	}
 
-	get_questions("208");
+	// get_questions("208");
 
 	printf("Create/Join game(0/1): ");
 	scanf("%d", &temp);
@@ -78,9 +79,11 @@ A:
 			free(username);
 			// printf("Do you want to start game?(1/0) ");
 			// scanf("%d", &temp);
-			if (temp)
+			if (i == 2)
 				break;
 		}
+
+		run_game();
 
 		scanf("%d", &temp);
 	}
@@ -93,6 +96,12 @@ A:
 		if (temp)
 		{
 			printf("You joined to the game!\n");
+			while (1)
+			{
+				int x = receiver();
+				printf("%d\n", x);
+			}
+			
 		}
 		else
 		{
@@ -296,4 +305,11 @@ char *get_questions(char *game_id)
 		printf("Question: %s\n1: %s\n2: %s\n3: %s\n4: %s\nAnswer: %s\n", question.question_text, question.option1, question.option2, question.option3, question.option4, question.answer);
 	}
 	return buf;
+}
+
+void run_game()
+{
+	method_t method;
+	method.type = RUN_GAME;
+	sendall(server_fd, &method, sizeof(method), 0);
 }

@@ -278,7 +278,21 @@ char *get_questions(char *game_id)
 	for (size_t i = 0; i < questions.size; i++)
 	{
 		question_t question = questions.at[i];
-		printf("Question: %s\n1: %s\n2: %s\n3: %s\n4: %s\nAnswer: %c\n", question.question_text, question.option1, question.option2, question.option3, question.option4, question.answer);
+		strcat(buf, question.question_text);
+		strcat(buf, "^^");
+		strcat(buf, question.option1);
+		strcat(buf, "||");
+		strcat(buf, question.option1);
+		strcat(buf, "||");
+		strcat(buf, question.option2);
+		strcat(buf, "||");
+		strcat(buf, question.option3);
+		strcat(buf, "||");
+		strcat(buf, question.option4);
+		strcat(buf, "@@");
+		strcat(buf, question.answer);
+		strcat(buf, "$$");
+		printf("Question: %s\n1: %s\n2: %s\n3: %s\n4: %s\nAnswer: %s\n", question.question_text, question.option1, question.option2, question.option3, question.option4, question.answer);
 	}
 	return buf;
 }

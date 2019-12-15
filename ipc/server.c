@@ -233,22 +233,22 @@ void *handle_client(peer_t *peer)
 					strcpy(questions.at[k].question_text, row[1]);
 					strcpy(questions.at[k].option1, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = "1";
+						questions.at[k].answer = '1';
 					break;
 				case 2:
 					strcpy(questions.at[k].option2, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = "2";
+						questions.at[k].answer = '2';
 					break;
 				case 3:
 					strcpy(questions.at[k].option3, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = "3";
+						questions.at[k].answer = '3';
 					break;
 				case 4:
 					strcpy(questions.at[k].option4, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = "4";
+						questions.at[k].answer = '4';
 					i = 0;
 					k++;
 					break;

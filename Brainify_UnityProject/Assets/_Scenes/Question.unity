@@ -385,6 +385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events: {fileID: 11400000, guid: 246d1322aa314954bb28ca6facda61d7, type: 2}
+  timerText: {fileID: 1587558380}
 --- !u!114 &1472067655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1315,6 +1316,18 @@ CanvasGroup:
     type: 3}
   m_PrefabInstance: {fileID: 1587558378}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1587558380 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 619183027952504149, guid: 6701bf5d56b5317448c38b6f4b1abce5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1587558378}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1947504229
 GameObject:
   m_ObjectHideFlags: 0

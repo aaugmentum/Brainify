@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
     public Color ScreenColorFinish => screenColorFinish;
     
     private static readonly int ScreenState = Animator.StringToHash("ScreenState");
-    
+
     private IEnumerator _IE_HoldPostQuestionScreen;
     
     private List<UserAnswerData> _currentAnswersData = new List<UserAnswerData>();
@@ -133,9 +133,7 @@ public class UIManager : MonoBehaviour
     private void EraseAnswers()
     {
         for (int i = 0; i < _currentAnswersData.Count; i++)
-        {
             _currentAnswersData[i].AnswerText.text = string.Empty;
-        }
         
         _currentAnswersData.Clear();
     }

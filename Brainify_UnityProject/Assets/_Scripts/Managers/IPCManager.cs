@@ -13,6 +13,8 @@ public class IPCManager : MonoBehaviour
     public static extern int connect_server();
     [DllImport ("IPCPlugin")] 
     public static extern string games();
+    [DllImport ("IPCPlugin")] 
+    public static extern string get_questions(string gid);
 
     [DllImport ("IPCPlugin")] 
     public static extern void logout();
@@ -20,10 +22,9 @@ public class IPCManager : MonoBehaviour
 
     public static IPCManager instance;
     public SortedDictionary<string, string> gamesMap = new SortedDictionary<string, string>();
-
     public int result;
-
     public Thread connectionThread;
+    public string question;
     private void Awake()
     {
         instance = this;
@@ -37,10 +38,13 @@ public class IPCManager : MonoBehaviour
     void Update()
     {
         if(result == -1){
-            connectionThread.Abort();
             print("Closed thread");
             result = 2;
         }
+    }
+    void OnApplicationQuit()
+    {
+        logout();
     }
 
     public void getGames(){
@@ -57,7 +61,7 @@ public class IPCManager : MonoBehaviour
             result = IPCManager.connect_server();
             print(result == 1 ? "Connected" : "Error");
             getGames();
-            if(result == 1)result = -1;
+            if(result == 1)connectionThread.Abort();
     }
 
     public void Logout(){

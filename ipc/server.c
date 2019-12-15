@@ -16,6 +16,7 @@ void terminate(const char *msg);
 int generate_luminous_element();
 void finish_with_error(MYSQL *conn);
 MYSQL_RES *selectQuery(const char *);
+int insertQuery(const char *query);
 void init_socket();
 void init_db();
 void *handle_client();
@@ -158,7 +159,8 @@ void *handle_client(peer_t *peer)
 			}
 			else
 				fprintf(stdout, "Wrong credentials...\n");
-
+			
+			mysql_free_result(sql_result);
 			sendall(peer->fd, &result, sizeof(int), 0);
 		}
 		break;

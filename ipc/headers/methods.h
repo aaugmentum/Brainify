@@ -4,12 +4,12 @@ typedef enum
 {
 	POTATO,
 	//User
-	SIGNUP,
-	SIGNIN,
-	LOGOUT,
+	SIGNUP, //* READY
+	SIGNIN, //* READY
+	LOGOUT, //! NO NEED
 	//Game
 	// CREATE,
-	START_GAME,
+	START_GAME, 
 	JOIN,
 	GAMES,
 	// EDIT,

@@ -18,7 +18,7 @@ char *games();
 int join(int);
 int start_game(char *);
 int connect_server();
-void logout();
+void sign();
 void potato();
 games_t gms();
 char *player_join();
@@ -34,14 +34,14 @@ int main()
 
 	int temp;
 A:
-	// printf("Sign in\n");
-	// char username[20], password[20];
-	// printf("Enter username: ");
-	// scanf("%s", username);
-	// printf("Enter password: ");
-	// scanf("%s", password);
+	printf("Sign in\n");
+	char username[20], password[20];
+	printf("Enter username: ");
+	scanf("%s", username);
+	printf("Enter password: ");
+	scanf("%s", password);
 
-	temp = signin("Azamat", "12345");
+	temp = signin(username, password);
 	if (temp)
 		printf("Signed In\n");
 	else
@@ -50,7 +50,7 @@ A:
 		goto A;
 	}
 
-	get_questions("202");
+	// get_questions("202");
 
 	printf("Create/Join game(0/1): ");
 	scanf("%d", &temp);
@@ -216,7 +216,7 @@ char *player_join()
 	return username;
 }
 
-void logout()
+void signout()
 {
 	// method_t method;
 	// method.type = LOGOUT;

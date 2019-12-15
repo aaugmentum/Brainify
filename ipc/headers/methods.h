@@ -17,8 +17,9 @@ typedef enum
 	// DELETE,
 	FINISH,
 	//In game
+	RUN_GAME,
 	ANSWER,
-	RESULT
+	RESULT,
 } mtd_type_enum;
 
 typedef struct
@@ -40,7 +41,7 @@ typedef struct
 	char option2[60];
 	char option3[60];
 	char option4[60];
-	int answer;
+	char answer;
 } question_t;
 
 typedef struct

@@ -14,7 +14,7 @@
 //Function prototypes
 void terminate(const char *msg);
 int generate_luminous_element();
-void finish_with_error(MYSQL *conn);
+void db_error(MYSQL *conn);
 MYSQL_RES *selectQuery(const char *);
 int insertQuery(const char *);
 void init_socket();
@@ -186,13 +186,14 @@ void *handle_client(peer_t *peer)
 			sendall(peer->fd, &result, sizeof(int), 0);
 		}
 		break;
+		//Client
 		case JOIN:
 		{
 			join_t join;
 			memcpy(&join, method->data, sizeof(join_t));
 
 			int result = 0;
-			if (join.pin == session.pin && session.players_size < 8)
+			if (join.pin == session.pin && session.players_size && session.pin != 0 < 8)
 			{
 				session.players[session.players_size] = *peer;
 				session.players_size++;
@@ -232,22 +233,22 @@ void *handle_client(peer_t *peer)
 					strcpy(questions.at[k].question_text, row[1]);
 					strcpy(questions.at[k].option1, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = 1;
+						questions.at[k].answer = "1";
 					break;
 				case 2:
 					strcpy(questions.at[k].option2, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = 2;
+						questions.at[k].answer = "2";
 					break;
 				case 3:
 					strcpy(questions.at[k].option3, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = 3;
+						questions.at[k].answer = "3";
 					break;
 				case 4:
 					strcpy(questions.at[k].option4, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = 4;
+						questions.at[k].answer = "4";
 					i = 0;
 					k++;
 					break;
@@ -262,18 +263,14 @@ void *handle_client(peer_t *peer)
 			sendall(peer->fd, &questions, sizeof(questions_t), 0);
 		}
 		break;
-		case START_GAME:
+		case ANSWER:
 		{
-			start_game_t start_game;
-			memcpy(&start_game, method->data, sizeof(start_game_t));
-			int pin = generate_luminous_element();
-			sendall(peer->fd, &pin, sizeof(int), 0);
-
-			strcpy(session.game.game_id, start_game.game_id);
-			session.pin = pin;
-			session.admin = *peer;
+			int score;
+			memcpy(&score, method->data, sizeof(int));
+			peer->score += score;
 		}
 		break;
+		//Admin
 		case GAMES:
 		{
 			// char query[256];
@@ -303,6 +300,26 @@ void *handle_client(peer_t *peer)
 			sendall(peer->fd, &games, sizeof(games_t), 0);
 		}
 		break;
+		case START_GAME:
+		{
+			start_game_t start_game;
+			memcpy(&start_game, method->data, sizeof(start_game_t));
+			int pin = generate_luminous_element();
+			sendall(peer->fd, &pin, sizeof(int), 0);
+
+			strcpy(session.game.game_id, start_game.game_id);
+			session.pin = pin;
+			session.admin = *peer;
+		}
+		break;
+		case RUN_GAME:
+		{
+			session.pin = 0;
+			for (size_t i = 0; i < session.question_size; i++)
+			{
+				sleep(20);
+			}
+		}
 		default:
 			fprintf(stdout, "Error");
 			break;
@@ -316,17 +333,21 @@ void *handle_client(peer_t *peer)
 	pthread_exit(NULL);
 }
 
+// void notify_next() {
+// 	send()
+// }
+
 MYSQL_RES *selectQuery(const char *query)
 {
 	fprintf(stdout, "%s\n", query);
 
 	if (mysql_query(conn, query))
-		finish_with_error(conn);
+		db_error(conn);
 
 	MYSQL_RES *result = mysql_store_result(conn);
 
 	if (result == NULL)
-		finish_with_error(conn);
+		db_error(conn);
 
 	return result;
 }
@@ -337,7 +358,7 @@ int insertQuery(const char *query)
 	return mysql_query(conn, query);
 }
 
-void finish_with_error(MYSQL *conn)
+void db_error(MYSQL *conn)
 {
 	fprintf(stderr, "%s\n", mysql_error(conn));
 	// mysql_close(conn);

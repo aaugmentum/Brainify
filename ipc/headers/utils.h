@@ -8,12 +8,14 @@
 #include "methods.h"
 #include "consts.h"
 
+//!Terminate with msg
 void terminate(const char *msg)
 {
 	perror(msg);
 	exit(EXIT_FAILURE);
 }
 
+//*Try to send all packages
 int sendall(int fd, void *buf, int n, int flags)
 {
 	int total = 0, temp;
@@ -29,9 +31,18 @@ int sendall(int fd, void *buf, int n, int flags)
 	return (temp == -1 ? -1 : total);
 }
 
+//!Exit if server disconnects
+int my_recv(int fd, void *buf, int n, int flags)
+{
+	int size = recv(fd, buf, n, flags);
+	if (size < 1)
+		terminate("Disconnected from server");
+	return size;
+}
+
+//*Generate pin
 int generate_luminous_element()
 {
-	srand(time(NULL)); // Initialization, should only be called once.
 	int r = rand() % 100000;
 	return r;
 }

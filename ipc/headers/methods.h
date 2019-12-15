@@ -3,25 +3,21 @@
 typedef enum
 {
 	POTATO,
-	//User
-	SIGNUP, //* READY
-	SIGNIN, //* READY
-	LOGOUT, //! NO NEED
-	//Game
-	// CREATE,
-	START_GAME, 
-	JOIN,
+	//*Basic
+	SIGNUP, 
+	SIGNIN, 
+	//*Admin
 	GAMES,
-	GET_QUESTIONS,
-	// EDIT,
-	// DELETE,
-	FINISH,
-	//In game
+	START_GAME, 
 	RUN_GAME,
+	//*Clients
+	JOIN,
+	GET_QUESTIONS,
 	ANSWER,
-	RESULT,
+	//TODO ?
 } mtd_type_enum;
 
+//*Send any struct within a struct
 typedef struct
 {
 	int type;
@@ -70,17 +66,17 @@ typedef struct
 
 typedef struct
 {
-	int status;
-	
-} join_result_t;
-
-typedef struct
-{
-	//0 Error, 1 Success
-	int status;
-} result_t;
-
-typedef struct
-{
 	char game_id[8];
 } start_game_t;
+
+typedef struct
+{
+	char username[20];
+	int score;
+} score_t;
+
+typedef struct
+{
+	score_t at[8];
+	int size;
+} scores_t;

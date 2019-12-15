@@ -11,6 +11,7 @@
 #include <mysql/mysql.h>
 #include "headers/utils.h"
 
+#define MAX_PLAYERS 8
 //Function prototypes
 void terminate(const char *);
 int generate_luminous_element();
@@ -21,6 +22,7 @@ void init_socket();
 void init_db();
 void *handle_client();
 void notify_next();
+int comp_score(const void *, const void *);
 
 //Server structs
 typedef struct
@@ -31,6 +33,13 @@ typedef struct
 	char username[20];
 } peer_t;
 
+typedef enum
+{
+	INITIAL,
+	LOBBY,
+	INGAME,
+} session_enum;
+
 typedef struct
 {
 	//DB
@@ -38,7 +47,7 @@ typedef struct
 
 	//Players
 	peer_t admin;
-	peer_t players[8];
+	peer_t players[MAX_PLAYERS];
 	int players_size;
 
 	//Questions
@@ -46,6 +55,7 @@ typedef struct
 	int question_size;
 
 	int pin;
+	int state;
 } session_t;
 
 //Global variables
@@ -55,6 +65,7 @@ MYSQL *conn;
 
 int main()
 {
+	srand(time(NULL));
 	init_db();
 	init_socket();
 	mysql_close(conn);
@@ -66,12 +77,12 @@ void init_db()
 	//MySQL init
 	if ((conn = mysql_init(NULL)) == NULL)
 	{
-		fprintf(stderr, "Could not init DB\n");
+		perror("Could not init DB");
 		return;
 	}
 	if (mysql_real_connect(conn, DB_HOST, DB_USER, DB_PASSWD, DB_DB, DB_PORT, NULL, 0) == NULL)
 	{
-		fprintf(stderr, "DB Connection Error\n");
+		perror("DB Connection Error");
 		return;
 	}
 	else
@@ -105,7 +116,7 @@ void init_socket()
 		terminate("Socket bind failed");
 
 	//Listen port
-	printf("Listening on port %d...\n", PORT);
+	fprintf(stdout, "Listening on port %d...\n\n", PORT);
 	if (listen(server_fd, 10) < 0)
 		terminate("Socket listen failed");
 
@@ -132,15 +143,16 @@ void *handle_client(peer_t *peer)
 	{
 		memset(method, 0, sizeof(method_t));
 		int size = recv(peer->fd, method, sizeof(method_t), MSG_WAITALL);
-		//Client disconnected
+		//!Client disconnected
 		if (size < 1)
 		{
-			fprintf(stdout, "Client disconnected\n");
+			fprintf(stdout, "Client %s disconnected\n", peer->username);
 			break;
 		}
 
 		switch (method->type)
 		{
+		//*Basic	
 		//Check if user is registred
 		case SIGNIN:
 		{
@@ -153,13 +165,12 @@ void *handle_client(peer_t *peer)
 			MYSQL_RES *sql_result = selectQuery(query);
 			if (sql_result->row_count)
 			{
-				fprintf(stdout, "USERNAME: %s\n", auth.username);
-				fprintf(stdout, "PASSWORD: %s\n", auth.password);
+				fprintf(stdout, "SIGNIN: User %s is signed!\n", auth.username);
 				strcpy(peer->username, auth.username);
 				result = 1;
 			}
 			else
-				fprintf(stdout, "Wrong credentials...\n");
+				fprintf(stdout, "SIGNIN: Wrong credentials...\n");
 
 			mysql_free_result(sql_result);
 			sendall(peer->fd, &result, sizeof(int), 0);
@@ -176,49 +187,49 @@ void *handle_client(peer_t *peer)
 			sprintf(query, SQL_USER_CREATE, auth.username, auth.password);
 
 			if (insertQuery(query))
-				fprintf(stdout, "Dublicate entry\n");
+				fprintf(stdout, "SIGNUP: User is already exists!\n");
 			else
 			{
-				fprintf(stdout, "SUCCESS\n");
-				fprintf(stdout, "INSERTED into user table\n\tUSERNAME: %s\n\tPASSWORD: %s\n",
-						auth.username, auth.password);
+				fprintf(stdout, "SIGNUP: User %s added to databse\n", auth.username);
 				result = 1;
 			}
 
 			sendall(peer->fd, &result, sizeof(int), 0);
 		}
 		break;
-		//Client
+		//*Client
 		case JOIN:
 		{
 			join_t join;
 			memcpy(&join, method->data, sizeof(join_t));
 
 			int result = 0;
-			if (join.pin == session.pin && session.players_size < 8 && session.pin != 0)
+			if (join.pin == session.pin && session.players_size < 8 && session.state == LOBBY)
 			{
 				session.players[session.players_size] = *peer;
 				session.players_size++;
 				result = atoi(session.game.game_id);
 
-				fprintf(stdout, "New player connected! %s\n", peer->username);
+				fprintf(stdout, "JOIN: Player %s connected!\n", peer->username);
 				sendall(peer->fd, &result, sizeof(int), 0);
 
 				sendall(session.admin.fd, peer->username, sizeof(peer->username), 0);
 			}
 			else
 			{
-				fprintf(stdout, "Pin incorrect!\n");
+				fprintf(stdout, "JOIN: Pin incorrect!\n");
 				sendall(peer->fd, &result, sizeof(int), 0);
 			}
 		}
 		break;
 		case GET_QUESTIONS:
 		{
+
 			char query[256];
 			char game_id[8];
 			memcpy(game_id, method->data, 8);
 			sprintf(query, SQL_QUESTIONS, game_id);
+			fprintf(stdout, "QUESTION: Getting questions for %s game\n", game_id);
 			MYSQL_RES *sql_result = selectQuery(query);
 
 			questions_t questions;
@@ -260,23 +271,27 @@ void *handle_client(peer_t *peer)
 				i++;
 			}
 			questions.size = k;
-
 			mysql_free_result(sql_result);
+
 			sendall(peer->fd, &questions, sizeof(questions_t), 0);
 		}
 		break;
 		case ANSWER:
 		{
 			int score;
+			if (score < 0)
+				fprintf(stdout, "ANSWER: User %s answered incorrect!", peer->username);
+			else
+				fprintf(stdout, "ANSWER: User %s answered correct!", peer->username);
+
 			memcpy(&score, method->data, sizeof(int));
 			peer->score += score;
 		}
 		break;
-		//Admin
+		//*Admin
 		case GAMES:
 		{
-			// char query[256];
-			// sprintf(query, SQL_GAMES, peer->username);
+			fprintf(stdout, "GAMES: Getting all games\n");
 			MYSQL_RES *sql_result = selectQuery(SQL_ALL_GAMES);
 
 			games_t games;
@@ -295,69 +310,107 @@ void *handle_client(peer_t *peer)
 				game_t game = games.at[i];
 
 				i++;
-				printf("GID: %s, Title: %s, Owner: %s\n", game.game_id, game.title, game.username);
 			}
-
 			mysql_free_result(sql_result);
 			sendall(peer->fd, &games, sizeof(games_t), 0);
 		}
 		break;
 		case START_GAME:
 		{
-			start_game_t start_game;
-			memcpy(&start_game, method->data, sizeof(start_game_t));
-			int pin = generate_luminous_element();
-			sendall(peer->fd, &pin, sizeof(int), 0);
+			if (session.state == INITIAL)
+			{
+				session.state = LOBBY;
+				start_game_t start_game;
+				memcpy(&start_game, method->data, sizeof(start_game_t));
+				int pin = generate_luminous_element();
+				sendall(peer->fd, &pin, sizeof(int), 0);
 
-			strcpy(session.game.game_id, start_game.game_id);
-			session.pin = pin;
-			session.admin = *peer;
+				strcpy(session.game.game_id, start_game.game_id);
+				session.pin = pin;
+				session.admin = *peer;
 
-			char query[256];
-			sprintf(query, SQL_QUESTIONS_COUNT, session.game.game_id);
-			MYSQL_RES *sql_result = selectQuery(query);
-			MYSQL_ROW row = mysql_fetch_row(sql_result);
-			session.question_size = atoi(row[0]);
-			printf("Question size: %d\n", session.question_size);
+				char query[256];
+				sprintf(query, SQL_QUESTIONS_COUNT, session.game.game_id);
+				MYSQL_RES *sql_result = selectQuery(query);
+				MYSQL_ROW row = mysql_fetch_row(sql_result);
+				session.question_size = atoi(row[0]);
+				printf("START_GAME: User %s created a lobby with pin %d\n", peer->username, pin);
+			}
+			else
+			{
+				int err = 0;
+				sendall(peer->fd, &err, sizeof(int), 0);
+				printf("START_GAME: Wait for finish\n");
+			}
 		}
 		break;
 		case RUN_GAME:
 		{
-			session.pin = 0;
+			session.state = INGAME;
 			notify_next(1);
 			for (size_t i = 0; i < session.question_size - 1; i++)
 			{
 				sleep(5);
 				notify_next(2);
+				
+				//*Standings
+				qsort(session.players, session.players_size, sizeof(peer_t), comp_score);
+				scores_t scores;
+				scores.size = session.players_size;
+				for (size_t i = 0; i < session.players_size; i++)
+				{
+					strcpy(scores.at[i].username, session.players[i].username);
+					scores.at[i].score = session.players[i].score;
+				}
+				sendall(session.admin.fd, &scores, sizeof(scores), 0);
 			}
 			sleep(5);
 			notify_next(3);
+
+			//*Clear session
+			session.players_size = 0;
+			session.question_size = 0;
+			memset(session.players, 0, sizeof(peer_t[MAX_PLAYERS]));
+			session.state = INITIAL;
 		}
 		break;
 		default:
-			fprintf(stdout, "Error");
+			fprintf(stdout, "NO SUCH METHOD\n");
 			break;
 		}
 		fflush(stdout);
 	}
 
+	//!Free memory and finish thread
 	free(method);
 	close(peer->fd);
 	free(peer);
 	pthread_exit(NULL);
 }
 
+//*Comparator for peers
+int comp_score(const void *elem1, const void *elem2)
+{
+	peer_t f = *((peer_t *)elem1);
+	peer_t s = *((peer_t *)elem2);
+	if (f.score > s.score)
+		return 1;
+	if (f.score < s.score)
+		return -1;
+	return 0;
+}
+
 void notify_next(int code)
 {
-	for (size_t i = 0; i < session.players_size; i++) {
-		printf("%d\n", code);
+	for (size_t i = 0; i < session.players_size; i++)
+	{
 		sendall(session.players[i].fd, &code, sizeof(int), 0);
 	}
 }
 
 MYSQL_RES *selectQuery(const char *query)
 {
-	fprintf(stdout, "%s\n", query);
+	fprintf(stdout, "SQL QUERY: %s\n", query);
 
 	if (mysql_query(conn, query))
 		db_error(conn);
@@ -378,7 +431,5 @@ int insertQuery(const char *query)
 
 void db_error(MYSQL *conn)
 {
-	fprintf(stderr, "%s\n", mysql_error(conn));
-	// mysql_close(conn);
-	// exit(1);
+	perror(mysql_error(conn));
 }

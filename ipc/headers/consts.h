@@ -11,10 +11,11 @@
 	#define DB_DB "brainify"
 #endif
 
+//*Ports
 #define DB_PORT 3306
 #define PORT 8080
 
-//SQL queries 
+//*SQL queries 
 #define SQL_USER_EXIST "select * from user where user_name='%s' and password='%s'"
 #define SQL_USER_CREATE "insert into user values ('%s', '%s')"
 #define SQL_GAMES "select * from game where user_name='%s'"

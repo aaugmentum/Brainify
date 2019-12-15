@@ -103,7 +103,7 @@ public class UIManager : MonoBehaviour
             case PostQuestionScreenType.Incorrect:
                 postQuestionBG.color = screenColorIncorrect;
                 postQuestionTitleText.text = Constants.PostQuestionTextIncorrect;
-                postQuestionScoreText.text = "+" + addScore + " points";
+                postQuestionScoreText.text = "+0 points";
                 break;
             case PostQuestionScreenType.Finish:
                 postQuestionBG.color = screenColorFinish;

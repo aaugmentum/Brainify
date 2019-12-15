@@ -9,34 +9,26 @@ public class UIManager : MonoBehaviour
     
     [Header("Question Canvas Group")]
     [SerializeField] private CanvasGroup mainCanvasGroup;
-    public CanvasGroup MainCanvasGroup => mainCanvasGroup;
     
     [Header("Question Fields")]
     [SerializeField] private Text questionInfoText;
-    public Text QuestionInfoText => questionInfoText;
     [SerializeField] private Button[] answerButtons;
 
     [Header("Post Question Screen Fields")] 
     [SerializeField] private Animator postQuestionAnimator;
     [SerializeField] private Image postQuestionBG;
-    public Image PostQuestionBg => postQuestionBG;
     [SerializeField] private Text postQuestionTitleText;
-    public Text PostQuestionTitleText => postQuestionTitleText;
-    [SerializeField] private Text postQuestionScoreText;
-    public Text PostQuestionScoreText => postQuestionScoreText;
+    [SerializeField] private Text postQuestionSubtitleText;
     [SerializeField] private RectTransform finishUI;
-    public RectTransform FinishUI => finishUI;
 
     [Header("Post Question Screen Params")]
     [SerializeField] private Color screenColorCorrect;
-    public Color ScreenColorCorrect => screenColorCorrect;
     [SerializeField] private Color screenColorIncorrect;
-    public Color ScreenColorIncorrect => screenColorIncorrect;
+    [SerializeField] private Color screenColorWaiting;
     [SerializeField] private Color screenColorFinish;
-    public Color ScreenColorFinish => screenColorFinish;
     
     private static readonly int ScreenState = Animator.StringToHash("ScreenState");
-    
+
     private IEnumerator _IE_HoldPostQuestionScreen;
     
     private List<UserAnswerData> _currentAnswersData = new List<UserAnswerData>();
@@ -64,7 +56,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateQuestionUI(Question question)
     {
-        QuestionInfoText.text = question.QuestionInfo;
+        questionInfoText.text = question.QuestionInfo;
         InitializeAnswers(question);
     }
 
@@ -98,18 +90,22 @@ public class UIManager : MonoBehaviour
             case PostQuestionScreenType.Correct:
                 postQuestionBG.color = screenColorCorrect;
                 postQuestionTitleText.text = Constants.PostQuestionTextCorrect;
-                postQuestionScoreText.text = "+" + addScore + " points";
+                postQuestionSubtitleText.text = "+" + addScore + " points";
                 break;
             case PostQuestionScreenType.Incorrect:
                 postQuestionBG.color = screenColorIncorrect;
                 postQuestionTitleText.text = Constants.PostQuestionTextIncorrect;
-                postQuestionScoreText.text = "+0 points";
+                postQuestionSubtitleText.text = "+0 points";
+                break;
+            case PostQuestionScreenType.Waiting:
+                postQuestionBG.color = screenColorWaiting;
+                postQuestionTitleText.text = Constants.PostQuestionTextWaiting1;
+                postQuestionSubtitleText.text = Constants.PostQuestionTextWaiting2;
                 break;
             case PostQuestionScreenType.Finish:
                 postQuestionBG.color = screenColorFinish;
-                postQuestionTitleText.text = Constants.PostQuestionTextFinish;
-                postQuestionScoreText.text = Constants.PostQuestionTextScore + events.currentScore + " points";
-                
+                postQuestionTitleText.gameObject.SetActive(false);
+                postQuestionSubtitleText.gameObject.SetActive(false);
                 finishUI.gameObject.SetActive(true);
                 break;
         }
@@ -133,9 +129,7 @@ public class UIManager : MonoBehaviour
     private void EraseAnswers()
     {
         for (int i = 0; i < _currentAnswersData.Count; i++)
-        {
             _currentAnswersData[i].AnswerText.text = string.Empty;
-        }
         
         _currentAnswersData.Clear();
     }
@@ -145,5 +139,6 @@ public enum PostQuestionScreenType
 {
     Correct,
     Incorrect,
+    Waiting,
     Finish
 }

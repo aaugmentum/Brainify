@@ -762,8 +762,45 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8301350742461767276, guid: 7b7decde0d9a8a64496e372aad0f907e,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301350742461767276, guid: 7b7decde0d9a8a64496e372aad0f907e,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301350742461767276, guid: 7b7decde0d9a8a64496e372aad0f907e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301350742461767276, guid: 7b7decde0d9a8a64496e372aad0f907e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301350742461767276, guid: 7b7decde0d9a8a64496e372aad0f907e,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b7decde0d9a8a64496e372aad0f907e, type: 3}
+--- !u!114 &584752991 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7118378717951264049, guid: 7b7decde0d9a8a64496e372aad0f907e,
+    type: 3}
+  m_PrefabInstance: {fileID: 584752990}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &652350193 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7415806850685310439, guid: 7b7decde0d9a8a64496e372aad0f907e,
@@ -1052,6 +1089,7 @@ MonoBehaviour:
   username: {fileID: 2146310146}
   password: {fileID: 652350193}
   c_password: {fileID: 405942227}
+  error_message: {fileID: 584752991}
 --- !u!114 &2146310146 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5482433571087305235, guid: 7b7decde0d9a8a64496e372aad0f907e,

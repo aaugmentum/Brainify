@@ -18,6 +18,8 @@
    
    public static readonly string PostQuestionTextCorrect  = "Correct!";
    public static readonly string PostQuestionTextIncorrect  = "Incorrect!";
+   public static readonly string PostQuestionTextWaiting1  = "Waiting";
+   public static readonly string PostQuestionTextWaiting2  = "for other players...";
    public static readonly string PostQuestionTextFinish  = "Game Over!";
    public static readonly string PostQuestionTextLeaders  = "Leaders: ";
    public static readonly string PostQuestionTextScore  = "Score: ";

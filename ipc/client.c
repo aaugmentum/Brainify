@@ -18,50 +18,88 @@ char *games();
 int join(int);
 int start_game(char *);
 int connect_server();
-int logout();
+void sign();
 void potato();
+games_t gms();
+char *player_join();
+char *get_questions(char *);
 
 //Global variables
 int server_fd;
-question_t questions[128];
-int questions_size;
 
 int main()
 {
 	if (connect_server() == 0)
 		exit(EXIT_FAILURE);
 
-	signin("Azamat", "12345");
+	int temp;
+A:
+	printf("Sign in\n");
+	char username[20], password[20];
+	printf("Enter username: ");
+	scanf("%s", username);
+	printf("Enter password: ");
+	scanf("%s", password);
 
-	int x;
-	printf("Enter what you want (0 to start): ");
-	scanf("%d", &x);
+	temp = signin(username, password);
+	if (temp)
+		printf("Signed In\n");
+	else
+	{
+		system("clear");
+		goto A;
+	}
 
-	if (x == 0)
+	get_questions("202");
+
+	printf("Create/Join game(0/1): ");
+	scanf("%d", &temp);
+	if (!temp)
 	{
-		int pin = start_game("12345");
-		printf("PIN for the game: %d\n", pin);
-	}
-	else if (x == 6)
-	{
-		games("Azamat");
-	}
-	else if (x == 8)
-	{
-		printf("DEBUG POTATO MODE");
-		potato();
-	}
-	else if(x == 7)
-	{
-		printf("SIGNUP\n");
-		signup("Test7", "12345");
+		printf("Games?\n");
+		games_t games = gms();
+		for (size_t i = 0; i < games.size; i++)
+		{
+			game_t game = games.at[i];
+			printf("%ld: Title: %s\n", i + 1, game.title);
+		}
+		printf("Which game to start: ");
+		scanf("%d", &temp);
+		temp = start_game(games.at[temp - 1].game_id);
+		system("clear");
+		printf("Game pin is: %d\n", temp);
+
+		int i = 0;
+		while (1)
+		{
+			char *username = player_join();
+			printf("Player %d connected: %s\n", ++i, username);
+			free(username);
+			// printf("Do you want to start game?(1/0) ");
+			// scanf("%d", &temp);
+			if (temp)
+				break;
+		}
+
+		scanf("%d", &temp);
 	}
 	else
 	{
+	B:
 		printf("Enter game pin: ");
-		scanf("%d", &x);
-		join(x);
+		scanf("%d", &temp);
+		temp = join(temp);
+		if (temp)
+		{
+			printf("You joined to the game!\n");
+		}
+		else
+		{
+			system("clear");
+			goto B;
+		}
 	}
+
 	close(server_fd);
 	return 0;
 }
@@ -139,7 +177,7 @@ char *games()
 
 	//Get list of games of this user
 	char *result = malloc(1024);
-	memset(result, 0, 1024);
+	memset(result, '\0', 1024);
 	games_t games;
 	int size = recv(server_fd, &games, sizeof(games_t), MSG_WAITALL);
 	for (size_t i = 0; i < games.size; i++)
@@ -157,15 +195,36 @@ char *games()
 	return result;
 }
 
-int logout()
+games_t gms()
 {
 	method_t method;
-	method.type = LOGOUT;
+	method.type = GAMES;
 	sendall(server_fd, &method, sizeof(method_t), 0);
 
-	return 1;
+	//Get list of games of this user
+	games_t games;
+	recv(server_fd, &games, sizeof(games_t), MSG_WAITALL);
+
+	return games;
 }
 
+char *player_join()
+{
+	char *username = malloc(20);
+	memset(username, '\0', 20);
+	recv(server_fd, username, 20, MSG_WAITALL);
+	return username;
+}
+
+void signout()
+{
+	// method_t method;
+	// method.type = LOGOUT;
+	// sendall(server_fd, &method, sizeof(method_t), 0);
+	close(server_fd);
+}
+
+//Return 0 if pin is incorrect or game_id
 int join(int pin)
 {
 	method_t method;
@@ -201,13 +260,39 @@ int start_game(char *game_id)
 	return result;
 }
 
-void potato()
+char *get_questions(char *game_id)
 {
 	method_t method;
-	method.type = POTATO;
-	sendall(server_fd, &method, sizeof(method_t), 0);
+	method.type = GET_QUESTIONS;
+	memset(method.data, '\0', sizeof(65000));
+	strcpy(method.data, game_id);
+	sendall(server_fd, &method, sizeof(method), 0);
 
-	int result;
-	recv(server_fd, &result, sizeof(int), MSG_WAITALL);
-	printf("%i\n", result);
+	questions_t questions;
+	recv(server_fd, &questions, sizeof(questions_t), MSG_WAITALL);
+	printf("%d\n", questions.size);
+
+	const int length = 60000;
+	char *buf = malloc(length);
+	memset(buf, '\0', length);
+	for (size_t i = 0; i < questions.size; i++)
+	{
+		question_t question = questions.at[i];
+		strcat(buf, question.question_text);
+		strcat(buf, "^^");
+		strcat(buf, question.option1);
+		strcat(buf, "||");
+		strcat(buf, question.option1);
+		strcat(buf, "||");
+		strcat(buf, question.option2);
+		strcat(buf, "||");
+		strcat(buf, question.option3);
+		strcat(buf, "||");
+		strcat(buf, question.option4);
+		strcat(buf, "@@");
+		strcat(buf, question.answer);
+		strcat(buf, "$$");
+		printf("Question: %s\n1: %s\n2: %s\n3: %s\n4: %s\nAnswer: %s\n", question.question_text, question.option1, question.option2, question.option3, question.option4, question.answer);
+	}
+	return buf;
 }

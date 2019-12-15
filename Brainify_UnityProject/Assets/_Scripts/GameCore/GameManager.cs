@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -8,6 +9,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] private EventsContainer events;
+    
+    [SerializeField] private Text timerText;
     
     private Question[] _questions;
     public Question[] Questions
@@ -17,11 +20,14 @@ public class GameManager : MonoBehaviour
     }
 
     private int _currentQuestionIndex = 0;
+    
     private IEnumerator _IE_WaitForNextQuestion;
+    private IEnumerator _IE_Timer;
 
     private UserAnswerData _chosenAnswer;
+    
     private List<int> _finishedQuestionsIndexes;
-    public List<int> FinishedQuestionsIndexes => _finishedQuestionsIndexes;
+    
     public bool IsFinishedGame { get => (_finishedQuestionsIndexes.Count >= _questions.Length); }
 
     
@@ -41,20 +47,19 @@ public class GameManager : MonoBehaviour
         DisplayQuestion();
     }
 
-    public void DisplayQuestion()
+    private void DisplayQuestion()
     {
-        Debug.Log($"Finished question: {_finishedQuestionsIndexes.Count}");
-        for (int i = 0; i < _finishedQuestionsIndexes.Count; i++)
-        {
-            Debug.Log($"{i}: {_finishedQuestionsIndexes[i]}");
-        }
         Question question = GetRandomQuestion();
         
         events.onUpdateQuestionUI?.Invoke(question);
+        
+        UpdateTimer(true);
     }
 
     public void AcceptUserAnswer(int chosenAnswerIndex)
     {
+        UpdateTimer(false);
+        
         bool isAnswerCorrect = CheckUserAnswers(chosenAnswerIndex);
         
         _finishedQuestionsIndexes.Add(_currentQuestionIndex);
@@ -70,8 +75,6 @@ public class GameManager : MonoBehaviour
 
         events.onDisplayPostQuestionScreen?.Invoke(screenType, _questions[_currentQuestionIndex].Score);
 
-        Debug.Log($"IsCorrect: {isAnswerCorrect} \t Score: {events.currentScore}");
-
         if (screenType.Equals(PostQuestionScreenType.Correct) || screenType.Equals(PostQuestionScreenType.Incorrect))
         {
             if (_IE_WaitForNextQuestion != null)
@@ -82,10 +85,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator WaitForNextQuestion()
+    private IEnumerator WaitForNextQuestion()
     {
         yield return new WaitForSeconds(Constants.PostQuestionTime);
         DisplayQuestion();
+    }
+    
+    private void UpdateTimer(bool shouldTimerTick)
+    {
+        if (shouldTimerTick)
+        {
+            _IE_Timer = Timer();
+            StartCoroutine(_IE_Timer);
+        }
+        else
+        {
+            if (_IE_Timer != null)
+                StopCoroutine(_IE_Timer);
+        }
+    }
+    
+    private IEnumerator Timer()
+    {
+        float timeTotal = Constants.RoundTimer;
+        float timeLeft = timeTotal;
+
+        while (timeLeft > 0)
+        {
+            timeLeft--;
+            timerText.text = timeLeft.ToString();
+            yield return new WaitForSeconds(1.0f);
+        }
     }
 
     private Question GetRandomQuestion()
@@ -115,7 +145,7 @@ public class GameManager : MonoBehaviour
         return (correctAnswerOptionIndex == chosenAnswerIndex);
     }
     
-    public void UpdateScore(int addScore)
+    private void UpdateScore(int addScore)
     {
         events.currentScore += addScore;
     }

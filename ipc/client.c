@@ -18,7 +18,7 @@ char *games();
 int join(int);
 int start_game(char *);
 int connect_server();
-int logout();
+void logout();
 void potato();
 games_t gms();
 char *player_join();
@@ -216,13 +216,12 @@ char *player_join()
 	return username;
 }
 
-int logout()
+void logout()
 {
-	method_t method;
-	method.type = LOGOUT;
-	sendall(server_fd, &method, sizeof(method_t), 0);
-
-	return 1;
+	// method_t method;
+	// method.type = LOGOUT;
+	// sendall(server_fd, &method, sizeof(method_t), 0);
+	close(server_fd);
 }
 
 //Return 0 if pin is incorrect or game_id

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,15 +16,19 @@ public class GameManager : MonoBehaviour
         set => _questions = value;
     }
 
-    private int _currentQuestionIndex = -1;
-    
+    private int _currentQuestionIndex = 0;
+    private IEnumerator _IE_WaitForNextQuestion;
+
+    private UserAnswerData _chosenAnswer;
     private List<int> _finishedQuestionsIndexes;
     public List<int> FinishedQuestionsIndexes => _finishedQuestionsIndexes;
+    public bool IsFinishedGame { get => (_finishedQuestionsIndexes.Count >= _questions.Length); }
 
-    [HideInInspector] public int currentScore;
     
     private void Awake()
     {
+        events.currentScore = 0;
+        
         if (instance == null)
             instance = this;
         
@@ -38,10 +43,12 @@ public class GameManager : MonoBehaviour
 
     public void DisplayQuestion()
     {
+        Debug.Log($"Finished question: {_finishedQuestionsIndexes.Count}");
+        for (int i = 0; i < _finishedQuestionsIndexes.Count; i++)
+        {
+            Debug.Log($"{i}: {_finishedQuestionsIndexes[i]}");
+        }
         Question question = GetRandomQuestion();
-        
-        _finishedQuestionsIndexes.Add(_currentQuestionIndex);
-        _currentQuestionIndex = question.QuestionIndex;
         
         events.onUpdateQuestionUI?.Invoke(question);
     }
@@ -55,18 +62,43 @@ public class GameManager : MonoBehaviour
         if (isAnswerCorrect)
             UpdateScore(_questions[_currentQuestionIndex].Score);
 
-        // Debug.Log($"IsCorrect: {isAnswerCorrect} \t Score: {currentScore}");
+        PostQuestionScreenType screenType;
+        if (IsFinishedGame)
+            screenType = PostQuestionScreenType.Finish;
+        else
+            screenType = (isAnswerCorrect) ? PostQuestionScreenType.Correct : PostQuestionScreenType.Incorrect;
+
+        events.onDisplayPostQuestionScreen?.Invoke(screenType, _questions[_currentQuestionIndex].Score);
+
+        Debug.Log($"IsCorrect: {isAnswerCorrect} \t Score: {events.currentScore}");
+
+        if (screenType.Equals(PostQuestionScreenType.Correct) || screenType.Equals(PostQuestionScreenType.Incorrect))
+        {
+            if (_IE_WaitForNextQuestion != null)
+                StopCoroutine(_IE_WaitForNextQuestion);
+
+            _IE_WaitForNextQuestion = WaitForNextQuestion();
+            StartCoroutine(_IE_WaitForNextQuestion);
+        }
+    }
+
+    IEnumerator WaitForNextQuestion()
+    {
+        yield return new WaitForSeconds(Constants.PostQuestionTime);
+        DisplayQuestion();
     }
 
     private Question GetRandomQuestion()
     {
         int randomIndex = GetRandomQuestionIndex();
+        _currentQuestionIndex = randomIndex;
+        
         return _questions[randomIndex];
     }
 
     private int GetRandomQuestionIndex()
     {
-        int randomIndex = -1;
+        int randomIndex = 0;
         if (_finishedQuestionsIndexes.Count < Questions.Length)
         {
             do
@@ -85,7 +117,7 @@ public class GameManager : MonoBehaviour
     
     public void UpdateScore(int addScore)
     {
-        currentScore += addScore;
+        events.currentScore += addScore;
     }
     
     private void LoadQuestions()

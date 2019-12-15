@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [SerializeField] private EventsContainer _events;
+    [SerializeField] private EventsContainer events;
+    
+    [SerializeField] private Text timerText;
     
     private Question[] _questions;
     public Question[] Questions
@@ -15,17 +19,22 @@ public class GameManager : MonoBehaviour
         set => _questions = value;
     }
 
-    private int _currentQuestionIndex = -1;
+    private int _currentQuestionIndex = 0;
     
-    private int score;
+    private IEnumerator _IE_WaitForNextQuestion;
+    private IEnumerator _IE_Timer;
 
-    private UserAnswerData _userPickedAnswer;
+    private UserAnswerData _chosenAnswer;
     
     private List<int> _finishedQuestionsIndexes;
-    public List<int> FinishedQuestionsIndexes => _finishedQuestionsIndexes;
+    
+    public bool IsFinishedGame { get => (_finishedQuestionsIndexes.Count >= _questions.Length); }
+
     
     private void Awake()
     {
+        events.currentScore = 0;
+        
         if (instance == null)
             instance = this;
         
@@ -38,21 +47,88 @@ public class GameManager : MonoBehaviour
         DisplayQuestion();
     }
 
-    public void DisplayQuestion()
+    private void DisplayQuestion()
     {
         Question question = GetRandomQuestion();
-        _events.onUpdateQuestionUI?.Invoke(question);
+        
+        events.onUpdateQuestionUI?.Invoke(question);
+        
+        UpdateTimer(true);
+    }
+
+    public void AcceptUserAnswer(int chosenAnswerIndex)
+    {
+        UpdateTimer(false);
+        
+        bool isAnswerCorrect = CheckUserAnswers(chosenAnswerIndex);
+        
+        _finishedQuestionsIndexes.Add(_currentQuestionIndex);
+
+        if (isAnswerCorrect)
+            UpdateScore(_questions[_currentQuestionIndex].Score);
+
+        PostQuestionScreenType screenType;
+        if (IsFinishedGame)
+            screenType = PostQuestionScreenType.Finish;
+        else
+            screenType = (isAnswerCorrect) ? PostQuestionScreenType.Correct : PostQuestionScreenType.Incorrect;
+
+        events.onDisplayPostQuestionScreen?.Invoke(screenType, _questions[_currentQuestionIndex].Score);
+
+        if (screenType.Equals(PostQuestionScreenType.Correct) || screenType.Equals(PostQuestionScreenType.Incorrect))
+        {
+            if (_IE_WaitForNextQuestion != null)
+                StopCoroutine(_IE_WaitForNextQuestion);
+
+            _IE_WaitForNextQuestion = WaitForNextQuestion();
+            StartCoroutine(_IE_WaitForNextQuestion);
+        }
+    }
+
+    private IEnumerator WaitForNextQuestion()
+    {
+        yield return new WaitForSeconds(Constants.PostQuestionTime);
+        DisplayQuestion();
+    }
+    
+    private void UpdateTimer(bool shouldTimerTick)
+    {
+        if (shouldTimerTick)
+        {
+            _IE_Timer = Timer();
+            StartCoroutine(_IE_Timer);
+        }
+        else
+        {
+            if (_IE_Timer != null)
+                StopCoroutine(_IE_Timer);
+        }
+    }
+    
+    private IEnumerator Timer()
+    {
+        float timeTotal = Constants.RoundTimer;
+        float timeLeft = timeTotal;
+
+        while (timeLeft > 0)
+        {
+            timeLeft--;
+            timerText.text = timeLeft.ToString();
+            yield return new WaitForSeconds(1.0f);
+        }
     }
 
     private Question GetRandomQuestion()
     {
         int randomIndex = GetRandomQuestionIndex();
+        _currentQuestionIndex = randomIndex;
+        
         return _questions[randomIndex];
     }
 
     private int GetRandomQuestionIndex()
     {
-        int randomIndex = -1;
+        int randomIndex = 0;
         if (_finishedQuestionsIndexes.Count < Questions.Length)
         {
             do
@@ -63,6 +139,17 @@ public class GameManager : MonoBehaviour
         return randomIndex;
     }
 
+    private bool CheckUserAnswers(int chosenAnswerIndex)
+    {
+        int correctAnswerOptionIndex = _questions[_currentQuestionIndex].GetCorrectAnswerIndex();
+        return (correctAnswerOptionIndex == chosenAnswerIndex);
+    }
+    
+    private void UpdateScore(int addScore)
+    {
+        events.currentScore += addScore;
+    }
+    
     private void LoadQuestions()
     {
         Object[] objects = Resources.LoadAll(Constants.PathQuestions, typeof(Question));

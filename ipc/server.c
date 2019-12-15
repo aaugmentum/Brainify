@@ -16,6 +16,7 @@ void terminate(const char *msg);
 int generate_luminous_element();
 void finish_with_error(MYSQL *conn);
 MYSQL_RES *selectQuery(const char *);
+int insertQuery(const char *);
 void init_socket();
 void init_db();
 void *handle_client();
@@ -26,7 +27,7 @@ typedef struct
 	pthread_t tid;
 	int fd;
 	int score;
-	char username[16];
+	char username[20];
 } peer_t;
 
 typedef struct
@@ -189,20 +190,76 @@ void *handle_client(peer_t *peer)
 		{
 			join_t join;
 			memcpy(&join, method->data, sizeof(join_t));
+
 			int result = 0;
 			if (join.pin == session.pin && session.players_size < 8)
 			{
 				session.players[session.players_size] = *peer;
 				session.players_size++;
-				result = 1;
+				result = atoi(session.game.game_id);
 
-				fprintf(stdout, "New player connected!\n");
+				fprintf(stdout, "New player connected! %s\n", peer->username);
+				sendall(peer->fd, &result, sizeof(int), 0);
+
+				sendall(session.admin.fd, peer->username, sizeof(peer->username), 0);
 			}
 			else
 			{
 				fprintf(stdout, "Pin incorrect!\n");
+				sendall(peer->fd, &result, sizeof(int), 0);
 			}
-			sendall(peer->fd, &result, sizeof(int), 0);
+		}
+		break;
+		case GET_QUESTIONS:
+		{
+			char query[256];
+			char game_id[8];
+			memcpy(game_id, method->data, 8);
+			sprintf(query, SQL_QUESTIONS, game_id);
+			MYSQL_RES *sql_result = selectQuery(query);
+
+			questions_t questions;
+			questions.size = 0;
+
+			MYSQL_ROW row;
+			int i = 1, k = 0;
+			while ((row = mysql_fetch_row(sql_result)))
+			{
+				// printf("%s %s %s %s\n", row[0], row[1], row[2], row[3]);
+				switch (i)
+				{
+				case 1:
+					strcpy(questions.at[k].question_text, row[1]);
+					strcpy(questions.at[k].option1, row[2]);
+					if (atoi(row[3]))
+						questions.at[k].answer = 1;
+					break;
+				case 2:
+					strcpy(questions.at[k].option2, row[2]);
+					if (atoi(row[3]))
+						questions.at[k].answer = 2;
+					break;
+				case 3:
+					strcpy(questions.at[k].option3, row[2]);
+					if (atoi(row[3]))
+						questions.at[k].answer = 3;
+					break;
+				case 4:
+					strcpy(questions.at[k].option4, row[2]);
+					if (atoi(row[3]))
+						questions.at[k].answer = 4;
+					i = 0;
+					k++;
+					break;
+				default:
+					break;
+				}
+				i++;
+			}
+			questions.size = k;
+
+			mysql_free_result(sql_result);
+			sendall(peer->fd, &questions, sizeof(questions_t), 0);
 		}
 		break;
 		case START_GAME:
@@ -219,9 +276,9 @@ void *handle_client(peer_t *peer)
 		break;
 		case GAMES:
 		{
-			char query[256];
-			sprintf(query, SQL_GAMES, peer->username);
-			MYSQL_RES *sql_result = selectQuery(query);
+			// char query[256];
+			// sprintf(query, SQL_GAMES, peer->username);
+			MYSQL_RES *sql_result = selectQuery(SQL_ALL_GAMES);
 
 			games_t games;
 			games.size = sql_result->row_count;
@@ -244,28 +301,6 @@ void *handle_client(peer_t *peer)
 
 			mysql_free_result(sql_result);
 			sendall(peer->fd, &games, sizeof(games_t), 0);
-		}
-		break;
-		//Debugging DB connection
-		case POTATO:
-		{
-
-			MYSQL_RES *result = selectQuery(SQL_POTATO);
-			int num_fields = mysql_num_fields(result);
-
-			MYSQL_ROW row;
-
-			while ((row = mysql_fetch_row(result)))
-			{
-				for (int i = 0; i < num_fields; i++)
-				{
-					printf("%s ", row[i] ? row[i] : "NULL");
-				}
-				printf("\n");
-			}
-			mysql_free_result(result);
-			int test = 1;
-			send(peer->fd, &test, sizeof(int), 0);
 		}
 		break;
 		default:

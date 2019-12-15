@@ -12,6 +12,7 @@ typedef enum
 	START_GAME,
 	JOIN,
 	GAMES,
+	GET_QUESTIONS,
 	// EDIT,
 	// DELETE,
 	FINISH,
@@ -34,13 +35,19 @@ typedef struct
 
 typedef struct
 {
-	char title[160];
-	char option1[32];
-	char option2[32];
-	char option3[32];
-	char option4[32];
+	char question_text[160];
+	char option1[60];
+	char option2[60];
+	char option3[60];
+	char option4[60];
 	int answer;
 } question_t;
+
+typedef struct
+{
+	question_t at[128];
+	int size;
+} questions_t;
 
 typedef struct
 {
@@ -59,6 +66,12 @@ typedef struct
 {
 	int pin;
 } join_t;
+
+typedef struct
+{
+	int status;
+	
+} join_result_t;
 
 typedef struct
 {

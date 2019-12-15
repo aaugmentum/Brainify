@@ -25,8 +25,9 @@ public class GameManager : MonoBehaviour
     private IEnumerator _IE_Timer;
 
     private UserAnswerData _chosenAnswer;
+    
     private List<int> _finishedQuestionsIndexes;
-    public List<int> FinishedQuestionsIndexes => _finishedQuestionsIndexes;
+    
     public bool IsFinishedGame { get => (_finishedQuestionsIndexes.Count >= _questions.Length); }
 
     

@@ -9,31 +9,22 @@ public class UIManager : MonoBehaviour
     
     [Header("Question Canvas Group")]
     [SerializeField] private CanvasGroup mainCanvasGroup;
-    public CanvasGroup MainCanvasGroup => mainCanvasGroup;
     
     [Header("Question Fields")]
     [SerializeField] private Text questionInfoText;
-    public Text QuestionInfoText => questionInfoText;
     [SerializeField] private Button[] answerButtons;
 
     [Header("Post Question Screen Fields")] 
     [SerializeField] private Animator postQuestionAnimator;
     [SerializeField] private Image postQuestionBG;
-    public Image PostQuestionBg => postQuestionBG;
     [SerializeField] private Text postQuestionTitleText;
-    public Text PostQuestionTitleText => postQuestionTitleText;
     [SerializeField] private Text postQuestionScoreText;
-    public Text PostQuestionScoreText => postQuestionScoreText;
     [SerializeField] private RectTransform finishUI;
-    public RectTransform FinishUI => finishUI;
 
     [Header("Post Question Screen Params")]
     [SerializeField] private Color screenColorCorrect;
-    public Color ScreenColorCorrect => screenColorCorrect;
     [SerializeField] private Color screenColorIncorrect;
-    public Color ScreenColorIncorrect => screenColorIncorrect;
     [SerializeField] private Color screenColorFinish;
-    public Color ScreenColorFinish => screenColorFinish;
     
     private static readonly int ScreenState = Animator.StringToHash("ScreenState");
 
@@ -64,7 +55,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateQuestionUI(Question question)
     {
-        QuestionInfoText.text = question.QuestionInfo;
+        questionInfoText.text = question.QuestionInfo;
         InitializeAnswers(question);
     }
 

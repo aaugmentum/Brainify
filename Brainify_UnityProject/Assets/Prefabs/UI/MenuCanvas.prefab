@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 672986133882133080}
   - component: {fileID: 8338468393466860807}
   m_Layer: 5
-  m_Name: FindGameBtn
+  m_Name: JoinGameBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1228,7 +1228,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Find Game
+  m_Text: Join Game
 --- !u!1 &6903911395390285285
 GameObject:
   m_ObjectHideFlags: 0

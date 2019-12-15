@@ -137,10 +137,10 @@ insert into answer values ('474', '319', '0', 'Descriptor');
 insert into answer values ('475', '319', '1', 'Inode');
 insert into answer values ('476', '319', '0', 'Hardlink');
 
-insert into answer values ('477', '320', '1', 'ls –i');
-insert into answer values ('478', '320', '0', 'ls –inode');
+insert into answer values ('477', '320', '1', 'ls -i');
+insert into answer values ('478', '320', '0', 'ls -inode');
 insert into answer values ('479', '320', '0', 'i|more');
-insert into answer values ('480', '320', '0', 'cat –i');
+insert into answer values ('480', '320', '0', 'cat -i');
 
 insert into answer values ('481', '321', '0', '4');
 insert into answer values ('482', '321', '0', '8');

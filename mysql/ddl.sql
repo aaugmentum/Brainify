@@ -1,7 +1,7 @@
 drop table if exists answer;
 drop table if exists question;
-drop table if exists user;
 drop table if exists game;
+drop table if exists user;
 
 create table user(
   user_name varchar(20),

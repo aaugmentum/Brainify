@@ -41,7 +41,7 @@ typedef struct
 	char option2[60];
 	char option3[60];
 	char option4[60];
-	char answer;
+	char answer[2];
 } question_t;
 
 typedef struct

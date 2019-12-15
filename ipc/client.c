@@ -50,7 +50,7 @@ A:
 		goto A;
 	}
 
-	// get_questions("202");
+	get_questions("202");
 
 	printf("Create/Join game(0/1): ");
 	scanf("%d", &temp);
@@ -278,8 +278,6 @@ char *get_questions(char *game_id)
 	for (size_t i = 0; i < questions.size; i++)
 	{
 		question_t question = questions.at[i];
-		char answer[1];
-//		itoa(answer, question.answer);
 		strcat(buf, question.question_text);
 		strcat(buf, "^^");
 		strcat(buf, question.option1);
@@ -292,9 +290,9 @@ char *get_questions(char *game_id)
 		strcat(buf, "||");
 		strcat(buf, question.option4);
 		strcat(buf, "@@");
-//		strcat(buf, answer);
-//		strcat(buf, "$$");
-		// printf("Question: %s\n1: %s\n2: %s\n3: %s\n4: %s\nAnswer: %d\n", question.question_text, question.option1, question.option2, question.option3, question.option4, question.answer);
+		strcat(buf, question.answer);
+		strcat(buf, "$$");
+		printf("Question: %s\n1: %s\n2: %s\n3: %s\n4: %s\nAnswer: %s\n", question.question_text, question.option1, question.option2, question.option3, question.option4, question.answer);
 	}
 	return buf;
 }

@@ -20,6 +20,7 @@ int insertQuery(const char *);
 void init_socket();
 void init_db();
 void *handle_client();
+void notify_next();
 
 //Server structs
 typedef struct
@@ -233,22 +234,22 @@ void *handle_client(peer_t *peer)
 					strcpy(questions.at[k].question_text, row[1]);
 					strcpy(questions.at[k].option1, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = '1';
+						strcpy(questions.at[k].answer, "1");
 					break;
 				case 2:
 					strcpy(questions.at[k].option2, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = '2';
+						strcpy(questions.at[k].answer, "2");
 					break;
 				case 3:
 					strcpy(questions.at[k].option3, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = '3';
+						strcpy(questions.at[k].answer, "3");
 					break;
 				case 4:
 					strcpy(questions.at[k].option4, row[2]);
 					if (atoi(row[3]))
-						questions.at[k].answer = '4';
+						strcpy(questions.at[k].answer, "4");
 					i = 0;
 					k++;
 					break;
@@ -315,9 +316,11 @@ void *handle_client(peer_t *peer)
 		case RUN_GAME:
 		{
 			session.pin = 0;
+			notify_next();
 			for (size_t i = 0; i < session.question_size; i++)
 			{
 				sleep(20);
+				notify_next();
 			}
 		}
 		default:
@@ -333,9 +336,12 @@ void *handle_client(peer_t *peer)
 	pthread_exit(NULL);
 }
 
-// void notify_next() {
-// 	send()
-// }
+void notify_next()
+{
+	int temp = 1;
+	for (size_t i = 0; i < session.players_size; i++)
+		sendall(session.players[i].fd, &temp, sizeof(int), 0);
+}
 
 MYSQL_RES *selectQuery(const char *query)
 {

@@ -409,10 +409,11 @@ MonoBehaviour:
   postQuestionAnimator: {fileID: 1492163213}
   postQuestionBG: {fileID: 1189464554}
   postQuestionTitleText: {fileID: 2145151079}
-  postQuestionScoreText: {fileID: 2145151078}
+  postQuestionSubtitleText: {fileID: 2145151078}
   finishUI: {fileID: 2145151077}
   screenColorCorrect: {r: 0, g: 0.9019608, b: 0.4627451, a: 1}
   screenColorIncorrect: {r: 0.8980392, g: 0.22352941, b: 0.20784314, a: 1}
+  screenColorWaiting: {r: 0.30980393, g: 0.7647059, b: 0.96862745, a: 1}
   screenColorFinish: {r: 1, g: 0.92156863, b: 0.23137255, a: 1}
 --- !u!95 &1492163213 stripped
 Animator:
@@ -1438,6 +1439,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 224979047303751350, guid: 138c2a5f379b0574e9ef901034734e2a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 492004830975381365, guid: 138c2a5f379b0574e9ef901034734e2a,
         type: 3}
       propertyPath: m_Alpha
@@ -1578,6 +1584,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3189669192980709967, guid: 138c2a5f379b0574e9ef901034734e2a,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3903721152802751094, guid: 138c2a5f379b0574e9ef901034734e2a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1598,20 +1609,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5564544721034007013, guid: 138c2a5f379b0574e9ef901034734e2a,
+    - target: {fileID: 3903721152802751094, guid: 138c2a5f379b0574e9ef901034734e2a,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5564544721034007013, guid: 138c2a5f379b0574e9ef901034734e2a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5564544721034007013, guid: 138c2a5f379b0574e9ef901034734e2a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8336838000259121340, guid: 138c2a5f379b0574e9ef901034734e2a,
         type: 3}

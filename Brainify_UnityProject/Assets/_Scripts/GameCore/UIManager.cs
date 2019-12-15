@@ -18,12 +18,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Animator postQuestionAnimator;
     [SerializeField] private Image postQuestionBG;
     [SerializeField] private Text postQuestionTitleText;
-    [SerializeField] private Text postQuestionScoreText;
+    [SerializeField] private Text postQuestionSubtitleText;
     [SerializeField] private RectTransform finishUI;
 
     [Header("Post Question Screen Params")]
     [SerializeField] private Color screenColorCorrect;
     [SerializeField] private Color screenColorIncorrect;
+    [SerializeField] private Color screenColorWaiting;
     [SerializeField] private Color screenColorFinish;
     
     private static readonly int ScreenState = Animator.StringToHash("ScreenState");
@@ -89,17 +90,22 @@ public class UIManager : MonoBehaviour
             case PostQuestionScreenType.Correct:
                 postQuestionBG.color = screenColorCorrect;
                 postQuestionTitleText.text = Constants.PostQuestionTextCorrect;
-                postQuestionScoreText.text = "+" + addScore + " points";
+                postQuestionSubtitleText.text = "+" + addScore + " points";
                 break;
             case PostQuestionScreenType.Incorrect:
                 postQuestionBG.color = screenColorIncorrect;
                 postQuestionTitleText.text = Constants.PostQuestionTextIncorrect;
-                postQuestionScoreText.text = "+0 points";
+                postQuestionSubtitleText.text = "+0 points";
+                break;
+            case PostQuestionScreenType.Waiting:
+                postQuestionBG.color = screenColorWaiting;
+                postQuestionTitleText.text = Constants.PostQuestionTextWaiting1;
+                postQuestionSubtitleText.text = Constants.PostQuestionTextWaiting2;
                 break;
             case PostQuestionScreenType.Finish:
                 postQuestionBG.color = screenColorFinish;
                 postQuestionTitleText.text = Constants.PostQuestionTextFinish;
-                postQuestionScoreText.text = Constants.PostQuestionTextScore + events.currentScore + " points";
+                postQuestionSubtitleText.text = Constants.PostQuestionTextScore + events.currentScore + " points";
                 
                 finishUI.gameObject.SetActive(true);
                 break;
@@ -134,5 +140,6 @@ public enum PostQuestionScreenType
 {
     Correct,
     Incorrect,
+    Waiting,
     Finish
 }

@@ -19,7 +19,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0, y: 0, z: -30}
+        value: {x: 0, y: 0, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -105,13 +105,6 @@ AnimationClip:
     genericBindings:
     - serializedVersion: 2
       path: 829950261
-      attribute: 4
-      script: {fileID: 0}
-      typeID: 4
-      customType: 4
-      isPPtrCurve: 0
-    - serializedVersion: 2
-      path: 829950261
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -123,6 +116,13 @@ AnimationClip:
       script: {fileID: 0}
       typeID: 225
       customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 829950261
+      attribute: 4
+      script: {fileID: 0}
+      typeID: 4
+      customType: 4
       isPPtrCurve: 0
     pptrCurveMapping: []
   m_AnimationClipSettings:
@@ -207,7 +207,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -30
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136

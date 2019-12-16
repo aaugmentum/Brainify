@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class IPCLoader : MonoBehaviour
 {
@@ -11,21 +12,31 @@ public class IPCLoader : MonoBehaviour
     public InputField c_password;
     public Text error_message;
 
-    [Header("Game buttons")]
-    public Button[] game_buttons;
+    [Header("Pin field")]
+
+    public InputField pin_field;
+
     
     public void signin_button(){
-        int result = IPCManager.signin(username.text, password.text);
-        if(result == 1){
-            ScenesManager.instance.SwitchScene("StartMenu");
-            PlayerPrefs.SetString("username", username.text);
-            PlayerPrefs.SetString("password", password.text);
-            PlayerPrefs.SetInt("is_logged_in", 1);
+        if(IPCManager.instance.is_connected == 1){
+            int result = IPCManager.signin(username.text, password.text);
+            if(result == 1){
+                ScenesManager.instance.SwitchScene("StartMenu");
+                PlayerPrefs.SetString("username", username.text);
+                PlayerPrefs.SetString("password", password.text);
+                PlayerPrefs.SetInt("is_logged_in", 1);
+            }else{
+                print("Wrong username or password");
+               error_message.text = "Wrong username or password";
+            }
         }else{
-            print("Wrong username or password");
-            error_message.text = "Wrong username or password";
-
+            error_message.text = "No connection";
+            if(IPCManager.instance.is_connected == 2){
+                print("Started thread again");
+                IPCManager.instance.connectionThread.Start();
+            }
         }
+        
     }
 
     public void register_button(){
@@ -43,6 +54,18 @@ public class IPCLoader : MonoBehaviour
             print("Password do not match");
             error_message.text = "Password do not match";
 
+        }
+    }
+
+    public void join_game_button(){
+        int pin = System.Convert.ToInt32(pin_field.text);
+        print("PIN: " + pin);
+        int result = IPCManager.join(pin);
+        if(result != 0){
+            IPCManager.instance.gid = result.ToString();
+            print("Game id: " + IPCManager.instance.gid);
+            IPCManager.instance.receiverThread.Start();
+            ScenesManager.instance.SwitchScene("LobbyUser");
         }
     }
 

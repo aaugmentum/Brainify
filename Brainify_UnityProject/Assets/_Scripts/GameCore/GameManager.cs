@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
         set => _questions = value;
     }
 
+
     private int _currentQuestionIndex = 0;
     
     private IEnumerator _IE_WaitForNextQuestion;
@@ -49,7 +50,9 @@ public class GameManager : MonoBehaviour
 
     private void DisplayQuestion()
     {
-        Question question = GetRandomQuestion();
+        // Question question = GetRandomQuestion();
+
+        Question question = _questions[_currentQuestionIndex];
         
         events.onUpdateQuestionUI?.Invoke(question);
         
@@ -152,12 +155,32 @@ public class GameManager : MonoBehaviour
     
     private void LoadQuestions()
     {
-        Object[] objects = Resources.LoadAll(Constants.PathQuestions, typeof(Question));
-        _questions = new Question[objects.Length];
+        if (!IPCManager.instance.answers_received)
+            return;
 
-        for (int i = 0; i < _questions.Length; i++)
+        string[] splitted_questions = IPCManager.instance.questionData.Split('$');
+        for (int i = 0; i < splitted_questions.Length - 1; i++)
         {
-            _questions[i] = (Question) objects[i];
+            print(splitted_questions[i]);
+            string[] question_items = splitted_questions[i].Split('^');
+            string[] question_answers = question_items[1].Split('@');
+            int correctAnswerIndex = System.Convert.ToInt32(question_items[2]);
+            print(question_items[0]);
+            print(question_items[1]);
+            print("THERE ARE " + question_answers.Length + " ANSWERS");
+            _questions[i] = new Question(i, question_items[0], question_answers, correctAnswerIndex);
         }
+
+        // Object[] objects = Resources.LoadAll(Constants.PathQuestions, typeof(Question));
+        // _questions = new Question[objects.Length];
+
+        // for (int i = 0; i < _questions.Length; i++)
+        // {
+        //     _questions[i] = (Question) objects[i];
+        // }
+    }
+
+    public void DisplayQuestionIndex(){
+        // TODO
     }
 }

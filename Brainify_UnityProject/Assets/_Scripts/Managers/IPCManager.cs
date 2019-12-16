@@ -27,6 +27,8 @@ public class IPCManager : MonoBehaviour
     public static extern string player_join();
     [DllImport ("IPCPlugin")] 
     public static extern void run_game();
+    [DllImport ("IPCPlugin")] 
+    public static extern string receive_standing();
 
 
     public static IPCManager instance;
@@ -37,6 +39,8 @@ public class IPCManager : MonoBehaviour
     public string questionData;
     public int is_connected = 0;
     public string gid;
+    public bool answers_received = false;
+
 
     public int game_pin;
     private int state = 0;
@@ -93,11 +97,13 @@ public class IPCManager : MonoBehaviour
     public void Receive(){
         print("GID: " + gid);
         questionData = get_questions(gid);
-        print("Question: " + questionData);
+        answers_received = true;
+        print(questionData);
         print("Receiver is active");
         while(true){
             int x = receiver();
-            print("Got a request: " + x);
+            print("Got a request: " + x);        
+            if(x == 3)break;
             switch(x){
                 case 1:
                     state = 1;

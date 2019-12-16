@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
-[CreateAssetMenu(menuName = "Quiz/Question")]
-public class Question : ScriptableObject
+// [CreateAssetMenu(menuName = "Quiz/Question")]
+public class Question
 {
     [SerializeField] private int questionIndex;
     public int QuestionIndex => questionIndex;
@@ -9,11 +11,41 @@ public class Question : ScriptableObject
     [SerializeField] private string questionInfo;
     public string QuestionInfo => questionInfo;
 
-    [SerializeField] private AnswerOption[] answerOptions;
+    [SerializeField] public AnswerOption[] answerOptions;
     public AnswerOption[] AnswerOptions => answerOptions;
 
     [SerializeField] private int score = 100;
     public int Score => score;
+
+    // constructor
+    public Question (int index, string info, string[] answers, int correct_answer){
+        questionIndex = index;
+        questionInfo = info;
+        answerOptions = CreateAnswerOptions(answers, correct_answer);
+    }
+
+    private AnswerOption[] CreateAnswerOptions(string[] answers, int correct_answer){
+        AnswerOption tempAnswerOption = new AnswerOption();
+        Debug.Log($"TempAnswer: {tempAnswerOption.AnswerInfo} : {tempAnswerOption.IsCorrect}");
+
+
+        AnswerOption[] answerOptions = new AnswerOption[4];
+
+        for (int i = 0; i < 4; i++){
+            answerOptions[i] = tempAnswerOption;
+        }
+
+        for (int i = 0; i < 4; i++){
+            Debug.Log($"Answer{i}: {tempAnswerOption.AnswerInfo} : {tempAnswerOption.IsCorrect}");
+
+            answerOptions[i].AnswerInfo = answers[i];
+            answerOptions[i].IsCorrect = false;
+            if (i == correct_answer)
+                answerOptions[i].IsCorrect = true;
+        }
+
+        return answerOptions;
+    }
 
     public int GetCorrectAnswerIndex()
     {
@@ -32,8 +64,22 @@ public class Question : ScriptableObject
 public class AnswerOption
 {
     [SerializeField] private string answerInfo;
-    public string AnswerInfo => answerInfo;
+    public string AnswerInfo
+    {
+        get => AnswerInfo;
+        set => AnswerInfo = value;
+    }
 
     [SerializeField] private bool isCorrect;
-    public bool IsCorrect => isCorrect;
+    public bool IsCorrect
+    {
+        get => IsCorrect;
+        set => IsCorrect = value;
+    }
+
+    public AnswerOption(){
+        answerInfo = "answer";
+        isCorrect = false;
+    }
 }
+

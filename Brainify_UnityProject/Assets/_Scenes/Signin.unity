@@ -623,7 +623,7 @@ PrefabInstance:
     - target: {fileID: 6973433590931597990, guid: 974594104a4e44e8d896fa0f486cb776,
         type: 3}
       propertyPath: m_Text
-      value: Connecting...
+      value: ' '
       objectReference: {fileID: 0}
     - target: {fileID: 7299441167322943002, guid: 974594104a4e44e8d896fa0f486cb776,
         type: 3}

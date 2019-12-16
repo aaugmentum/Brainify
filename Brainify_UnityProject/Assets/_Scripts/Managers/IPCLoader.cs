@@ -18,7 +18,7 @@ public class IPCLoader : MonoBehaviour
 
     
     public void signin_button(){
-        if(IPCManager.instance.is_connected == 1){
+        // if(IPCManager.instance.is_connected == 1){
             int result = IPCManager.signin(username.text, password.text);
             if(result == 1){
                 ScenesManager.instance.SwitchScene("StartMenu");
@@ -29,13 +29,13 @@ public class IPCLoader : MonoBehaviour
                 print("Wrong username or password");
                error_message.text = "Wrong username or password";
             }
-        }else{
-            error_message.text = "No connection";
-            if(IPCManager.instance.is_connected == 2){
-                print("Started thread again");
-                IPCManager.instance.connectionThread.Start();
-            }
-        }
+        // }else{
+        //     error_message.text = "No connection";
+        //     if(IPCManager.instance.is_connected == 2){
+        //         print("Started thread again");
+        //         // IPCManager.instance.connectionThread.Start();
+        //     }
+        // }
         
     }
 
@@ -68,6 +68,7 @@ public class IPCLoader : MonoBehaviour
             ScenesManager.instance.SwitchScene("LobbyUser");
         }
     }
+
 
    
 

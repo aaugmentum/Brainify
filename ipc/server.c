@@ -22,6 +22,7 @@ void init_socket();
 void init_db();
 void *handle_client();
 void notify_next();
+void standings();
 int comp_score(const void *, const void *);
 
 //Server structs
@@ -47,7 +48,7 @@ typedef struct
 
 	//Players
 	peer_t admin;
-	peer_t players[MAX_PLAYERS];
+	peer_t *players[MAX_PLAYERS];
 	int players_size;
 
 	//Questions
@@ -125,7 +126,7 @@ void init_socket()
 	{
 		peer_t *peer = malloc(sizeof(peer_t));
 		peer->fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
-		peer->score = 0;
+		// peer->score = 0;
 		if (peer->fd < 0)
 			perror("Socket accept failed");
 
@@ -152,7 +153,7 @@ void *handle_client(peer_t *peer)
 
 		switch (method->type)
 		{
-		//*Basic	
+		//*Basic
 		//Check if user is registred
 		case SIGNIN:
 		{
@@ -206,7 +207,7 @@ void *handle_client(peer_t *peer)
 			int result = 0;
 			if (join.pin == session.pin && session.players_size < 8 && session.state == LOBBY)
 			{
-				session.players[session.players_size] = *peer;
+				session.players[session.players_size] = peer;
 				session.players_size++;
 				result = atoi(session.game.game_id);
 
@@ -214,6 +215,9 @@ void *handle_client(peer_t *peer)
 				sendall(peer->fd, &result, sizeof(int), 0);
 
 				sendall(session.admin.fd, peer->username, sizeof(peer->username), 0);
+				int x = generate_luminous_element();
+				printf("%d", x);
+				peer->score = x;
 			}
 			else
 			{
@@ -246,22 +250,22 @@ void *handle_client(peer_t *peer)
 					strcpy(questions.at[k].question_text, row[1]);
 					strcpy(questions.at[k].option1, row[2]);
 					if (atoi(row[3]))
-						strcpy(questions.at[k].answer, "1");
+						strcpy(questions.at[k].answer, "0");
 					break;
 				case 2:
 					strcpy(questions.at[k].option2, row[2]);
 					if (atoi(row[3]))
-						strcpy(questions.at[k].answer, "2");
+						strcpy(questions.at[k].answer, "1");
 					break;
 				case 3:
 					strcpy(questions.at[k].option3, row[2]);
 					if (atoi(row[3]))
-						strcpy(questions.at[k].answer, "3");
+						strcpy(questions.at[k].answer, "2");
 					break;
 				case 4:
 					strcpy(questions.at[k].option4, row[2]);
 					if (atoi(row[3]))
-						strcpy(questions.at[k].answer, "4");
+						strcpy(questions.at[k].answer, "3");
 					i = 0;
 					k++;
 					break;
@@ -352,20 +356,13 @@ void *handle_client(peer_t *peer)
 			{
 				sleep(5);
 				notify_next(2);
-				
+
 				//*Standings
-				qsort(session.players, session.players_size, sizeof(peer_t), comp_score);
-				scores_t scores;
-				scores.size = session.players_size;
-				for (size_t i = 0; i < session.players_size; i++)
-				{
-					strcpy(scores.at[i].username, session.players[i].username);
-					scores.at[i].score = session.players[i].score;
-				}
-				sendall(session.admin.fd, &scores, sizeof(scores), 0);
+				standings();
 			}
 			sleep(5);
 			notify_next(3);
+			standings();
 
 			//*Clear session
 			session.players_size = 0;
@@ -388,14 +385,33 @@ void *handle_client(peer_t *peer)
 	pthread_exit(NULL);
 }
 
+void standings()
+{
+	peer_t players[8];
+	for (size_t i = 0; i < session.players_size; i++)
+		players[i] = *session.players[i];
+
+	qsort(players, session.players_size, sizeof(peer_t), comp_score);
+
+	//Send
+	scores_t scores;
+	scores.size = session.players_size;
+	for (size_t i = 0; i < session.players_size; i++)
+	{
+		strcpy(scores.at[i].username, players[i].username);
+		scores.at[i].score = players[i].score;
+	}
+	sendall(session.admin.fd, &scores, sizeof(scores_t), 0);
+}
+
 //*Comparator for peers
 int comp_score(const void *elem1, const void *elem2)
 {
 	peer_t f = *((peer_t *)elem1);
 	peer_t s = *((peer_t *)elem2);
-	if (f.score > s.score)
-		return 1;
 	if (f.score < s.score)
+		return 1;
+	if (f.score > s.score)
 		return -1;
 	return 0;
 }
@@ -404,7 +420,7 @@ void notify_next(int code)
 {
 	for (size_t i = 0; i < session.players_size; i++)
 	{
-		sendall(session.players[i].fd, &code, sizeof(int), 0);
+		sendall(session.players[i]->fd, &code, sizeof(int), 0);
 	}
 }
 

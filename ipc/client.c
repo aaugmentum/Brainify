@@ -25,7 +25,7 @@ int start_game(char *);
 char *player_join();
 void run_game();
 //TODO
-char* receive_standings();
+char *receive_standings();
 
 //*Client
 int join(int);
@@ -49,13 +49,13 @@ int main()
 	int temp;
 A:
 	printf("Sign in\n");
-	// char username[20], password[20];
-	// printf("Enter username: ");
-	// scanf("%s", username);
-	// printf("Enter password: ");
-	// scanf("%s", password);
+	char username[20], password[20];
+	printf("Enter username: ");
+	scanf("%s", username);
+	printf("Enter password: ");
+	scanf("%s", password);
 
-	temp = signin("Azamat", "12345");
+	temp = signin(username, password);
 	if (temp)
 		printf("Signed In\n");
 	else
@@ -90,14 +90,17 @@ A:
 			char *username = player_join();
 			printf("Player %d connected: %s\n", ++i, username);
 			free(username);
-			// printf("Do you want to start game?(1/0) ");
-			// scanf("%d", &temp);
-			if (i == 1)
+			if (i == 2)
 				break;
 		}
 
-		sleep(5);
+		sleep(3);
 		run_game();
+		while (1)
+		{
+			receive_standings();
+		}
+		
 
 		scanf("%d", &temp);
 	}
@@ -253,6 +256,22 @@ void run_game()
 	method_t method;
 	method.type = RUN_GAME;
 	sendall(server_fd, &method, sizeof(method), 0);
+}
+
+char *receive_standings()
+{
+	scores_t scores;
+	my_recv(server_fd, &scores, sizeof(scores_t), MSG_WAITALL);
+
+	const int length = 512;
+	char *buf = malloc(length);
+	memset(buf, '\0', length);
+	for (size_t i = 0; i < scores.size; i++)
+	{
+		sprintf(buf, "%s: %d,", scores.at[i].username, scores.at[i].score);
+		printf("%s: %d\n", scores.at[i].username, scores.at[i].score);
+	}
+	return buf;
 }
 
 //*Client

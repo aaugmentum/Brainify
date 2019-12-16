@@ -480,7 +480,7 @@ PrefabInstance:
     - target: {fileID: 2435230792413359545, guid: 7b7decde0d9a8a64496e372aad0f907e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: Question
+      value: Signin
       objectReference: {fileID: 0}
     - target: {fileID: 2540189803559112539, guid: 7b7decde0d9a8a64496e372aad0f907e,
         type: 3}
@@ -1090,6 +1090,7 @@ MonoBehaviour:
   password: {fileID: 652350193}
   c_password: {fileID: 405942227}
   error_message: {fileID: 584752991}
+  pin_field: {fileID: 0}
 --- !u!114 &2146310146 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5482433571087305235, guid: 7b7decde0d9a8a64496e372aad0f907e,

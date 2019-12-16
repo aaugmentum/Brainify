@@ -347,6 +347,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1064168677 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5482433571087305235, guid: 7dca179be93bc714b99a746fecfebe38,
+    type: 3}
+  m_PrefabInstance: {fileID: 2078300499}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1811747003
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,7 +449,7 @@ MonoBehaviour:
   password: {fileID: 0}
   c_password: {fileID: 0}
   error_message: {fileID: 0}
-  game_buttons: []
+  pin_field: {fileID: 1064168677}
 --- !u!1001 &2078300499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -563,7 +575,7 @@ PrefabInstance:
     - target: {fileID: 2435230792413359545, guid: 7dca179be93bc714b99a746fecfebe38,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2435230792413359545, guid: 7dca179be93bc714b99a746fecfebe38,
         type: 3}
@@ -574,11 +586,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1811747005}
+      objectReference: {fileID: 2004978647}
     - target: {fileID: 2435230792413359545, guid: 7dca179be93bc714b99a746fecfebe38,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: LoadScene
+      value: join_game_button
       objectReference: {fileID: 0}
     - target: {fileID: 2435230792413359545, guid: 7dca179be93bc714b99a746fecfebe38,
         type: 3}

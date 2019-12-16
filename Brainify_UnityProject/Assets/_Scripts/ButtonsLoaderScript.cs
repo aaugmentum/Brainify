@@ -31,8 +31,8 @@ public class ButtonsLoaderScript : MonoBehaviour
     }
     
     public void start_game(int index){
-        print("You started " + IPCManager.instance.gamesMap[Buttons[index].gameObject.GetComponentInChildren<Text>().text]);
-        IPCManager.instance.question = IPCManager.get_questions(IPCManager.instance.gamesMap[Buttons[index].gameObject.GetComponentInChildren<Text>().text]);
-        print(IPCManager.instance.question);
+        string gid = IPCManager.instance.gamesMap[Buttons[index].gameObject.GetComponentInChildren<Text>().text];
+        IPCManager.instance.game_pin = IPCManager.start_game(gid);
+        ScenesManager.instance.SwitchScene("LobbyAdmin");
     }
 }

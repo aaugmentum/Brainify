@@ -385,6 +385,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoginPopup
       objectReference: {fileID: 0}
+    - target: {fileID: 2330894567647881419, guid: 974594104a4e44e8d896fa0f486cb776,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2349673755285432688, guid: 974594104a4e44e8d896fa0f486cb776,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -614,6 +619,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6973433590931597990, guid: 974594104a4e44e8d896fa0f486cb776,
+        type: 3}
+      propertyPath: m_Text
+      value: Connecting...
       objectReference: {fileID: 0}
     - target: {fileID: 7299441167322943002, guid: 974594104a4e44e8d896fa0f486cb776,
         type: 3}
@@ -977,6 +987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44f22bacce1274259aac45d14ed63c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  signin_window: {fileID: 2049053093}
 --- !u!1 &2004978645
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,4 +1035,10 @@ MonoBehaviour:
   password: {fileID: 743297709}
   c_password: {fileID: 0}
   error_message: {fileID: 525396440}
-  game_buttons: []
+  pin_field: {fileID: 0}
+--- !u!1 &2049053093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2330894567647881419, guid: 974594104a4e44e8d896fa0f486cb776,
+    type: 3}
+  m_PrefabInstance: {fileID: 525396439}
+  m_PrefabAsset: {fileID: 0}

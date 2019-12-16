@@ -575,6 +575,8 @@ MonoBehaviour:
   username: {fileID: 0}
   password: {fileID: 0}
   c_password: {fileID: 0}
+  error_message: {fileID: 0}
+  pin_field: {fileID: 0}
 --- !u!1 &2009735169
 GameObject:
   m_ObjectHideFlags: 0

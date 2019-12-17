@@ -13,9 +13,14 @@ typedef enum
 	//*Clients
 	JOIN,
 	GET_QUESTIONS,
-	ANSWER,
-	//TODO ?
+	ANSWER
 } mtd_type_enum;
+
+typedef enum
+{
+	STANDINGS,
+	PLAYER_JOIN
+} standings_type_enum;
 
 //*Send any struct within a struct
 typedef struct
@@ -79,4 +84,6 @@ typedef struct
 {
 	score_t at[8];
 	int size;
+	int type;
+	char username[20];
 } scores_t;

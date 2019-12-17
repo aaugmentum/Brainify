@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Threading;
@@ -7,7 +7,7 @@ using System;
 public class IPCManager : MonoBehaviour
 {
     [DllImport ("IPCPlugin")] 
-    public static extern int connect_server();
+    public static extern int connect_server(string ip);
     [DllImport ("IPCPlugin")] 
     public static extern int signin(string username, string password);
     [DllImport ("IPCPlugin")] 
@@ -104,7 +104,7 @@ public class IPCManager : MonoBehaviour
         print("Trying to connect");
       
         try{
-            result = IPCManager.connect_server();
+            result = IPCManager.connect_server("127.0.0.1");
         }catch(Exception e){
             Debug.LogException(e, this);
         }

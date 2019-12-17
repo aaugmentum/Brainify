@@ -14,19 +14,43 @@ public class Question
     [SerializeField] public AnswerOption[] answerOptions;
     public AnswerOption[] AnswerOptions => answerOptions;
 
+    public string[] options;
+    public int correctAnsIndex = -1;
+
+
     [SerializeField] private int score = 100;
     public int Score => score;
 
-    // constructor
+
+
+
+
+
+
+
     public Question (int index, string info, string[] answers, int correct_answer){
         questionIndex = index;
         questionInfo = info;
-        answerOptions = CreateAnswerOptions(answers, correct_answer);
+        options = answers;
+        correctAnsIndex = correct_answer;
+        // answerOptions = CreateAnswerOptions(answers, correct_answer);
     }
+   
+
+
+
+
+
+    // constructor
+    // public Question (int index, string info, string[] answers, int correct_answer){
+    //     questionIndex = index;
+    //     questionInfo = info;
+    //     answerOptions = CreateAnswerOptions(answers, correct_answer);
+    // }
 
     private AnswerOption[] CreateAnswerOptions(string[] answers, int correct_answer){
         AnswerOption tempAnswerOption = new AnswerOption();
-        Debug.Log($"TempAnswer: {tempAnswerOption.AnswerInfo} : {tempAnswerOption.IsCorrect}");
+        // Debug.Log($"TempAnswer: {tempAnswerOption.AnswerInfo} : {tempAnswerOption.IsCorrect}");
 
 
         AnswerOption[] answerOptions = new AnswerOption[4];
@@ -36,7 +60,7 @@ public class Question
         }
 
         for (int i = 0; i < 4; i++){
-            Debug.Log($"Answer{i}: {tempAnswerOption.AnswerInfo} : {tempAnswerOption.IsCorrect}");
+            // Debug.Log($"Answer{i}: {tempAnswerOption.AnswerInfo} : {tempAnswerOption.IsCorrect}");
 
             answerOptions[i].AnswerInfo = answers[i];
             answerOptions[i].IsCorrect = false;
@@ -49,14 +73,14 @@ public class Question
 
     public int GetCorrectAnswerIndex()
     {
-        int correctAnswerIndex = -1;
-        for (int i = 0; i < answerOptions.Length; i++)
-        {
-            if (answerOptions[i].IsCorrect)
-                correctAnswerIndex = i;
-        }
+        // int correctAnswerIndex = -1;
+        // for (int i = 0; i < answerOptions.Length; i++)
+        // {
+        //     if (answerOptions[i].IsCorrect)
+        //         correctAnswerIndex = i;
+        // }
 
-        return correctAnswerIndex;
+        return correctAnsIndex;
     }
 }
 

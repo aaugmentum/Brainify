@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager instance;
+
     [SerializeField] private EventsContainer events;
     
     [Header("Question Canvas Group")]
@@ -54,6 +56,12 @@ public class UIManager : MonoBehaviour
         events.onDisplayPostQuestionScreen -= DisplayPostQuestionScreenUI;
     }
 
+    private void Awake() {
+        if (instance == null){
+            instance = this;
+        }
+    }
+
     private void UpdateQuestionUI(Question question)
     {
         questionInfoText.text = question.QuestionInfo;
@@ -78,7 +86,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator HoldPostQuestionScreenUI()
     {
-        yield return new WaitForSeconds(Constants.PostQuestionTime);
+        yield return new WaitForSeconds(20 - GameManager.instance.timeLeft);
         postQuestionAnimator.SetInteger(ScreenState, 1);
         mainCanvasGroup.blocksRaycasts = true;
     }
@@ -102,12 +110,17 @@ public class UIManager : MonoBehaviour
                 postQuestionTitleText.text = Constants.PostQuestionTextWaiting1;
                 postQuestionSubtitleText.text = Constants.PostQuestionTextWaiting2;
                 break;
-            case PostQuestionScreenType.Finish:
+            case PostQuestionScreenType.FinishClient:
                 postQuestionBG.color = screenColorFinish;
-                postQuestionTitleText.gameObject.SetActive(false);
-                postQuestionSubtitleText.gameObject.SetActive(false);
-                finishUI.gameObject.SetActive(true);
+                postQuestionTitleText.text = Constants.PostQuestionTextFinish;
+                postQuestionSubtitleText.text = Constants.PostQuestionTextFinishScore + events.currentScore + " points";
                 break;
+            //  case PostQuestionScreenType.Finish:
+            //     postQuestionBG.color = screenColorFinish;
+            //     postQuestionTitleText.gameObject.SetActive(false);
+            //     postQuestionSubtitleText.gameObject.SetActive(false);
+            //     finishUI.gameObject.SetActive(true);
+            //     break;
         }
     }
 
@@ -115,9 +128,11 @@ public class UIManager : MonoBehaviour
     {
         EraseAnswers();
         
-        for (int i = 0; i < question.AnswerOptions.Length; i++)
+        // for (int i = 0; i < question.AnswerOptions.Length; i++)
+        for (int i = 0; i < 4; i++)
         {
-            string answerInfo = question.AnswerOptions[i].AnswerInfo;
+            // string answerInfo = question.AnswerOptions[i].AnswerInfo;
+            string answerInfo = question.options[i];
             
             UserAnswerData newAnswerData = answerButtons[i].GetComponent<UserAnswerData>();
             newAnswerData.UpdateData(answerInfo);
@@ -140,5 +155,6 @@ public enum PostQuestionScreenType
     Correct,
     Incorrect,
     Waiting,
+    FinishClient,
     Finish
 }

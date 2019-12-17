@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -386,6 +387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   events: {fileID: 11400000, guid: 246d1322aa314954bb28ca6facda61d7, type: 2}
   timerText: {fileID: 1587558380}
+  timeLeft: 0
 --- !u!114 &1472067655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,7 +709,7 @@ PrefabInstance:
     - target: {fileID: 1531959843841503445, guid: 6701bf5d56b5317448c38b6f4b1abce5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: GamesScene
+      value: StartMenu
       objectReference: {fileID: 0}
     - target: {fileID: 2330894567647881418, guid: 6701bf5d56b5317448c38b6f4b1abce5,
         type: 3}
@@ -1375,6 +1377,8 @@ MonoBehaviour:
   username: {fileID: 0}
   password: {fileID: 0}
   c_password: {fileID: 0}
+  error_message: {fileID: 0}
+  pin_field: {fileID: 0}
 --- !u!1 &2009735169
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,13 +11,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private EventsContainer events;
     
     [SerializeField] private Text timerText;
-    
-    private Question[] _questions;
-    public Question[] Questions
-    {
-        get => _questions;
-        set => _questions = value;
-    }
+
+    public float timeLeft;
+
+    public List<Question> _questions = new List<Question>();
+    // public Question[] Questions
+    // {
+    //     get => _questions;
+    //     set => _questions = value;
+    // }
 
 
     private int _currentQuestionIndex = 0;
@@ -29,7 +31,7 @@ public class GameManager : MonoBehaviour
     
     private List<int> _finishedQuestionsIndexes;
     
-    public bool IsFinishedGame { get => (_finishedQuestionsIndexes.Count >= _questions.Length); }
+    public bool IsFinishedGame { get => (_finishedQuestionsIndexes.Count >= _questions.Count); }
 
     
     private void Awake()
@@ -48,11 +50,14 @@ public class GameManager : MonoBehaviour
         DisplayQuestion();
     }
 
-    private void DisplayQuestion()
+    public void DisplayQuestion()
     {
         // Question question = GetRandomQuestion();
+        // TODO Check TIMER
+        UpdateTimer(false);
 
         Question question = _questions[_currentQuestionIndex];
+        _currentQuestionIndex++;
         
         events.onUpdateQuestionUI?.Invoke(question);
         
@@ -67,16 +72,18 @@ public class GameManager : MonoBehaviour
         
         _finishedQuestionsIndexes.Add(_currentQuestionIndex);
 
-        if (isAnswerCorrect)
-            UpdateScore(_questions[_currentQuestionIndex].Score);
+        if (isAnswerCorrect){
+            IPCManager.answer((int) (timeLeft * 5));
+            UpdateScore((int) (timeLeft * 5));
+        }
 
         PostQuestionScreenType screenType;
         if (IsFinishedGame)
-            screenType = PostQuestionScreenType.Finish;
+            screenType = PostQuestionScreenType.FinishClient;
         else
             screenType = (isAnswerCorrect) ? PostQuestionScreenType.Correct : PostQuestionScreenType.Incorrect;
 
-        events.onDisplayPostQuestionScreen?.Invoke(screenType, _questions[_currentQuestionIndex].Score);
+        events.onDisplayPostQuestionScreen?.Invoke(screenType, (int) (timeLeft * 5));   
 
         if (screenType.Equals(PostQuestionScreenType.Correct) || screenType.Equals(PostQuestionScreenType.Incorrect))
         {
@@ -91,7 +98,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator WaitForNextQuestion()
     {
         yield return new WaitForSeconds(Constants.PostQuestionTime);
-        DisplayQuestion();
+        // DisplayQuestion();
     }
     
     private void UpdateTimer(bool shouldTimerTick)
@@ -111,7 +118,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator Timer()
     {
         float timeTotal = Constants.RoundTimer;
-        float timeLeft = timeTotal;
+        timeLeft = timeTotal;
 
         while (timeLeft > 0)
         {
@@ -121,26 +128,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Question GetRandomQuestion()
-    {
-        int randomIndex = GetRandomQuestionIndex();
-        _currentQuestionIndex = randomIndex;
+    // private Question GetRandomQuestion()
+    // {
+    //     int randomIndex = GetRandomQuestionIndex();
+    //     _currentQuestionIndex = randomIndex;
         
-        return _questions[randomIndex];
-    }
+    //     return _questions[randomIndex];
+    // }
 
-    private int GetRandomQuestionIndex()
-    {
-        int randomIndex = 0;
-        if (_finishedQuestionsIndexes.Count < Questions.Length)
-        {
-            do
-            {
-                randomIndex = Random.Range(0, Questions.Length);
-            } while (_finishedQuestionsIndexes.Contains(randomIndex) || randomIndex == _currentQuestionIndex);
-        }
-        return randomIndex;
-    }
+    // private int GetRandomQuestionIndex()
+    // {
+    //     int randomIndex = 0;
+    //     if (_finishedQuestionsIndexes.Count < _questions.Count)
+    //     {
+    //         do
+    //         {
+    //             randomIndex = Random.Range(0, _questions.Count);
+    //         } while (_finishedQuestionsIndexes.Contains(randomIndex) || randomIndex == _currentQuestionIndex);
+    //     }
+    //     return randomIndex;
+    // }
 
     private bool CheckUserAnswers(int chosenAnswerIndex)
     {
@@ -164,11 +171,14 @@ public class GameManager : MonoBehaviour
             print(splitted_questions[i]);
             string[] question_items = splitted_questions[i].Split('^');
             string[] question_answers = question_items[1].Split('@');
+            print("Correct answer is" + question_items[2]);
             int correctAnswerIndex = System.Convert.ToInt32(question_items[2]);
             print(question_items[0]);
             print(question_items[1]);
             print("THERE ARE " + question_answers.Length + " ANSWERS");
-            _questions[i] = new Question(i, question_items[0], question_answers, correctAnswerIndex);
+            print(correctAnswerIndex);
+
+            _questions.Add(new Question(i, question_items[0], question_answers, correctAnswerIndex));
         }
 
         // Object[] objects = Resources.LoadAll(Constants.PathQuestions, typeof(Question));

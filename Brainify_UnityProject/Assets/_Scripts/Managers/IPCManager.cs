@@ -5,31 +5,32 @@ using System.Threading;
 
 public class IPCManager : MonoBehaviour
 {
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int signin(string username, string password);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int signup(string username, string password);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int connect_server();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int start_game(string gid);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern string games();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern string get_questions(string gid);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int join(int pin);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern void signout();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int receiver();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern string player_join();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern void run_game();
-    [DllImport ("IPCPlugin")] 
-    public static extern string receive_standing();
-
+    [DllImport ("Simple")] 
+    public static extern string receive_standings();
+    [DllImport ("Simple")] 
+    public static extern void answer(int score);
 
     public static IPCManager instance;
     public SortedDictionary<string, string> gamesMap = new SortedDictionary<string, string>();
@@ -60,7 +61,10 @@ public class IPCManager : MonoBehaviour
             ScenesManager.instance.SwitchScene("Question");
         }else if(state == 2){
             print("Next question");
+            GameManager.instance.DisplayQuestion();
             state = 0;
+        }else if(state == 3){
+            ScenesManager.instance.SwitchScene("FinishClient");
         }
     }
     void OnApplicationQuit()
@@ -103,7 +107,10 @@ public class IPCManager : MonoBehaviour
         while(true){
             int x = receiver();
             print("Got a request: " + x);        
-            if(x == 3)break;
+            if(x == 3){
+                state = 3;
+                break;
+            }
             switch(x){
                 case 1:
                     state = 1;

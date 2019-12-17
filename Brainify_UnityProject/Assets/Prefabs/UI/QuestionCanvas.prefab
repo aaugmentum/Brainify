@@ -284,7 +284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 50
+  m_MinHeight: 25
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
@@ -685,7 +685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 1000
+  m_MinHeight: 1100
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
@@ -825,10 +825,10 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 650, y: 180}
+  m_CellSize: {x: 1400, y: 180}
   m_Spacing: {x: 50, y: 50}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_Constraint: 1
+  m_ConstraintCount: 1
 --- !u!1 &2330894567647881419
 GameObject:
   m_ObjectHideFlags: 0
@@ -1310,9 +1310,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '
+  m_Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua.
 --- !u!225 &2557618322863520335
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1339,8 +1338,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 600
-  m_PreferredWidth: 1100
+  m_MinHeight: 300
+  m_PreferredWidth: 1300
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
@@ -2019,6 +2018,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ButtonAnswer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5595983782668480716, guid: 6ed685f4170311441b8712b275cc8555,
+        type: 3}
+      propertyPath: m_Text
+      value: AnswerAnswerAnswerAnswerAnswerAnswer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5595983782668480716, guid: 6ed685f4170311441b8712b275cc8555,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5702407054845791344, guid: 6ed685f4170311441b8712b275cc8555,
         type: 3}

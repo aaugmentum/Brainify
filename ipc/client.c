@@ -24,7 +24,6 @@ char *games();
 int start_game(char *);
 char *player_join();
 void run_game();
-//TODO
 char *receive_standings();
 
 //*Client
@@ -309,19 +308,17 @@ char *get_questions(char *game_id)
 	{
 		question_t question = questions.at[i];
 		strcat(buf, question.question_text);
-		strcat(buf, "^^");
+		strcat(buf, "^");
 		strcat(buf, question.option1);
-		strcat(buf, "||");
-		strcat(buf, question.option1);
-		strcat(buf, "||");
+		strcat(buf, "@");
 		strcat(buf, question.option2);
-		strcat(buf, "||");
+		strcat(buf, "@");
 		strcat(buf, question.option3);
-		strcat(buf, "||");
+		strcat(buf, "@");
 		strcat(buf, question.option4);
-		strcat(buf, "@@");
+		strcat(buf, "^");
 		strcat(buf, question.answer);
-		strcat(buf, "$$");
+		strcat(buf, "$");
 		printf("Question: %s\n1: %s\n2: %s\n3: %s\n4: %s\nAnswer: %s\n", question.question_text, question.option1, question.option2, question.option3, question.option4, question.answer);
 	}
 	return buf;
@@ -332,6 +329,14 @@ int receiver()
 	int result;
 	my_recv(server_fd, &result, sizeof(int), MSG_WAITALL);
 	return result;
+}
+
+void answer(int score)
+{
+	method_t method;
+	method.type = ANSWER;
+	memcpy(method.data, &score, sizeof(int));
+	sendall(server_fd, &method, sizeof(method_t), MSG_WAITALL);
 }
 
 //!Test

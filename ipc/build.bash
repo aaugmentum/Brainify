@@ -1,2 +1,2 @@
-gcc -shared -o Simple.so -fPIC client.c
-cp Simple.so ../Brainify_UnityProject/Assets/Plugins/
+gcc -shared -o IPCPLugin.so -fPIC client.c
+cp IPCPLugin.so ../Brainify_UnityProject/Assets/Plugins/

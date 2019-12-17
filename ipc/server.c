@@ -126,7 +126,7 @@ void init_socket()
 	{
 		peer_t *peer = malloc(sizeof(peer_t));
 		peer->fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
-		// peer->score = 0;
+		peer->score = 0;
 		if (peer->fd < 0)
 			perror("Socket accept failed");
 
@@ -215,9 +215,6 @@ void *handle_client(peer_t *peer)
 				sendall(peer->fd, &result, sizeof(int), 0);
 
 				sendall(session.admin.fd, peer->username, sizeof(peer->username), 0);
-				int x = generate_luminous_element();
-				printf("%d", x);
-				peer->score = x;
 			}
 			else
 			{
@@ -283,12 +280,8 @@ void *handle_client(peer_t *peer)
 		case ANSWER:
 		{
 			int score;
-			if (score < 0)
-				fprintf(stdout, "ANSWER: User %s answered incorrect!", peer->username);
-			else
-				fprintf(stdout, "ANSWER: User %s answered correct!", peer->username);
-
 			memcpy(&score, method->data, sizeof(int));
+			fprintf(stdout, "Score: %d\n", score);
 			peer->score += score;
 		}
 		break;
@@ -354,15 +347,15 @@ void *handle_client(peer_t *peer)
 			notify_next(1);
 			for (size_t i = 0; i < session.question_size - 1; i++)
 			{
-				sleep(5);
+				sleep(20);
 				notify_next(2);
 
 				//*Standings
-				standings();
+				// standings();
 			}
-			sleep(5);
+			sleep(20);
 			notify_next(3);
-			standings();
+			// standings();
 
 			//*Clear session
 			session.players_size = 0;

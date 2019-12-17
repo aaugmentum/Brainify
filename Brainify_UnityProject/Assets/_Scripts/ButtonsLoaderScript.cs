@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,8 +31,11 @@ public class ButtonsLoaderScript : MonoBehaviour
     }
     
     public void start_game(int index){
-        string gid = IPCManager.instance.gamesMap[Buttons[index].gameObject.GetComponentInChildren<Text>().text];
-        IPCManager.instance.game_pin = IPCManager.start_game(gid);
-        ScenesManager.instance.SwitchScene("LobbyAdmin");
+        if(IPCManager.instance.is_connected){
+            string gid = IPCManager.instance.gamesMap[Buttons[index].gameObject.GetComponentInChildren<Text>().text];
+            IPCManager.instance.game_pin = IPCManager.instance.ipc_start_game(gid);
+            ScenesManager.instance.SwitchScene("LobbyAdmin");
+        }
+        
     }
 }

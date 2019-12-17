@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
@@ -18,8 +18,8 @@ public class IPCLoader : MonoBehaviour
 
     
     public void signin_button(){
-        // if(IPCManager.instance.is_connected == 1){
-            int result = IPCManager.signin(username.text, password.text);
+        if(IPCManager.instance.is_connected){
+            int result = IPCManager.instance.ipc_signin(username.text, password.text);
             if(result == 1){
                 ScenesManager.instance.SwitchScene("StartMenu");
                 PlayerPrefs.SetString("username", username.text);
@@ -27,46 +27,47 @@ public class IPCLoader : MonoBehaviour
                 PlayerPrefs.SetInt("is_logged_in", 1);
             }else{
                 print("Wrong username or password");
-               error_message.text = "Wrong username or password";
+                error_message.text = "Wrong username or password";
             }
-        // }else{
-        //     error_message.text = "No connection";
-        //     if(IPCManager.instance.is_connected == 2){
-        //         print("Started thread again");
-        //         // IPCManager.instance.connectionThread.Start();
-        //     }
-        // }
-        
+        }else{
+            error_message.text = "No connection";
+        }
     }
 
     public void register_button(){
         error_message.text = " ";
-
-        if(c_password.text.Equals(password.text)){
-            int result = IPCManager.signup(username.text, password.text);
-            if(result == 1){
-                ScenesManager.instance.SwitchScene("Signin");
+        if(IPCManager.instance.is_connected){
+            if(c_password.text.Equals(password.text)){
+                int result = IPCManager.instance.ipc_signup(username.text, password.text);
+                if(result == 1){
+                    ScenesManager.instance.SwitchScene("Signin");
+                }else{
+                    print("User already exists");
+                    error_message.text = "User already exists";
+                }
             }else{
-                print("User already exists");
-                error_message.text = "User already exists";
+                print("Password do not match");
+                error_message.text = "Password do not match";
             }
         }else{
-            print("Password do not match");
-            error_message.text = "Password do not match";
-
+            error_message.text = "No connection";
         }
+        
     }
 
     public void join_game_button(){
-        int pin = System.Convert.ToInt32(pin_field.text);
-        print("PIN: " + pin);
-        int result = IPCManager.join(pin);
-        if(result != 0){
-            IPCManager.instance.gid = result.ToString();
-            print("Game id: " + IPCManager.instance.gid);
-            IPCManager.instance.receiverThread.Start();
-            ScenesManager.instance.SwitchScene("LobbyUser");
+        if(IPCManager.instance.is_connected){
+            int pin = System.Convert.ToInt32(pin_field.text);
+            print("PIN: " + pin);
+            int result = IPCManager.instance.ipc_join_game(pin);
+            if(result != 0){
+                IPCManager.instance.gid = result.ToString();
+                print("Game id: " + IPCManager.instance.gid);
+                IPCManager.instance.receiverThread.Start();
+                ScenesManager.instance.SwitchScene("LobbyUser");
+            }
         }
+       
     }
 
 

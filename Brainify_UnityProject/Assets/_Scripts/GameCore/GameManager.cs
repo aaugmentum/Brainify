@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         _finishedQuestionsIndexes.Add(_currentQuestionIndex);
 
         if (isAnswerCorrect){
-            IPCManager.answer((int) (timeLeft * 5));
+            IPCManager.instance.ipc_answer((int) (timeLeft * 5));
             UpdateScore((int) (timeLeft * 5));
         }
 

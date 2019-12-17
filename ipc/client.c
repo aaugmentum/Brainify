@@ -14,7 +14,7 @@
 void terminate(const char *);
 
 //*Basic
-int connect_server();
+int connect_server(char *);
 int signup(char *, char *);
 int signin(char *, char *);
 void signout();
@@ -22,7 +22,6 @@ void signout();
 //*Admin
 char *games();
 int start_game(char *);
-char *player_join();
 void run_game();
 char *receive_standings();
 
@@ -30,7 +29,6 @@ char *receive_standings();
 int join(int);
 char *get_questions(char *);
 int receiver();
-//TODO
 void answer(int score);
 
 //*Global variables
@@ -42,7 +40,7 @@ games_t gms();
 //!Do not include to .so
 int main()
 {
-	if (connect_server() == 0)
+	if (connect_server("127.0.0.1") == 0)
 		exit(EXIT_FAILURE);
 
 	int temp;
@@ -86,7 +84,7 @@ A:
 		int i = 0;
 		while (1)
 		{
-			char *username = player_join();
+			char *username = receive_standings();
 			printf("Player %d connected: %s\n", ++i, username);
 			free(username);
 			if (i == 2)
@@ -99,7 +97,6 @@ A:
 		{
 			receive_standings();
 		}
-		
 
 		scanf("%d", &temp);
 	}
@@ -131,7 +128,7 @@ A:
 
 //*Basic
 //Return 0 if server is unavailable
-int connect_server()
+int connect_server(char *ip)
 {
 	//Init variables
 	struct sockaddr_in server_addr;
@@ -148,7 +145,7 @@ int connect_server()
 	memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(PORT);
-	if (inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0)
+	if (inet_pton(AF_INET, ip, &server_addr.sin_addr) <= 0)
 	{
 		perror("Address cant't be converted");
 		return 0;
@@ -241,15 +238,6 @@ int start_game(char *game_id)
 	return result;
 }
 
-//Return joined player's username
-char *player_join()
-{
-	char *username = malloc(20);
-	memset(username, '\0', 20);
-	my_recv(server_fd, username, 20, MSG_WAITALL);
-	return username;
-}
-
 void run_game()
 {
 	method_t method;
@@ -265,11 +253,20 @@ char *receive_standings()
 	const int length = 512;
 	char *buf = malloc(length);
 	memset(buf, '\0', length);
-	for (size_t i = 0; i < scores.size; i++)
+
+	if (scores.type == PLAYER_JOIN)
 	{
-		sprintf(buf, "%s: %d,", scores.at[i].username, scores.at[i].score);
-		printf("%s: %d\n", scores.at[i].username, scores.at[i].score);
+		strcpy(buf, scores.username);
 	}
+	else
+	{
+		for (size_t i = 0; i < scores.size; i++)
+		{
+			sprintf(buf, "%s: %d,", scores.at[i].username, scores.at[i].score);
+			printf("%s: %d\n", scores.at[i].username, scores.at[i].score);
+		}
+	}
+
 	return buf;
 }
 

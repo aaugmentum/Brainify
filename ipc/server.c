@@ -214,7 +214,10 @@ void *handle_client(peer_t *peer)
 				fprintf(stdout, "JOIN: Player %s connected!\n", peer->username);
 				sendall(peer->fd, &result, sizeof(int), 0);
 
-				sendall(session.admin.fd, peer->username, sizeof(peer->username), 0);
+				scores_t scores;
+				scores.type = PLAYER_JOIN;
+				strcpy(scores.username, peer->username);
+				sendall(session.admin.fd, &scores, sizeof(scores_t), 0);
 			}
 			else
 			{
@@ -351,11 +354,11 @@ void *handle_client(peer_t *peer)
 				notify_next(2);
 
 				//*Standings
-				// standings();
+				standings();
 			}
 			sleep(20);
 			notify_next(3);
-			// standings();
+			standings();
 
 			//*Clear session
 			session.players_size = 0;
@@ -388,6 +391,7 @@ void standings()
 
 	//Send
 	scores_t scores;
+	scores.type = STANDINGS;
 	scores.size = session.players_size;
 	for (size_t i = 0; i < session.players_size; i++)
 	{

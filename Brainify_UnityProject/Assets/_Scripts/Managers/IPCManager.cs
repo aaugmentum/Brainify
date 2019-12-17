@@ -10,7 +10,7 @@ public class IPCManager : MonoBehaviour
     [DllImport ("Simple")] 
     public static extern int signup(string username, string password);
     [DllImport ("Simple")] 
-    public static extern int connect_server();
+    public static extern int connect_server(string ip);
     [DllImport ("Simple")] 
     public static extern int start_game(string gid);
     [DllImport ("Simple")] 
@@ -86,8 +86,8 @@ public class IPCManager : MonoBehaviour
 
     public void Connect(){
         print("Trying to connect");
-        result = IPCManager.connect_server();
-        getGames();
+        result = IPCManager.connect_server("127.0.0.1");
+        // getGames();
         if(result == 1){
             is_connected = 1;
         }else{

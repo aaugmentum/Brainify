@@ -10,10 +10,11 @@ public class LobbyControllerScript : MonoBehaviour
     public Text[] users;
     int counter = 0;
     int toShow = -1;
-    string username;
-    string standingsData;
+    string stringData;
+	string [] standings;
     private Thread lobbyReceiverThread;
     public Button run_button;
+    // public Button back_button;
     bool is_running = false;
     private bool is_lobby_thread_active = false;
     void Start()
@@ -32,10 +33,16 @@ public class LobbyControllerScript : MonoBehaviour
     {
         if (toShow != -1 && toShow < 8)
         {
-            users[toShow].text = username;
+            users[toShow].text = stringData;
             users[toShow].gameObject.SetActive(true);
             toShow = -1;
         }
+		if(toShow == 10){
+			for(int i = 0; i < standings.Length - 1; i++){
+				users[i].text = standings[i];
+			}
+			toShow = -1;
+		}
     }
 
     public void run_game_clicked()
@@ -62,21 +69,25 @@ public class LobbyControllerScript : MonoBehaviour
     {
         while (is_lobby_thread_active && IPCManager.instance.is_connected)
         {
-            if (is_running)
+			stringData = IPCManager.instance.ipc_standing();
+			if(stringData.Equals("Rasengan")){
+				print("Game finished");
+				break;
+			}
+            if (!is_running)
             {
-                username = IPCManager.instance.ipc_standing();
-                print("New user connected: " + username);
+                print("New user connected: " + stringData);
                 toShow = counter;
                 if (counter < 8) counter++;
             }
             else
             {
-                standingsData = IPCManager.instance.ipc_standing();
-                string[] standings = standingsData.Split(',');
-                for (int i = 0; i < standings.Length - 1; i++)
-                {
-                    users[i].text = standings[i];
-                }
+                standings = stringData.Split(',');
+                // for (int i = 0; i < standings.Length - 1; i++)
+                // {
+                //     users[i].text = standings[i];
+                // }
+				toShow = 10;
             }
 
         }

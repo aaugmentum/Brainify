@@ -25,7 +25,7 @@ public class IPCManager : MonoBehaviour
     [DllImport ("IPCPlugin")] 
     public static extern string get_questions(string gid);
     [DllImport ("IPCPlugin")] 
-    public static extern string receive_standing();
+    public static extern string receive_standings();
     [DllImport ("IPCPlugin")] 
     public static extern int receiver();
     [DllImport ("IPCPlugin")] 
@@ -104,7 +104,7 @@ public class IPCManager : MonoBehaviour
         print("Trying to connect");
       
         try{
-            result = IPCManager.connect_server("127.0.0.1");
+            result = IPCManager.connect_server("172.20.10.2");
         }catch(Exception e){
             Debug.LogException(e, this);
         }
@@ -188,7 +188,7 @@ public void ipc_run_game(){
 }
 public string ipc_standing(){
     string result = "";
-    if(is_connected) result = receive_standing();
+    if(is_connected) result = receive_standings();
     return result;
 }
 public void ipc_answer(int score){

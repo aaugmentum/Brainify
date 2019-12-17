@@ -52,7 +52,7 @@ public class LobbyControllerScript : MonoBehaviour
             if (IPCManager.instance.is_connected)
             {
                 IPCManager.instance.ipc_run_game();
-                run_button.gameObject.GetComponentInChildren<Text>().text = "Exit";
+                run_button.gameObject.SetActive(false);
                 is_running = true;
             }
         }
@@ -71,6 +71,8 @@ public class LobbyControllerScript : MonoBehaviour
         {
 			stringData = IPCManager.instance.ipc_standing();
 			if(stringData.Equals("Rasengan")){
+                run_button.gameObject.GetComponentInChildren<Text>().text = "Exit";
+                run_button.gameObject.SetActive(true);
 				print("Game finished");
 				break;
 			}

@@ -360,6 +360,11 @@ void *handle_client(peer_t *peer)
 			notify_next(3);
 			standings();
 
+			scores_t scores;
+			scores.type = PLAYER_JOIN;
+			strcpy(scores.username, "Rasengan");
+			sendall(session.admin.fd, &scores, sizeof(scores_t), 0);
+
 			//*Clear session
 			session.players_size = 0;
 			session.question_size = 0;

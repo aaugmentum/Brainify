@@ -15,14 +15,8 @@ public class GameManager : MonoBehaviour
     public float timeLeft;
 
     public List<Question> _questions = new List<Question>();
-    // public Question[] Questions
-    // {
-    //     get => _questions;
-    //     set => _questions = value;
-    // }
 
-
-    private int _currentQuestionIndex = 0;
+    private int _currentQuestionIndex = -1;
     
     private IEnumerator _IE_WaitForNextQuestion;
     private IEnumerator _IE_Timer;
@@ -52,12 +46,11 @@ public class GameManager : MonoBehaviour
 
     public void DisplayQuestion()
     {
-        // Question question = GetRandomQuestion();
-        // TODO Check TIMER
+        _currentQuestionIndex++;
+
         UpdateTimer(false);
 
         Question question = _questions[_currentQuestionIndex];
-        _currentQuestionIndex++;
         
         events.onUpdateQuestionUI?.Invoke(question);
         
@@ -65,16 +58,16 @@ public class GameManager : MonoBehaviour
     }
 
     public void AcceptUserAnswer(int chosenAnswerIndex)
-    {
-        UpdateTimer(false);
-        
+    {        
         bool isAnswerCorrect = CheckUserAnswers(chosenAnswerIndex);
         
         _finishedQuestionsIndexes.Add(_currentQuestionIndex);
 
+        int userScore = (int) (timeLeft * 5);
+
         if (isAnswerCorrect){
-            IPCManager.instance.ipc_answer((int) (timeLeft * 5));
-            UpdateScore((int) (timeLeft * 5));
+            IPCManager.instance.ipc_answer(userScore);
+            UpdateScore(userScore);
         }
 
         PostQuestionScreenType screenType;
@@ -83,22 +76,7 @@ public class GameManager : MonoBehaviour
         else
             screenType = (isAnswerCorrect) ? PostQuestionScreenType.Correct : PostQuestionScreenType.Incorrect;
 
-        events.onDisplayPostQuestionScreen?.Invoke(screenType, (int) (timeLeft * 5));   
-
-        if (screenType.Equals(PostQuestionScreenType.Correct) || screenType.Equals(PostQuestionScreenType.Incorrect))
-        {
-            if (_IE_WaitForNextQuestion != null)
-                StopCoroutine(_IE_WaitForNextQuestion);
-
-            _IE_WaitForNextQuestion = WaitForNextQuestion();
-            StartCoroutine(_IE_WaitForNextQuestion);
-        }
-    }
-
-    private IEnumerator WaitForNextQuestion()
-    {
-        yield return new WaitForSeconds(Constants.PostQuestionTime);
-        // DisplayQuestion();
+        events.onDisplayPostQuestionScreen?.Invoke(screenType, userScore);   
     }
     
     private void UpdateTimer(bool shouldTimerTick)
@@ -122,32 +100,11 @@ public class GameManager : MonoBehaviour
 
         while (timeLeft > 0)
         {
-            timeLeft--;
             timerText.text = timeLeft.ToString();
+            timeLeft--;
             yield return new WaitForSeconds(1.0f);
         }
     }
-
-    // private Question GetRandomQuestion()
-    // {
-    //     int randomIndex = GetRandomQuestionIndex();
-    //     _currentQuestionIndex = randomIndex;
-        
-    //     return _questions[randomIndex];
-    // }
-
-    // private int GetRandomQuestionIndex()
-    // {
-    //     int randomIndex = 0;
-    //     if (_finishedQuestionsIndexes.Count < _questions.Count)
-    //     {
-    //         do
-    //         {
-    //             randomIndex = Random.Range(0, _questions.Count);
-    //         } while (_finishedQuestionsIndexes.Contains(randomIndex) || randomIndex == _currentQuestionIndex);
-    //     }
-    //     return randomIndex;
-    // }
 
     private bool CheckUserAnswers(int chosenAnswerIndex)
     {
@@ -180,17 +137,5 @@ public class GameManager : MonoBehaviour
 
             _questions.Add(new Question(i, question_items[0], question_answers, correctAnswerIndex));
         }
-
-        // Object[] objects = Resources.LoadAll(Constants.PathQuestions, typeof(Question));
-        // _questions = new Question[objects.Length];
-
-        // for (int i = 0; i < _questions.Length; i++)
-        // {
-        //     _questions[i] = (Question) objects[i];
-        // }
-    }
-
-    public void DisplayQuestionIndex(){
-        // TODO
     }
 }

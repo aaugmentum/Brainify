@@ -6,29 +6,29 @@ using System;
 
 public class IPCManager : MonoBehaviour
 {
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int connect_server(string ip);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int signin(string username, string password);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int signup(string username, string password);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern string games();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int start_game(string gid);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern void run_game();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int join(int pin);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern void answer(int score);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern string get_questions(string gid);
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern string receive_standings();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern int receiver();
-    [DllImport ("IPCPlugin")] 
+    [DllImport ("Simple")] 
     public static extern void signout();
 
 
@@ -69,10 +69,12 @@ public class IPCManager : MonoBehaviour
             ScenesManager.instance.SwitchScene("Question");
         }else if(state == 2){
             print("Next question");
+            UIManager.instance.FadeOutPostQuestionScreenUI();
             GameManager.instance.DisplayQuestion();
             state = 0;
         }else if(state == 3){
             ScenesManager.instance.SwitchScene("FinishClient");
+            state = 0;
         }
     }
     void OnApplicationQuit()
@@ -104,7 +106,7 @@ public class IPCManager : MonoBehaviour
         print("Trying to connect");
       
         try{
-            result = IPCManager.connect_server("172.20.10.2");
+            result = IPCManager.connect_server("192.168.43.234");
         }catch(Exception e){
             Debug.LogException(e, this);
         }

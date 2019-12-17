@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/LobbyUser.unity
     guid: 25677cc4cab322b488d7d5ce424a21a3
+  - enabled: 1
+    path: Assets/_Scenes/FinishClient.unity
+    guid: 4ca177e3937f656bd95621491584cd8d
   m_configObjects: {}

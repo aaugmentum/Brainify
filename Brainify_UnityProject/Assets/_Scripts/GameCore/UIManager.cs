@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup mainCanvasGroup;
     
     [Header("Question Fields")]
+    [SerializeField] private Text questionIndexText;
     [SerializeField] private Text questionInfoText;
     [SerializeField] private Button[] answerButtons;
 
@@ -64,6 +65,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateQuestionUI(Question question)
     {
+        questionIndexText.text = "Question " + (question.QuestionIndex + 1).ToString();
         questionInfoText.text = question.QuestionInfo;
         InitializeAnswers(question);
     }
@@ -72,21 +74,10 @@ public class UIManager : MonoBehaviour
     {
         UpdatePostQuestionScreenUI(type, addScore);
         postQuestionAnimator.SetInteger(ScreenState, 2);
-        mainCanvasGroup.blocksRaycasts = false;
-
-        if (type.Equals(PostQuestionScreenType.Correct) || type.Equals(PostQuestionScreenType.Incorrect))
-        {
-            if (_IE_HoldPostQuestionScreen != null)
-                StopCoroutine(_IE_HoldPostQuestionScreen);
-
-            _IE_HoldPostQuestionScreen = HoldPostQuestionScreenUI();
-            StartCoroutine(_IE_HoldPostQuestionScreen);
-        }
+        mainCanvasGroup.blocksRaycasts = false;        
     }
 
-    IEnumerator HoldPostQuestionScreenUI()
-    {
-        yield return new WaitForSeconds(20 - GameManager.instance.timeLeft);
+    public void FadeOutPostQuestionScreenUI(){
         postQuestionAnimator.SetInteger(ScreenState, 1);
         mainCanvasGroup.blocksRaycasts = true;
     }
@@ -115,12 +106,6 @@ public class UIManager : MonoBehaviour
                 postQuestionTitleText.text = Constants.PostQuestionTextFinish;
                 postQuestionSubtitleText.text = Constants.PostQuestionTextFinishScore + events.currentScore + " points";
                 break;
-            //  case PostQuestionScreenType.Finish:
-            //     postQuestionBG.color = screenColorFinish;
-            //     postQuestionTitleText.gameObject.SetActive(false);
-            //     postQuestionSubtitleText.gameObject.SetActive(false);
-            //     finishUI.gameObject.SetActive(true);
-            //     break;
         }
     }
 
@@ -128,10 +113,8 @@ public class UIManager : MonoBehaviour
     {
         EraseAnswers();
         
-        // for (int i = 0; i < question.AnswerOptions.Length; i++)
         for (int i = 0; i < 4; i++)
         {
-            // string answerInfo = question.AnswerOptions[i].AnswerInfo;
             string answerInfo = question.options[i];
             
             UserAnswerData newAnswerData = answerButtons[i].GetComponent<UserAnswerData>();

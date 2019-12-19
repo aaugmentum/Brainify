@@ -10,7 +10,7 @@
    #endregion
 
    #region RoundParams
-   public static readonly float RoundTimer  = 20.0f;
+   public static readonly float RoundTimer  = 10.0f;
    #endregion
 
    #region PostQuestionParams

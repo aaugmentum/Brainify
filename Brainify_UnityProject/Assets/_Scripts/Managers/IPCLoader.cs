@@ -63,7 +63,7 @@ public class IPCLoader : MonoBehaviour
             if(result != 0){
                 IPCManager.instance.gid = result.ToString();
                 print("Game id: " + IPCManager.instance.gid);
-                IPCManager.instance.receiverThread.Start();
+                IPCManager.instance.createReceiverThread();
                 ScenesManager.instance.SwitchScene("LobbyUser");
             }
         }

@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         
         _finishedQuestionsIndexes.Add(_currentQuestionIndex);
 
-        int userScore = (int) (timeLeft * 5);
+        int userScore = (int) (timeLeft * 10);
 
         if (isAnswerCorrect){
             IPCManager.instance.ipc_answer(userScore);

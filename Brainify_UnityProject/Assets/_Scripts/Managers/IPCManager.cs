@@ -59,7 +59,6 @@ public class IPCManager : MonoBehaviour
         // });
         connectionThread = new Thread(Connect);
         connectionThread.IsBackground = true;
-        receiverThread = new Thread(Receive);
         connectionThread.Start();
     }
     void Update()
@@ -77,15 +76,21 @@ public class IPCManager : MonoBehaviour
             state = 0;
         }
     }
+
+    public void createReceiverThread(){
+        if(receiverThread == null || !receiverThread.IsAlive){
+            receiverThread = new Thread(Receive);
+            receiverThread.Start();
+        }
+    }
     void OnApplicationQuit()
     {
-        print("Connection Thread: " + connectionThread.IsAlive);
-        print("Receiver Thread: " + receiverThread.IsAlive);
-        if(connectionThread.IsAlive)connectionThread.Abort();
-        if(receiverThread.IsAlive)receiverThread.Abort();
-        print("After closing");
-        print("Connection Thread: " + connectionThread.IsAlive);
-        print("Receiver Thread: " + receiverThread.IsAlive);
+        if(receiverThread != null && receiverThread.IsAlive){
+            receiverThread.Abort();
+        }
+        if(connectionThread != null && connectionThread.IsAlive){
+            connectionThread.Abort();
+        }
         print("App closed");
         ipc_signout();
     }
@@ -106,7 +111,7 @@ public class IPCManager : MonoBehaviour
         print("Trying to connect");
       
         try{
-            result = IPCManager.connect_server("192.168.43.234");
+            result = IPCManager.connect_server("127.0.0.1");
         }catch(Exception e){
             Debug.LogException(e, this);
         }

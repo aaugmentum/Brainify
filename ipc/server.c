@@ -208,6 +208,7 @@ void *handle_client(peer_t *peer)
 			if (join.pin == session.pin && session.players_size < 8 && session.state == LOBBY)
 			{
 				session.players[session.players_size] = peer;
+				session.players[session.players_size]->score = 0;
 				session.players_size++;
 				result = atoi(session.game.game_id);
 
@@ -350,15 +351,16 @@ void *handle_client(peer_t *peer)
 			notify_next(1);
 			for (size_t i = 0; i < session.question_size - 1; i++)
 			{
-				sleep(20);
+				sleep(10);
 				notify_next(2);
 
 				//*Standings
 				standings();
 			}
-			sleep(20);
+			sleep(10);
 			notify_next(3);
 			standings();
+			sleep(2);
 
 			scores_t scores;
 			scores.type = PLAYER_JOIN;

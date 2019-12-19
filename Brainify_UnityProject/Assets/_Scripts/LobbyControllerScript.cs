@@ -36,13 +36,16 @@ public class LobbyControllerScript : MonoBehaviour
             users[toShow].text = stringData;
             users[toShow].gameObject.SetActive(true);
             toShow = -1;
-        }
-		if(toShow == 10){
+        }else if(toShow == 10){
 			for(int i = 0; i < standings.Length - 1; i++){
 				users[i].text = standings[i];
 			}
 			toShow = -1;
-		}
+		}else if(toShow == 20){
+            run_button.gameObject.GetComponentInChildren<Text>().text = "Exit";
+            run_button.gameObject.SetActive(true);
+            toShow = -1;
+        }
     }
 
     public void run_game_clicked()
@@ -71,8 +74,7 @@ public class LobbyControllerScript : MonoBehaviour
         {
 			stringData = IPCManager.instance.ipc_standing();
 			if(stringData.Equals("Rasengan")){
-                run_button.gameObject.GetComponentInChildren<Text>().text = "Exit";
-                run_button.gameObject.SetActive(true);
+                toShow = 20;
 				print("Game finished");
 				break;
 			}
@@ -84,21 +86,25 @@ public class LobbyControllerScript : MonoBehaviour
             }
             else
             {
+                print("STANDING: " + stringData);
                 standings = stringData.Split(',');
                 // for (int i = 0; i < standings.Length - 1; i++)
                 // {
                 //     users[i].text = standings[i];
                 // }
 				toShow = 10;
+                
             }
 
         }
     }
     void OnDestroy()
     {
-        if (lobbyReceiverThread.IsAlive) lobbyReceiverThread.Abort();
-        print("Lobby thread: " + lobbyReceiverThread.IsAlive);
-        is_lobby_thread_active = false;
+        if (lobbyReceiverThread != null && lobbyReceiverThread.IsAlive){
+            lobbyReceiverThread.Abort();
+            print("Lobby thread: " + lobbyReceiverThread.IsAlive);
+            is_lobby_thread_active = false;
+        } 
     }
     void OnApplicationQuit()
     {

@@ -262,7 +262,9 @@ char *receive_standings()
 	{
 		for (size_t i = 0; i < scores.size; i++)
 		{
-			sprintf(buf, "%s: %d,", scores.at[i].username, scores.at[i].score);
+			char temp[32] = {"\0"};
+			sprintf(temp, "%s: %d,", scores.at[i].username, scores.at[i].score);
+			strcat(buf, temp);
 			printf("%s: %d\n", scores.at[i].username, scores.at[i].score);
 		}
 	}

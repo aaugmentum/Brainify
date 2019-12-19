@@ -1,4 +1,4 @@
-#define REMOTE 0
+#define REMOTE 1
 #if REMOTE
 	#define DB_HOST "remotemysql.com"
 	#define DB_USER "71VUvOSzmm"
